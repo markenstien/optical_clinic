@@ -59,14 +59,14 @@
         break;
 
         case 'up':
-            define('URL' , 'https://vitalcare.sbs/');
+            define('URL' , 'https://www.vividoptical.online');
             define('DBVENDOR' , 'mysql');
             define('DBHOST' , 'localhost');
-            define('DBUSER' , 'arthsobx_vitalcare');
-            define('DBPASS' , 'xjiR&]ccqs&]');
-            define('DBNAME' , 'arthsobx_vitalcare');
+            define('DBUSER' , 'korpzpru_th_main');
+            define('DBPASS' , 'Y[@h=Ytz;(f}');
+            define('DBNAME' , 'korpzpru_vivid_optical');
 
-            define('BASECONTROLLER' , 'AppointmentController');
+            define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
         break;
     }
