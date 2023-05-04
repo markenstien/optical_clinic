@@ -12,36 +12,6 @@
 			</div>
 		</div>	
 	</div>
-
-	<div class="col-md-7">
-		<div class="card">
-			<div class="card-header">
-				<h4 class="card-title">Services , Payments & Bills Attached</h4>
-			</div>
-
-			<div class="card-body">
-				<section>
-					<h4>Bill</h4>
-					<ul>
-						<li>#<?php __($bill->reference) ?></li>
-						<li>Amount : <?php echo $bill->total_amount?></li>
-						<li>Status : <?php echo $bill->payment_status?></li>
-						<li>Method : <?php echo $bill->payment_method?></li>
-						<li><?php echo anchor(_route('bill:show' , $bill->id) , 'view' , 'Show Bill')?></li>
-					</ul>
-				</section>
-
-				<section>
-					<h4>Bill Items</h4>
-					<ul>
-						<?php foreach($bill->items as $row) :?>
-							<li><?php echo $row->name?></li>
-						<?php endforeach?>
-					</ul>
-				</section>
-			</div>
-		</div>
-	</div>
 </div>
 <?php endbuild()?>
 

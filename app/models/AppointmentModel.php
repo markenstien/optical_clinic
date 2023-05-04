@@ -15,7 +15,8 @@
 			'guest_name',
 			'guest_email',
 			'guest_phone',
-			'status'
+			'status',
+			'notes'
 		];
 
 		public function save($appointment_data , $id = null)
@@ -35,7 +36,7 @@
 		{	
 			extract($appointment_data);
 
-			if(!$this->checkAvailability($date)) 
+			if(!$this->checkAvailability($date) || $this->checkDuplicateAppointment($appointment_data)) 
 				return false;
 			/*check appointment date if in maximum*/
 
@@ -55,7 +56,8 @@
 
 			if( $appointment_id )
 			{
-				if( !is_null($user_id) )
+				$user_id = $appointment_data['user_id'];
+				if( !empty($appointment_data['user_id']) )
 				{
 
 					$user_model = model('UserModel');
@@ -65,9 +67,9 @@
 					$email = $user->email;
 					$user_mobile_number = $user->phone_number;
 					
-					_notify_include_email("Appointment to vitalcare is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
+					// _notify_include_email("Appointment to vitalcare is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
 
-					send_sms("Appointment to vitalcare is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
+					// send_sms("Appointment to vitalcare is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
 				}
 				
 				_notify_operations("Appointment to vitalcare is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
@@ -169,6 +171,20 @@
 			return $this->db->single()->total ?? 0;
 		}
 
+		public function checkDuplicateAppointment($data) {
+			$exists = parent::single([
+				'date' => $data['date'],
+				'guest_email' => $data['guest_email'],
+				'status' => 'pending'
+			]);
+
+			if($exists) {
+				$this->addError("Duplicate Appointment");
+				return true;
+			}
+			return false;
+		}
+
 		public function checkAvailability($date)
 		{
 			$schedule_model = model('ScheduleModel');
@@ -179,12 +195,16 @@
 
 			$date_by_name = $schedule_model->getByAppointmentByDay($day_name);
 
-			if( $date_by_name->max_visitor_count <= $total_person_reserved ){
-				$this->addError("Date {$date}($day_name) is already full , please schedule another day");
-				return false;
-			}else{
-				$this->addMessage("Date is available");
-				return true;
+			if($date_by_name) {
+				if($date_by_name->max_visitor_count <= $total_person_reserved ){
+					$this->addError("Date {$date}($day_name) is already full , please schedule another day");
+					return false;
+				}else{
+					$this->addMessage("Date is available");
+					return true;
+				}
 			}
+			$this->addMessage("Date is available");
+			return true;
 		}
 	}

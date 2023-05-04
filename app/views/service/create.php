@@ -46,6 +46,12 @@
 
 					<div class="form-group">
 						<?php
+							__( $form->getRow('images[]') );
+						?>
+					</div>
+
+					<div class="form-group">
+						<?php
 							__( $form->get('submit') );
 						?>
 					</div>

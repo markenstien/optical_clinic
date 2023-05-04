@@ -77,7 +77,8 @@
 		'edit' => $controller.'/edit',
 		'add' => $controller.'/add',
 		'delete' => $controller.'/destroy',
-		'show'   => $controller.'/show'
+		'show'   => $controller.'/show',
+		'appointment_form' => $controller. '/appointment_form'
 	];
 
 	$controller = '/BillController';
@@ -162,6 +163,16 @@
 		'delete' => $controller.'/destroy',
 		'download' => $controller.'/download',
 		'show'   => $controller.'/show'
+	];
+
+	$controller = '/StockController';
+	$routes['stock'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/addStock',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'log'   => $controller.'/log',
 	];
 
 	

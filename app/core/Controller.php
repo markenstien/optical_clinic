@@ -1,18 +1,29 @@
 <?php
 	use Form\AttachmentForm;
-	load(['AttachmentForm'] , APPROOT.DS.'form');
+	use Form\FormCommon;
+	load(['AttachmentForm', 'FormCommon'] , APPROOT.DS.'form');
 
 	class Controller
 	{	
 
 		protected $_attachmentForm = null;
+		protected $_attachmentModel = null;
 
 		public function __construct()
 		{
-			if( is_null($this->_attachmentForm) )
-			{
+			if(is_null($this->_attachmentForm)) {
 				$this->_attachmentForm = new AttachmentForm();
+				$this->_attachmentModel = model('AttachmentModel'); 
 			}
+
+			$this->_formCommon = new FormCommon();
+			$this->data = [];
+			$this->data['whoIs'] = whoIs();
+			$this->data['_formCommon'] = $this->_formCommon;
+			$this->data['_attachmentForm'] = $this->_attachmentForm;
+			$user = whoIs(); 
+			if($user && isEqual($user->user_type , 'admin'))
+				$this->is_admin = true;
 		}
 
 		public function model($model)

@@ -17,4 +17,8 @@ create table appointments(
 
 alter table appointments
 	add column start_time time after date ,
-	add column end_time time after date
+	add column end_time time after date;
+
+
+alter table appointments
+	add column notes text;

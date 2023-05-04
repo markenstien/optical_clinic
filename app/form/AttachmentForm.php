@@ -25,7 +25,6 @@
 			// $this->addName();
 
 			$this->addLabel();
-			$this->addSearchKey();
 			$this->addDescription();
 			$this->addGlobalId();
 			$this->addGlobalKey();

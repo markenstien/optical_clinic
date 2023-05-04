@@ -11,6 +11,10 @@
         return $result;
     }
 
+	function number_series($string, $startFrom = null){
+		return str_pad($string,10,000,STR_PAD_LEFT);
+	}
+	
     function random_letter($length = 12)
     {
     	$sets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -95,6 +99,9 @@
 		}
 	}
 
+	function csrfGet(){
+		return Session::get('csrfToken');
+	}
 	function csrfReload(){
 		return Session::set('csrfToken' , get_token_random_char(20));
 	}
@@ -115,3 +122,13 @@
 		}
 		return true;
 	}
+
+	function referenceSeries($startAt = null, $length = 10, $prefix = null, $suffix = null) {
+		if (is_numeric($startAt)) {
+			$reference = str_pad(($startAt+1),$length,0,STR_PAD_LEFT);
+		}else{
+			$reference = str_pad(random_number(5),$length,0,STR_PAD_LEFT);
+		}
+		return $prefix.$reference.$suffix;
+	}
+	

@@ -34,7 +34,7 @@
 								<td>
 									<?php
 										__([
-											btnEdit(_route('service:edit' , $row->id)),
+											btnView(_route('service:show' , $row->id)),
 											btnDelete(_route('service:delete' , $row->id))
 										])
 									?>

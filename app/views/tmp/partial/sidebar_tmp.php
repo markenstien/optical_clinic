@@ -51,9 +51,15 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Modules</h6>
                 <a class="collapse-item" href="<?php echo _route('service:index')?>">List</a>
-                <a class="collapse-item" href="#">Inventory</a>
+                <a class="collapse-item" href="<?php echo _route('stock:index')?>">Inventory</a>
             </div>
         </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo _route('appointment:index')?>">
+            <i class="fas fa-calendar-check"></i>
+            <span>Appointments</span></a>
     </li>
     
 

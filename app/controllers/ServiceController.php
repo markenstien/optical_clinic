@@ -8,9 +8,10 @@
 
 		public function __construct()
 		{
+			parent::__construct();
+
 			$this->_form = new ServiceForm();
 			$this->model = model('ServiceModel');
-
 		}
 
 		public function index()
@@ -39,6 +40,14 @@
 				if(!$res){
 					Flash::set( $this->model->getErrorString() , 'danger');
 					return request()->return();
+				}
+
+				if(!upload_empty('images')) {
+					//upload images
+					$this->_attachmentModel->upload_multiple([
+						'global_key' => 'PRODUCT_IMAGES',
+						'global_id'  => $this->model->_getRetval('id')
+					], 'images');
 				}
 
 				return redirect( _route('service:index') );
@@ -87,5 +96,23 @@
 			];
 
 			return $this->view('service/edit' , $data);
+		}
+
+		public function show($id) {
+			$service = $this->model->get($id);
+			$this->_form->setValueObject( $service );
+			$this->data['service'] = $service;
+			$this->data['_form'] = $this->_form;
+
+			$this->data['images'] = $this->_attachmentModel->all([
+				'global_key' => _asset_key('PRODUCT_IMAGES'),
+				'global_id'  => $id
+			]);
+
+			$this->data['_attachmentForm']->setValue('global_id', $id);
+			$this->data['_attachmentForm']->setValue('global_key', _asset_key('PRODUCT_IMAGES'));
+
+
+			return $this->view('service/show' , $this->data);
 		}
 	}

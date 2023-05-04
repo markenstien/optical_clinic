@@ -55,10 +55,6 @@
 					<div class="table-responsive">
 						<table class="table table-bordered">
 							<tr>
-								<td>Licensed #</td>
-								<td><?php echo $doctor->license_number?></td>
-							</tr>
-							<tr>
 								<td>Name</td>
 								<td><?php echo $doctor->first_name . ' ' .$doctor->middle_name.' '.$doctor->last_name?></td>
 							</tr>
@@ -76,7 +72,7 @@
 							</tr>
 						</table>
 					</div>
-					<a href="<?php echo _route('user:show' , $doctor->user_id)?>">Show Account</a>
+					<a href="<?php echo _route('user:show' , $doctor->id)?>">Show Account</a>
 				</div>
 			</div>
 		</div>

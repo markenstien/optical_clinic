@@ -38,16 +38,28 @@
 				$order = " ORDER BY {$params['order']} ";
 
 			$this->db->query(
-				"SELECT service.* , cat.category as category 
+				"SELECT service.* , cat.category as category,
+					ifnull(stock_table.total_stock,0) as total_stock
 					FROM {$this->table} as service
 					LEFT JOIN categories as cat 
 					ON cat.id = service.category_id
+					LEFT JOIN (SELECT sum(quantity) as total_stock, item_id 
+							FROM stocks GROUP BY item_id) as stock_table
+					ON stock_table.item_id = service.id
+
 					{$where} {$order}"
 			);
 
 			return $this->db->resultSet();
 		}
 
+		public function get($id) {
+			return $this->getAll([
+				'where' => [
+					'service.id' => $id
+				]
+			])[0] ?? false;
+		}
 		public function getByFilter($filter = [])
 		{
 			$key_word = null;
@@ -108,7 +120,12 @@
 				_notify_operations( "{$first_name} added a service {$fillable_datas['service']}");
 
 				$this->addMessage("Service {$fillable_datas['service']} has been created");
-				return parent::store($fillable_datas);
+
+
+				$id = parent::store($fillable_datas);
+
+				parent::_addRetval('id', $id);
+				return $id;
 			}
 		}
 

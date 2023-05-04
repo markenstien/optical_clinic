@@ -111,3 +111,7 @@
             'created_by' => $createdBy
         ]);
     }
+
+    function _asset_key($name) {
+        return Module::getAsset($name);
+    }

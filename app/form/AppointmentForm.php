@@ -13,7 +13,7 @@
 			parent::__construct();
 
 			$this->init([
-				'url' => _route('appointment:createWithBill')
+				'url' => _route('appointment:appointment_form')
 			]);
 
 			$this->addDate();
@@ -22,10 +22,8 @@
 			$this->addGuestEmail();
 			$this->addGuestPhoneNumber();
 			$this->addType();
+			$this->addNotes();
 
-			if( isEqual(auth('user_type') , ['admin' , 'doctor']))
-				$this->addStatus();
-			
 			$this->customSubmit('Reserve');
 		}
 
@@ -121,6 +119,22 @@
 					'option_values' => [
 						'pending', 'arrived', 'cancelled','scheduled'
 					]
+				]
+			]);
+		}
+
+		public function addNotes()
+		{
+			$this->add([
+				'type' => 'textarea',
+				'name' => 'notes',
+				'class' => 'form-control',
+				'required' => true,
+				'options' => [
+					'label' => 'Reason of visit',
+				],
+				'attributes' => [
+					'rows' => 4
 				]
 			]);
 		}

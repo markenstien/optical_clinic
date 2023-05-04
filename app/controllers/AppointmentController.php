@@ -16,6 +16,29 @@
 
 
 			$this->_form = new AppointmentForm();
+
+			parent::__construct();
+		}
+
+		/**
+		 * Temporary to keep order glasses online
+		 * */
+		public function appointment_form() {
+			if(isSubmitted()) {
+				$post = request()->posts();
+
+				$res = $this->model->create($post);
+
+				if(!$res) {
+					Flash::set($this->model->getErrorString(), 'danger');
+					return request()->return();
+				} else {
+					Flash::set($this->model->getMessageString());
+					return redirect(_route('auth:login'));
+				}
+			}
+			$this->data['form'] = $this->_form;
+			return $this->view('appointment/appointment_form', $this->data);
 		}
 
 		public function index()

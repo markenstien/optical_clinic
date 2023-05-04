@@ -4,29 +4,32 @@
     */
     define('DS', DIRECTORY_SEPARATOR);
     //application root
-	define('APPROOT' , dirname(dirname(__FILE__)));
-	//core root
+    define('APPROOT' , dirname(dirname(__FILE__)));
+    //core root
     define('CORE' , APPROOT.DS.'core');
     //
-	define('CLASSES' , APPROOT.DS.'classes');
-	//
-	define('BASE_DIR', dirname(dirname(dirname(__FILE__))));
-	//models
-	define('MODELS' , APPROOT.DS.'models');
-	//controllers
+    define('CLASSES' , APPROOT.DS.'classes');
+    define('FORMS' , APPROOT.DS.'form');
+    //
+    define('BASE_DIR', dirname(dirname(dirname(__FILE__))));
+    //models
+    define('MODELS' , APPROOT.DS.'models');
+    //controllers
     define('CNTLRS' , APPROOT.DS.'controllers');
 
-	define('CONFIG' , APPROOT.DS.'config');
-	//controllers
-	define('API' , APPROOT.DS.'api');
-	//helpers root
-	define('HELPERS', APPROOT.DS.'helpers');
-	//library
-	define('LIBS' , APPROOT.DS.'libraries');
-	//funtions
+    define('CONFIG' , APPROOT.DS.'config');
+    //controllers
+    define('API' , APPROOT.DS.'api');
+    //helpers root
+    define('HELPERS', APPROOT.DS.'helpers');
+    //library
+    define('LIBS' , APPROOT.DS.'libraries');
+    //funtions
     define('FNCTNS' ,  APPROOT.DS.'functions');
 
-	define('VIEWS' , APPROOT.DS.'views');
+    define('VIEWS' , APPROOT.DS.'views');
+
+    define('SERVICES' , APPROOT.DS.'services');
     ##########################################################################################
 
     /**
@@ -51,7 +54,7 @@
     $system['version']  = 'N/A';
 
 
-    $system['app_name'] = 'RESERVATION AND BILLING SYSTEM WITH DIAGNOSTIC';
+    $system['app_name'] = 'COVID-PIMS';
 
     $ui = [
         'vendor' => 'cork'

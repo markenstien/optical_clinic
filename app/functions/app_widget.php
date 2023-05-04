@@ -1,10 +1,18 @@
 <?php   
+
+    function btnCreate( $route  , $text = 'Create', $attributes  = null)
+    {
+        $attributes = keypair_to_str($attributes ?? []);
+        return <<<EOF
+            <a href="{$route}" class="btn btn-primary btn-xs" {$attributes}><i class='fa fa-plus'> </i> {$text} </a>
+        EOF;
+    }
     
     function btnView( $route  , $text = 'Show', $attributes  = null)
     {
         $attributes = keypair_to_str($attributes ?? []);
         return <<<EOF
-            <a href="{$route}" class="btn btn-primary btn-sm" {$attributes}><i class='fa fa-eye'> </i> {$text} </a>
+            <a href="{$route}" class="btn btn-primary btn-xs" {$attributes}><i class='fa fa-eye'> </i> {$text} </a>
         EOF;
     }
 
@@ -12,7 +20,7 @@
     {
         $attributes = keypair_to_str($attributes ?? []);
         return <<<EOF
-            <a href="{$route}" class="btn btn-primary btn-sm" {$attributes}><i class='fa fa-edit'> </i> {$text}  </a>
+            <a href="{$route}" class="btn btn-primary btn-xs" {$attributes}><i class='fa fa-edit'> </i> {$text}  </a>
         EOF;
     }
 
@@ -20,7 +28,7 @@
     {
         $attributes = keypair_to_str($attributes ?? []);
         return <<<EOF
-            <a href="{$route}" class="form-verify btn btn-danger btn-sm" {$attributes}><i class='fa fa-trash'> </i> {$text} </a>
+            <a href="{$route}" class="form-verify btn btn-danger btn-xs" {$attributes}><i class='fa fa-trash'> </i> {$text} </a>
         EOF;
     }
 
@@ -28,10 +36,42 @@
     {
         $attributes = keypair_to_str($attributes ?? []);
         return <<<EOF
-            <a href="{$route}" class="btn btn-primary btn-sm" {$attributes}><i class='fa fa-list'> </i> {$text}  </a>
+            <a href="{$route}" class="btn btn-primary btn-xs" {$attributes}><i class='fa fa-list'> </i> {$text}  </a>
         EOF;
     }
 
+    /*
+    *ancors
+    *['url' , 'icon' , 'text']
+    */
+    function anchorList( $anchors = [])
+    {
+        $token = random_letter(12);
+
+        $html  = <<<EOF
+        <div class="dropdown mb-2">
+        <button class="btn p-0" type="button" id="dropdownMenuButton-{$token}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-{$token}">
+        EOF;
+
+        foreach($anchors as $anchor)
+        {
+            $html .= <<<EOF
+            <a class="dropdown-item d-flex align-items-center" href="{$anchor['url']}">
+                <i data-feather="{$anchor['icon']}" class="icon-sm me-2"></i> 
+            <span class="">{$anchor['text']}</span></a>
+            EOF;
+        }
+
+        $html.= <<<EOF
+            </div>
+        </div>
+        EOF;
+
+        return $html;
+    }
 
     function anchor( $route , $type = 'edit' , $text = null , $color = null)
     {
@@ -59,6 +99,9 @@
                 $icon = 'plus';
                 $a_text = 'Create';
             break;
+
+            default:
+                $icon = 'fa-check-circle';
         }
 
         if( !is_null($text) )
@@ -90,6 +133,15 @@
         EOF;
     }
 
+    function wLinkDefault($link , $text = 'Edit' , $attributes = [])
+    {   
+        $icon = isset($attributes['icon']) ? "<i class='{$attributes['icon']}'> </i>" : null;
+        $attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
+        return <<<EOF
+            <a href="{$link}" style="text-decoration:underline" {$attributes}>{$icon} {$text}</a>
+        EOF;
+    }
+
     function wWrapSpan($text)
     {
         $retVal = '';
@@ -111,9 +163,9 @@
 
     
 
-    function wDivider()
+    function wDivider($size = '30px')
     {
         return <<<EOF
-            <div style="margin-top:30px"> </div>
+            <div style="margin-top:{$size}px"> </div>
         EOF;
     }

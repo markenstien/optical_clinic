@@ -157,7 +157,7 @@
 				'url' => _route('session:edit' , $id),
 				'method' => 'post'
 			]);
-			
+
 			$form->addDoctorRecommendation();
 			//addremarks
 			$form->addRemarks();

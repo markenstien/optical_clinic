@@ -34,7 +34,7 @@
 
 			$users = $user_model->getAll([
 				'where' => [
-					'user_type' => 'doctor'
+					'user_type' => 'staff'
 				]
 			]);
 

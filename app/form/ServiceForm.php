@@ -21,6 +21,7 @@
 			$this->addStatus();
 			$this->addDescription();
 			$this->addCategory();
+			$this->addImages();
 			// $this->addVisible();
 
 
@@ -140,6 +141,21 @@
 				],
 				'attributes' => [
 					'class' => 'form-control'
+				]
+			]);
+		}
+
+		public function addImages() {
+			$this->add([
+				'type' => 'file',
+				'name' => 'images[]',
+				'class' => 'form-control',
+				'attributes' => [
+					'id' => 'images_upload',
+					'multiple' => true
+				],
+				'options' => [
+					'label' => 'Product Images'
 				]
 			]);
 		}
