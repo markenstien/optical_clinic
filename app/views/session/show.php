@@ -88,7 +88,7 @@
 						<?php endif?>
 					</section>
 
-					<?php divider()?>
+					<?php wDivider(30)?>
 						
 					</section>
 						<h4>Doctors Recommendations</h4>
@@ -117,7 +117,7 @@
 		</div>
 	</div>
 
-	<?php divider()?>
+	<?php wDivider(30)?>
 
 
 	<div class="card">
