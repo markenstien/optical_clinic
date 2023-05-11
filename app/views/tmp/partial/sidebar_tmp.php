@@ -61,6 +61,12 @@
             <i class="fas fa-calendar-check"></i>
             <span>Appointments</span></a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo _route('session:index')?>">
+            <i class="fas fa-calendar-check"></i>
+            <span>Sessions</span></a>
+    </li>
     
 
     <li class="nav-item">

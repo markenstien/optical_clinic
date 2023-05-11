@@ -23,6 +23,7 @@
 			'user_type',
 			'profile',
 			'updated_at',
+			'backer_id',
 			'is_verified'
 		];
 
@@ -289,7 +290,7 @@
 
 		public function getAll($params = null )
 		{
-			if( !is_null($params) )
+			if(!is_null($params))
 				$params = $this->conditionConvert($params['where']);
 			
 			return parent::getAssoc('first_name' , $params);

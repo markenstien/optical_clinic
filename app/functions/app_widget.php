@@ -116,8 +116,10 @@
     }
 
 
+    //depricated
     function divider()
     {
+        echo die("DIVIDER FUNCTION IS DEPRICATED");
         print <<<EOF
             <div style='margin:30px 0px'>
             </div>
@@ -163,7 +165,7 @@
 
     
 
-    function wDivider($size = '30px')
+    function wDivider($size = '30')
     {
         return <<<EOF
             <div style="margin-top:{$size}px"> </div>

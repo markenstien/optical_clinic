@@ -27,7 +27,7 @@
 
 			$this->data['title'] = 'Sessions';
 
-			if( isEqual($auth->user_type , 'patient') )
+			if(isEqual($auth->user_type , 'patient'))
 			{
 				$this->data['sessions'] = $this->model->getAll([
 						'order' => 'session.id desc',
@@ -48,9 +48,53 @@
 			return $this->view('session/index' , $this->data);
 		}
 
-		public function create( $appointment_id = null)
+		private function _createWithAppointment($appointment_id) 
 		{
-			if( isSubmitted() )
+			$appointment = $this->appointment->get($appointment_id);
+
+			if($appointment->user_id) {
+				$user = $this->user_model->get($params['user_id']);
+				return[
+					'guest_name' => $user->first_name . ' '.$user->last_name,
+					'guest_phone' => $user->phone_number,
+					'guest_email' => $user->email,
+					'user_id' => $user->id,
+					'guest_address' => $user->address,
+				];
+			} else {
+				return[
+					'guest_name' => $appointment->guest_name,
+					'guest_phone' => $appointment->guest_phone,
+					'guest_email' => $appointment->guest_email,
+					'guest_address' => '',
+				];
+			}
+		}
+
+
+		/**
+		 * no appointment */
+		private function _createWalkin($params) 
+		{
+			$user = $this->user_model->get($params['user_id']);
+			
+			/*
+			*data needed to create a session
+			*/
+			return[
+				'guest_name' => $user->first_name . ' '.$user->last_name,
+				'guest_phone' => $user->phone_number,
+				'guest_email' => $user->email,
+				'user_id' => $user->id,
+				'guest_address' => $user->address,
+			];
+		}
+
+		public function create($appointment_id = null)
+		{
+			$req = request()->inputs();
+
+			if(isSubmitted())
 			{
 				$post = request()->posts();
 
@@ -66,61 +110,44 @@
 				}
 			}
 
-
-			$appointment = $this->appointment->get($appointment_id);
-
 			$form = $this->_form;
 
-			$form->init([
-				'url' => _route('session:create',$appointment_id),
-				'method' => 'post'
-			]);
-
-			$form->add([
-				'type' => 'hidden',
-				'name' => 'appointment_id',
-				'value' => $appointment->id
-			]);
-
-			if( !is_null($appointment->user_id) )
-			{
-				$form->add([
-					'type' => 'hidden',
-					'name' => 'user_id',
-					'value' => $appointment->user_id
+			if(is_null($appointment_id)) {
+				$sesionData = $this->_createWalkin($req);
+				$form->init([
+					'url' => _route('session:create'),
+					'method' => 'post'
 				]);
+
+			} else {
+				$sesionData = $this->_createWithAppointment($appointment_id);
+				$form->init([
+					'url' => _route('session:create',$appointment_id),
+					'method' => 'post'
+				]);
+
+				// $form->add([
+				// 	'type' => 'hidden',
+				// 	'name' => 'appointment_id',
+				// 	'value' => $appointment_id
+				// ]);
 			}
 
 
-			$address = '';
-
-
-			if( $appointment->user_id )
-			{
-				$address_model = model('AddressModel');
-
-				$user = $this->user_model->get($appointment->user_id);
-
-				$address_object = $address_model->get( $user->address_id );
-
-				if( $address_object ){
-					$address = "{$address_object->block_house_number} {$address_object->street} {$address_object->city} {$address_object->city} {$address_object->barangay} , {$address_object->zip} ";
-				}
-			}
 
 			$form->setValue('doctor_id' , auth('id'));
-			$form->setValue('guest_name' , $appointment->guest_name);
-			$form->setValue('guest_phone' , $appointment->guest_phone);
-			$form->setValue('guest_email' , $appointment->guest_email);
-			$form->setValue('user_id' , $appointment->user_id);
-			$form->setValue('guest_address' , $address);
+			$form->setValue('guest_name' , $sesionData['guest_name']);
+			$form->setValue('guest_phone' , $sesionData['guest_phone']);
+			$form->setValue('guest_email' , $sesionData['guest_email']);
+			$form->setValue('user_id' , $sesionData['user_id'] ?? '');
 
 			$form->customSubmit('Create Session');
 
 
 
 			$this->data['form'] = $form;
-			$this->data['appointment'] = $appointment;
+			
+			// $this->data['appointment'] = $appointment;
 
 			return $this->view('session/create' , $this->data);
 		}

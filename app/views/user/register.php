@@ -16,11 +16,23 @@
 							<h4 class="card-title">Personal</h4>
 						</div>
 						<div class="card-body">
+							<?php if($backerData) :?>
+								<?php 
+									__($form->getRow('backer_name')); 
+									__($form->getRow('backer_id')); 
+								?>
+							<?php else:?>
+								<?php
+									__($form->getRow('backer_user_code'));
+								?>
+							<?php endif?>
+
 							<div class="form-group">
 								<?php
 									__( $form->getRow('profile') );
 								?>
 							</div>
+							
 
 							<div class="form-group">
 								<?php

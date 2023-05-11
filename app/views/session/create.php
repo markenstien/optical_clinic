@@ -7,7 +7,7 @@
 
 		<div class="card-body">
 			<?php
-				__( $form->getForm() );
+				__($form->getForm());
 			?>
 		</div>
 	</div>

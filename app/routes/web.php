@@ -13,7 +13,8 @@
 		'profile' => $controller.'/profile',
 		'sendAuth' => $controller.'/sendAuth',
 		'register' => $controller.'/register',
-		'verification' => $controller.'/verification'
+		'verification' => $controller.'/verification',
+		'referrral'  => $controller .'/referrral'
 	];
 
 	$controller = '/AuthController';

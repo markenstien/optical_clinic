@@ -12,7 +12,7 @@
 
 			$this->name = 'session_form';
 
-
+			$this->addUser();
 			$this->addDoctor();
 			$this->addDate();
 			$this->addName();
@@ -200,11 +200,19 @@
 		}
 		
 
-		public function addUser($id)
+		public function addUser()
 		{
 			$this->add([
 				'type' => 'hidden',
 				'name' => 'user_id'
+			]);
+		}
+
+		public function addUserId() {
+			$this->add([
+				'type' => 'hidden',
+				'name' => 'user_id',
+				'class' => 'form-control'
 			]);
 		}
 		

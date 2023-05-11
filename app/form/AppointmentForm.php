@@ -81,17 +81,17 @@
 
 		public function addType()
 		{
-			$this->add([
-				'type' => 'select',
-				'name' => 'type',
-				'class' => 'form-control',
-				'options' => [
-					'label' => 'Type',
-					'option_values' => [
-						'online' , 'walk-in'
-					]
-				]
-			]);
+			// $this->add([
+			// 	'type' => 'select',
+			// 	'name' => 'type',
+			// 	'class' => 'form-control',
+			// 	'options' => [
+			// 		'label' => 'Type',
+			// 		'option_values' => [
+			// 			'online' , 'walk-in'
+			// 		]
+			// 	]
+			// ]);
 		}
 
 		public function addStartTime()
@@ -136,6 +136,14 @@
 				'attributes' => [
 					'rows' => 4
 				]
+			]);
+		}
+
+		public function addUserId() {
+			$this->add([
+				'type' => 'hidden',
+				'name' => 'user_id',
+				'class' => 'form-control'
 			]);
 		}
 	}

@@ -38,11 +38,32 @@
 		}
 
 		public function register()
-		{		
+		{	
 
-			if( isSubmitted() )
+			$req = request()->inputs();
+
+			//if who is logged in then logout
+			if(whoIs()) {
+				session_destroy();
+			}
+
+			if(isSubmitted())
 			{
 				$post = request()->posts();
+
+				//check if backer_user_code is not empty
+
+				if(!empty($post['backer_user_code'])) {
+
+					$backer = $this->model->single(['user_code' => $post['backer_user_code']]);
+
+					if(!$backer) {
+						Flash::set("Invalid Referral Code");
+						return request()->return();
+					}
+
+					$post['backer_id'] = $backer->id;
+				}
 
 				$res = $this->model->register($post , 'profile');
 
@@ -60,6 +81,49 @@
 				'url' => _route('user:register')
 			]);
 
+			if(isset($req['backer_id'])) {
+				$backerData = unseal($req['backer_id']);
+				//check from user
+				$user = $this->model->single([
+					'id' => $backerData[1]
+				]);
+
+				if($user && isEqual($user->user_code, $backerData[0])) {
+					$backerData = $user;
+
+					//add to form
+					$this->_form->add([
+						'name' => 'backer_id',
+						'type' => 'hidden',
+						'value' => $user->id
+					]);
+
+					$this->_form->add([
+						'name' => 'backer_name',
+						'type' => 'text',
+						'value' => $user->first_name . ' '.$user->last_name,
+						'class' => 'form-control',
+						'options' => [
+							'label' => 'Referrer Name'
+						],
+						'attributes' => [
+							'readonly' => true
+						]
+					]);
+				}
+			} else {
+				$this->_form->add([
+					'name' => 'backer_user_code',
+					'type' => 'text',
+						'value' => '',
+						'class' => 'form-control',
+						'options' => [
+							'label' => 'Referrer Code (if any)'
+						],
+				]);
+			}
+			
+
 			$this->_form->setValue('submit' , 'Register');
 			$this->_form->remove('user_type');
 			$this->_form->add([
@@ -70,7 +134,8 @@
 			
 			$data = [
 				'title' => 'User Registration',
-				'form'  => $this->_form
+				'form'  => $this->_form,
+				'backerData' => $backerData ?? false
 			];
 
 			return $this->view('user/register' , $data);
@@ -183,37 +248,13 @@
 				Flash::set("Doctor not found" , 'danger');
 				return request()->return();
 			}
+
 			$data = [
 				'user' => $user
 			];
 
-			switch( strtolower($user->user_type) )
+			switch(strtolower($user->user_type))
 			{
-				case 'doctor':
-
-				$doctor_model = model('DoctorModel');
-
-				$doctor_specialization = model('DoctorSpecializationModel');
-
-				$prefix = $user->gender == 'male' ? 'DR.' : 'DRA';
-
-				$data['title']  = $prefix.'. '.$user->first_name . ' '.$user->last_name;
-
-				$data['doctor'] = $doctor_model->getByUser($user->id);
-
-
-				$data['doctor_specializations'] = $doctor_specialization->getByUser($user->id);
-
-				$data['sessions'] = $this->session->getAll([
-					'where' => [
-						'doctor_id' => $user->id
-					]
-				]);
-				
-
-				return $this->view('user/doctor_view' , $data);
-				break;
-
 				case 'patient':
 				
 				$data['appointments'] = $this->appointment->getDesc('id' , ['user_id' => $user->id]);
@@ -224,6 +265,10 @@
 					]
 				]);
 
+				if(!is_null($user->backer_id)) {
+					$backer = $this->model->get($user->backer_id);
+				}
+				$data['backer'] = $backer;
 				$this->view('user/patient_view' , $data);
 				break;
 
@@ -259,5 +304,15 @@
 				return request()->return();
 			}
 		}
+
+		public function referrral() {
+
+			$req = request()->inputs();
+			/*registration with backer*/
+		}
+
+
+
+
 			
 	}
