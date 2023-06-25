@@ -1,23 +1,32 @@
 <?php 	
 	use Form\AppointmentForm;
+	use Form\PaymentForm;
 
-	load(['AppointmentForm'] , APPROOT.DS.'form');
+	load(['AppointmentForm','PaymentForm'] , APPROOT.DS.'form');
 
 	class AppointmentController extends Controller
 	{
+		private $model,$service,
+		$service_bundle,
+		$category,
+		$service_cart_model,
+		$reservationFeeModel;
+
+		public $_form,$_paymentForm;
 
 		public function __construct()
 		{
+			parent::__construct();
+
 			$this->service = model('ServiceModel');
 			$this->service_bundle = model('ServiceBundleModel');
 			$this->category = model('CategoryModel');
 			$this->service_cart_model = model('ServiceCartModel');
 			$this->model = model('AppointmentModel');
-
+			$this->reservationFeeModel  = model('ReservationFeeSettingModel');
 
 			$this->_form = new AppointmentForm();
-
-			parent::__construct();
+			$this->_paymentForm = new PaymentForm();
 		}
 
 		/**
@@ -26,18 +35,31 @@
 		public function appointment_form() {
 			if(isSubmitted()) {
 				$post = request()->posts();
-
 				$res = $this->model->create($post);
 
 				if(!$res) {
 					Flash::set($this->model->getErrorString(), 'danger');
-					return request()->return();
+					if(isset($post['returnTo'])) {
+						request()->saveEntries();
+						return redirect(unseal($post['returnTo']));
+					} else {
+						return request()->return();
+					}
 				} else {
 					Flash::set($this->model->getMessageString());
+
+					if(!empty($post['reservation_fee'])) {
+						//reservation fee
+						return redirect(_route('appointment:payment-add',null,[
+							'appointmentID' => seal($this->model->_getRetval('appointment_id'))
+						]));
+					}
 					return redirect(_route('auth:login'));
 				}
 			}
 			$this->data['form'] = $this->_form;
+			$this->data['reservationFee']  = $this->reservationFeeModel->getActive();
+
 			return $this->view('appointment/appointment_form', $this->data);
 		}
 
@@ -229,5 +251,32 @@
 				$data['payment'] = $payments[0] ?? false;
 			
 			return $this->view('appointment/show' , $data);
+		}
+
+		public function addPayment() {
+			$req = request()->inputs();
+
+			$appointmentId = unseal($req['appointmentID']);
+			$appointment = $this->model->get($appointmentId);
+
+			$this->_paymentForm->setValue('amount', $appointment->reservation_fee);
+
+			$this->_paymentForm->add([
+				'name' => 'method',
+				'type' => 'text',
+				'class' => 'form-control',
+				'required' => true,
+				'options' => [
+					'label' => 'Payment Method'
+				],
+				'attributes' => [
+					'readonly' => true
+				],
+				'value' => 'ONLINE PAYMENT'
+			]);
+
+			$this->data['paymentForm'] = $this->_paymentForm;
+			$this->data['appointment'] = $appointment;
+			return $this->view('appointment/payment', $this->data);
 		}
 	}

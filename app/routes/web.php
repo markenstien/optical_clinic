@@ -35,6 +35,12 @@
 		'show'   => $controller.'/show'
 	];
 
+	$controller = '/HomeController';
+
+	$routes['home'] = [
+		'index' => $controller.'/index',
+	];
+
 	$controller = '/ServiceBundleController';
 
 	$routes['service-bundle'] = [
@@ -79,7 +85,8 @@
 		'add' => $controller.'/add',
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
-		'appointment_form' => $controller. '/appointment_form'
+		'appointment_form' => $controller. '/appointment_form',
+		'payment-add' => $controller .'/addPayment'
 	];
 
 	$controller = '/BillController';
@@ -175,6 +182,23 @@
 		'show'   => $controller.'/show',
 		'log'   => $controller.'/log',
 	];
+
+	$controller = '/SettingController';
+	$routes['setting'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
+	];
+
+	$controller = '/ReservationFeeController';
+	$routes['rsv-setting'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
+	];
+
 
 	
 	return $routes;

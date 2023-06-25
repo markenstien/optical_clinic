@@ -18,9 +18,9 @@
             define('DBPASS' , '');
             define('DBNAME' , 'th_patientrecord');
 
-            define('BASECONTROLLER' , 'AuthController');
+            define('BASECONTROLLER' , 'HomeController');
             define('BASEMETHOD' , 'index');
-
+  
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);

@@ -18,7 +18,7 @@
     {
         if(is_null($args))
             return PATH_PUBLIC.DS.'tmp/sbadmin';
-        return PATH_PUBLIC.DS.'tmp/sbadmin'.DS.$args;
+        return PATH_PUBLIC.DS.'tmp/'.$args;
     }
 
 

@@ -22,3 +22,6 @@ alter table appointments
 
 alter table appointments
 	add column notes text;
+
+
+alter table appointments add column reservation_fee decimal(10,2);

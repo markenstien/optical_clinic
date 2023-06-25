@@ -12,3 +12,7 @@ create table payments(
 	created_by int(10),
 	created_at timestamp default now()
 );
+
+alter table payments 
+	add column status ('for-approval','approved','invalid'),
+	add remarks varchar(100);

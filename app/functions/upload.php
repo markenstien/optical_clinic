@@ -150,6 +150,13 @@
         return false;
     }
 
+    function upload_type($fileName)
+    {
+        $file = $_FILES[$fileName];
+        $ext = explode('.' , $file['name']);
+        return strtolower(end($ext));
+    }
+
     function upload_image($filename , $uploadPath , $newFileName = null)
     {
         $uploaderImage = new UploaderImage();

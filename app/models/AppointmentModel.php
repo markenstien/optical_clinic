@@ -16,7 +16,8 @@
 			'guest_email',
 			'guest_phone',
 			'status',
-			'notes'
+			'notes',
+			'reservation_fee'
 		];
 
 		public function save($appointment_data , $id = null)
@@ -51,35 +52,32 @@
 			$_fillables = $this->getFillablesOnly($appointment_data);
 			$appointment_id = parent::store($_fillables);
 
-
 			$appointment_link = _route('appointment:show' , $appointment_id);
 
-			if( $appointment_id )
+			if($appointment_id)
 			{
 				$user_id = $appointment_data['user_id'];
-				if( !empty($appointment_data['user_id']) )
+				if(!empty($appointment_data['user_id']))
 				{
-
 					$user_model = model('UserModel');
 
 					$user = $user_model->single(['id' => $user_id]);
-
 					$email = $user->email;
 					$user_mobile_number = $user->phone_number;
-					
-					// _notify_include_email("Appointment to vitalcare is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
-
-					// send_sms("Appointment to vitalcare is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
+				} else {
+					$email = $appointment_data['guest_email'];
+					$user_mobile_number = $appointment_data['guest_phone'];
 				}
-				
+
+				// _notify_include_email("Appointment to vitalcare is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
+				// send_sms("Appointment to vitalcare is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
 				_notify_operations("Appointment to vitalcare is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
 			}
-
+			parent::_addRetval('appointment_id', $appointment_id);
 			return $appointment_id;
 		}
 
-		public function createWithBill
-		( $appointment_data )
+		public function createWithBill( $appointment_data )
 		{
 			$this->bill_model = model('BillModel');
 
@@ -163,7 +161,7 @@
 				"SELECT sum(id) as total 
 					FROM {$this->table}
 					WHERE date = '{$date}' 
-					AND status not in ('pending' , 'cancelled')
+					AND status not in ('cancelled')
 					AND type = 'online'
 					GROUP BY date"
 			);
@@ -187,24 +185,39 @@
 
 		public function checkAvailability($date)
 		{
+			$dateGapCheck = $this->_checkDateDifference($date);
+			//date gap check failed
+			if(!$dateGapCheck) {
+				return false;
+			}
+
 			$schedule_model = model('ScheduleModel');
 
 			$total_person_reserved = $this->getTotalAppointmentByDate($date);
-
 			$day_name = date('l' , strtotime($date));
-
 			$date_by_name = $schedule_model->getByAppointmentByDay($day_name);
 
-			if($date_by_name) {
-				if($date_by_name->max_visitor_count <= $total_person_reserved ){
-					$this->addError("Date {$date}($day_name) is already full , please schedule another day");
-					return false;
-				}else{
-					$this->addMessage("Date is available");
-					return true;
-				}
+			if($date_by_name->max_visitor_count <= $total_person_reserved){
+				$this->addError("There are {$total_person_reserved} reservees on this Date {$date}($day_name), please schedule another day");
+				return false;
 			}
-			$this->addMessage("Date is available");
+
+			$message = "Date is available you are reserved";
+			$this->addMessage($message);
 			return true;
+		}
+
+
+		private function _checkDateDifference($reservationDate) {
+			
+			$dateToday = today();
+			$dateDifference = strtotime($reservationDate) - strtotime($dateToday);
+			$dateDifferenceByDay = (($dateDifference / 60) / 60)/24;
+
+			if($dateDifferenceByDay >= 3) {
+				return true;	
+			}
+			$this->addError("Reservation Date must have 3 days gap");
+			return false;
 		}
 	}

@@ -21,3 +21,12 @@ insert into schedule_setting(
 ('friday' , '10:00' , '18:00' , 100 , false),
 ('saturday' , '10:00' , '18:00' , 100 , false),
 ('sunday' , '10:00' , '18:00' , 100 , false);
+
+
+
+create table settings_constants(
+	id int(10) not null primary key auto_increment,
+
+);
+
+

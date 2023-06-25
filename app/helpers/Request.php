@@ -137,10 +137,15 @@
 			return $_SERVER['HTTP_REFERER'] ?? '';
 		}
 
+		public function saveEntries() {
+			FormSession::getInstance();
+			return $this;
+		}
+		
 		public function return(){
-      FormSession::getInstance();
+			FormSession::getInstance();
 			header("Location:".$this->referrer());
-    }
+		}
 
         public function returnWithVal($params)
         {

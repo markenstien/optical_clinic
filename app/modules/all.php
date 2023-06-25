@@ -12,4 +12,15 @@
         ]
     ];
     
+
+    $module['services'] = [
+        'SERVICE_OPSUPLY' => 'Optical Supplies',
+        'SERVICE_VISION_TEST' => 'Vision Testing',
+        'SERVICE_EYE_FIT' => 'Eyewear Fitting',
+        'SERVICE_LENS_FRAMES' => 'Lens and frames Calibration',
+        'SERVICE_PROS_LENS' => 'Processing Lens',
+        'SERVICE_CONTACT_LENS' => 'Contact Lens with Vision Testing',
+    ];
+
+
     return $module;

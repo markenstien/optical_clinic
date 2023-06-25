@@ -2,6 +2,7 @@
 	<div class="card">
 		<?php Flash::show()?>
 		<div class="card-body">
+			<?php echo wLinkDefault(_route('setting:index'), 'Back to Settings')?>
 			<form method="post" action="<?php echo _route('schedule:update')?>">
 				<div class="table-responsive">
 					<table class="table table-bordered">

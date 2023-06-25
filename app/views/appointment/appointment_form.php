@@ -61,6 +61,21 @@
 							?>
 						</div>
 
+						<?php if($reservationFee->is_active) :?>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-3"><?php Form::label($reservationFee->display_name);?></div>
+									<div class="col-md-9">
+										<?php Form::text('reservation_fee', $reservationFee->amount_fee, [
+											'class' => 'form-control',
+											'required' => true,
+											'readonly' => true
+										]);?>
+									</div>
+								</div>
+							</div>
+						<?php endif?>
+
 						<div>
 							<?php __( $form->get('submit' , ['value' => 'Create Appointment'])) ?>
 						</div>
@@ -70,7 +85,7 @@
 				<?php else:?>
 					<?php
 						$form->setValue('date' , date('Y-m-d'));
-						$form->setValue('type' , 'walk-in');
+						// $form->setValue('type' , 'walk-in');
 
 						__( $form->getForm() );
 					?>
