@@ -31,7 +31,7 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <?php grab('tmp/partial/sidebar_tmp')?>
+        <?php grab('tmp/partial/sidebar')?>
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->

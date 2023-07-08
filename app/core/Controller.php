@@ -82,6 +82,12 @@
 		{
 			$this->$modelInstance = $this->model($modelName);
 		}
+
+		final protected function _jsonResponse($data, $error, $message = '') {
+			header('Content-Type: application/json; charset=utf-8');
+			echo json_encode($data);
+		}
+
 		public function request()
 		{
 			if(strtoupper($_SERVER['REQUEST_METHOD']) == 'POST')

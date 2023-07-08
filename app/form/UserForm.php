@@ -173,7 +173,7 @@
 				'options' => [
 					'label' => 'Email',
 				],
-
+				'required' => true,
 				'attributes' => [
 					'id' => 'id_email',
 					'placeholder' => 'Enter Valid Email'
@@ -204,14 +204,14 @@
 				'type' => 'password',
 				'name' => 'password',
 				'class' => 'form-control',
-				'required' => '',
+				'required' => true,
 				'options' => [
 					'label' => 'Password',
 				],
 
 				'attributes' => [
 					'id' => 'id_password'
-				]
+				],
 			]);
 		}
 

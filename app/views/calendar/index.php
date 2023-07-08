@@ -1,6 +1,6 @@
 <?php build('content') ?>
 	<?php Flash::show()?>
-	<?php divider()?>
+	<?php echo wDivider()?>
 	
 	<div id='calendar'></div>
 <?php endbuild()?>

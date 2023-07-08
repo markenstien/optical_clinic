@@ -8,7 +8,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3"><?php echo COMPANY_NAME?></div>
+        <div class="sidebar-brand-text mx-3"><?php echo COMPANY_NAME_ABBR?></div>
     </a>
 
     <!-- Divider -->
@@ -77,6 +77,12 @@
     </li>
     <?php endif?>
     <?php if(isEqual($auth->user_type , 'admin')):?>
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo _route('order:index')?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Order</span></a>
+    </li>
+
     <li class="nav-item">
         <a class="nav-link" href="/ReportController/create">
             <i class="fas fa-fw fa-chart-area"></i>

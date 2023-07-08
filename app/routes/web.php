@@ -200,6 +200,18 @@
 	];
 
 
+	$controller = '/OrderController';
+
+	$routes['order'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show',
+		'cashier' => $controller. '/cashierMode',
+		'cancel-session' => $controller .'/cancelOrderSession'
+	];
+
 	
 	return $routes;
 ?>

@@ -70,8 +70,7 @@
 			*/
 			$auth = auth();
 
-			if( isEqual($auth->user_type , 'patient') )
-			{
+			if(isEqual($auth->user_type , 'patient')){
 				$appointments = $this->model->getDesc('id' , ['user_id' => $auth->id]);
 			}else
 			{

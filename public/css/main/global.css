@@ -69,6 +69,16 @@ div.card
 	background: #F5F0F0 !important;
 }
 
+div.card-header{
+	padding: 5px;
+	margin: 0px;
+}
+
+div.card-body{
+	padding: 10px;
+	background: #fff;
+}
+
 div.card-theme-blue .card-header{
 	background: #31326f !important;
 	color: #fff !important;

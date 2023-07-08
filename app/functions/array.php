@@ -1,10 +1,12 @@
 <?php 
     
    
-    function arr_layout_keypair($array , $key , $value = null)
+    function arr_layout_keypair($array , $key = array() , $attributes = [])
     {
         $keyPair = [];
 
+        $concatinator = $attributes['concatinator'] ?? null;
+        $textWrapper  = $attributes['textWrapper'] ?? null;
 
         if( !is_array($array) ){
             return [];
@@ -12,14 +14,7 @@
         
         if(! is_array($key)) 
         {
-            foreach($array as $row => $val) {
-
-                if(is_object($val)){
-                    $keyPair[$val->$key] = $val->$value;
-                }else{
-                    $keyPair[$val[$key]] = $val[$value];
-                }
-            }
+            echo die("Second Parameter must be an array");
         }else{
 
             $value = $key[0];
@@ -43,8 +38,18 @@
                             $addField = trim($val->$field);
 
                             if(!empty($addField)) {
-                                $textContent .= trim($val->$field);
-                                $textContent .= ' ';
+                                if(!empty($textWrapper[$fieldKey])) {
+                                    $textWrapperCurrent = $textWrapper[$fieldKey];
+                                    $textContent .= $textWrapperCurrent[0].trim($val->$field).$textWrapperCurrent[1];
+                                } else {
+                                    $textContent .= trim($val->$field);
+                                }
+                                
+                                if(!is_null($concatinator) && !empty($concatinator[$fieldKey])) {
+                                    $textContent .= $concatinator[$fieldKey];
+                                } else {
+                                    $textContent .= ' ';
+                                }
                             }
                             
                         }

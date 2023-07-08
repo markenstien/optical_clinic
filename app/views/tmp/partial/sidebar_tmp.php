@@ -28,33 +28,35 @@
     <div class="sidebar-heading">
         Main
     </div>
+    <?php if(isEqual($auth->user_type , 'admin')):?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo _route('user:index')?>">
+                <i class="fas fa-user"></i>
+                <span>User</span></a>
+        </li>   
 
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo _route('user:index')?>">
-            <i class="fas fa-user"></i>
-            <span>User</span></a>
-    </li>   
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo _route('category:index')?>">
+                <i class="fas fa-sort-alpha-down"></i>
+                <span>Categories</span></a>
+        </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo _route('category:index')?>">
-            <i class="fas fa-sort-alpha-down"></i>
-            <span>Categories</span></a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#module-service-items"
-            aria-expanded="true" aria-controls="module-service-items">
-            <i class="fas fa-fw fa-store"></i>
-            <span>Products</span>
-        </a>
-        <div id="module-service-items" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Modules</h6>
-                <a class="collapse-item" href="<?php echo _route('service:index')?>">List</a>
-                <a class="collapse-item" href="<?php echo _route('stock:index')?>">Inventory</a>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#module-service-items"
+                aria-expanded="true" aria-controls="module-service-items">
+                <i class="fas fa-fw fa-store"></i>
+                <span>Products</span>
+            </a>
+            <div id="module-service-items" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Modules</h6>
+                    <a class="collapse-item" href="<?php echo _route('service:index')?>">List</a>
+                    <a class="collapse-item" href="<?php echo _route('stock:index')?>">Inventory</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
+    <?php endif?>
+
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('appointment:index')?>">
@@ -67,12 +69,13 @@
             <i class="fas fa-calendar-check"></i>
             <span>Sessions</span></a>
     </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo _route('setting:index')?>">
-            <i class="fas fa-calendar-check"></i>
-            <span>Settings</span></a>
-    </li>
+    <?php if(isEqual($auth->user_type , 'admin')):?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo _route('setting:index')?>">
+                <i class="fas fa-calendar-check"></i>
+                <span>Settings</span></a>
+        </li>
+    <?php endif?>
     
 
     <li class="nav-item">
