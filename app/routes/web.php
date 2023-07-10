@@ -181,6 +181,7 @@
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
 		'log'   => $controller.'/log',
+		'add'  => $controller.'/addStock'
 	];
 
 	$controller = '/SettingController';
@@ -207,9 +208,20 @@
 		'edit' => $controller.'/edit',
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
+		'replacement' => $controller.'/replacement',
 		'show'   => $controller.'/show',
 		'cashier' => $controller. '/cashierMode',
 		'cancel-session' => $controller .'/cancelOrderSession'
+	];
+
+	$controller = '/OrderItemController';
+
+	$routes['order-item'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
 	];
 
 	

@@ -47,8 +47,8 @@
                 'options' => [
                     'label' => 'Payment Method',
                     'option_values' => [
-                        'ONLINE PAYMENT',
-                        'ONSITE PAYMENT'
+                        'CASH',
+                        'BANK/ONLINE'
                     ]
                 ]
             ]);
@@ -59,7 +59,6 @@
                 'type' => 'text',
                 'name' => 'org',
                 'class' => 'form-control',
-                'required' => true,
                 'options' => [
                     'label' => 'Organization'
                 ]
@@ -71,7 +70,6 @@
                 'type' => 'text',
                 'name' => 'external_reference',
                 'class' => 'form-control',
-                'required' => true,
                 'options' => [
                     'label' => 'External Reference'
                 ]
@@ -83,7 +81,6 @@
                 'type' => 'text',
                 'name' => 'acc_no',
                 'class' => 'form-control',
-                'required' => true,
                 'options' => [
                     'label' => 'Account Number'
                 ]
@@ -95,7 +92,6 @@
                 'type' => 'text',
                 'name' => 'acc_name',
                 'class' => 'form-control',
-                'required' => true,
                 'options' => [
                     'label' => 'Account Name'
                 ]
@@ -107,10 +103,7 @@
                 'type' => 'hidden',
                 'name' => 'bill_id',
                 'class' => 'form-control',
-                'required' => true,
-                'options' => [
-                    'label' => 'Account Name'
-                ]
+                'required' => true
             ]);
         }
 

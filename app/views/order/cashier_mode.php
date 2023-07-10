@@ -57,8 +57,15 @@
 								<td><?php echo $row->quantity?></td>
 								<td><?php echo amountHTML($row->quantity * $row->item_price)?></td>
 								<td>
-									<a href="#">Edit</a> | 
-									<a href="#">Remove</a>
+									<?php
+										echo wLinkDefault(_route('order:cashier', null, [
+											'order_item_id' => $row->id
+										]), 'Edit');
+
+										echo '&nbsp;';
+
+										echo wLinkDefault(_route('order-item:delete', $row->id), 'Remove');
+									?>
 								</td>
 							</tr>
 						<?php endforeach?>
@@ -96,8 +103,8 @@
 		</div>
 	</div>
 <?php __($formOrder->end())?>
-<!-- END GENRA LFORM -->
-	<!-- Modal -->
+	
+	<!-- ADD ITEM MODAL -->
 	<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -109,17 +116,32 @@
 	      </div>
 	      <div class="modal-body">
 	      	<?php __($formOrderItem->start())?>
-		        <?php __($formOrderItem->getCol('item_id'))?>
+	      		<?php
+	      			if(isset($req['order_item_id'])) {
+	      				Form::hidden('id', $req['order_item_id']);
+
+	      				Form::text('', $orderItem->item_name, [
+			      			'class' => 'form-control',
+			      			'required' => true,
+			      			'readonly' => true
+			      		]);
+	      			}
+	      		?>
+	      		<?php __($formOrderItem->getCol('item_id'))?>
 		        <?php __($formOrderItem->getCol('purchased_amount'))?>
 		        <?php __($formOrderItem->getCol('quantity'))?>
-
-		        <div class="mt-2"><?php Form::submit('btn_add_item', 'Add Item')?></div>
+		        <?php
+	      			if(isset($req['order_item_id'])) {
+	      				?>  <div class="mt-2"><?php Form::submit('btn_edit_item', 'Edit Item')?></div> <?php
+	      			} else {
+	      				?>  <div class="mt-2"><?php Form::submit('btn_add_item', 'Add Item')?></div> <?php
+	      			}
+	      		?>
 	        <?php __($formOrderItem->end())?>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-
 <?php endbuild()?>
 
 <?php build('scripts') ?>
@@ -132,7 +154,11 @@
 				$.get(getURL('API_Product/getItem?id='+productId), function(response) {
 					$("#orderItemPrice").val(response.price)
 				});
-			})
+			});
+
+			<?php if(!empty($req['order_item_id'])) :?>
+				$('#addItemModal').modal('show')
+			<?php endif?>
 		});
 	</script>
 <?php endbuild()?>

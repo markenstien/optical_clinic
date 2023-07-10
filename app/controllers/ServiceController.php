@@ -1,17 +1,19 @@
 <?php
 	load(['ServiceForm'] , APPROOT.DS.'form');
-
 	use Form\ServiceForm;
 
 	class ServiceController extends Controller
 	{
 
+		private $model, $modelStock;
+		
 		public function __construct()
 		{
 			parent::__construct();
 
 			$this->_form = new ServiceForm();
 			$this->model = model('ServiceModel');
+			$this->modelStock = model('StockModel');
 		}
 
 		public function index()
@@ -112,7 +114,7 @@
 			$this->data['_attachmentForm']->setValue('global_id', $id);
 			$this->data['_attachmentForm']->setValue('global_key', _asset_key('PRODUCT_IMAGES'));
 
-
+			$this->data['logs'] = $this->modelStock->getProductLogs($id);
 			return $this->view('service/show' , $this->data);
 		}
 	}

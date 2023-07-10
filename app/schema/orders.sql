@@ -22,6 +22,9 @@ create table orders(
 );
 
 
+alter table orders add column
+	order_status enum('shipped','pending','cancelled','completed') default 'pending';
+alter table orders add column return_id int(10) comment 'if item is returned add the new order record id here';
 
 create table order_items(
 	id int(10) not null primary key auto_increment,

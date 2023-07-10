@@ -1,9 +1,12 @@
 <?php 
+	use Services\StockService;
+	load(['StockService'], SERVICES);
 
 	class OrderModel extends Model {
 
 		public $table = 'orders';
 		public $modelOrderItem;
+		public $modelStock;
 
 		public $_fillables = [
 			'customer_name',
@@ -32,22 +35,28 @@
 		}
 
 		public function addItem($token, $itemData) {
-
 			$order = $this->_tokenExists($token);
 			if(!$order) {
 				//create order session
 				$orderId = parent::store([
 					'tmp_token' => $token
 				]);
-
-				$order = parent::single($orderId);
+				$order = parent::get($orderId);
 			}
 
 			$itemData['order_id'] = $order->id;
-
 			$res = $this->modelOrderItem->addItem($itemData);
-
 			return $res;
+		}
+
+		public function addPayment($orderId, $amount) {
+			// addPayment
+			$order = $this->get($orderId);
+			$balance = $order->current_balance - $amount;
+
+			return parent::update([
+				'current_balance' => $balance
+			], $order->id);
 		}
 
 		public function checkOut($token, $orderData) {
@@ -79,7 +88,24 @@
 			}
 
 			$_fillables['order_reference'] = 'ORDR-'.number_series(parent::lastId()+1);
-			return parent::update($_fillables, $order->id);
+			$updateOrder = parent::update($_fillables, $order->id);
+
+			if($updateOrder) {
+				if(!isset($this->modelStock)) {
+					$this->modelStock = model('StockModel');
+				}
+
+				foreach($orderItems as $key => $row) {
+					$this->modelStock->createOrUpdate([
+						'item_id'        => $row->item_id,
+						'quantity'       => $row->quantity,
+						'remarks'        => 'Order Reference : #'.$_fillables['order_reference'],
+						'date'           => today(),
+						'entry_origin'   => StockService::ENTRY_ORIGIN,
+						'entry_type'     => StockService::ENTRY_DEDUCT,
+					]);
+				}
+			}
 		}
 
 		public function getComplete($condition) {
@@ -90,7 +116,6 @@
 			}
 
 			$order->items = $this->getItems($order->id);
-
 			return $order;
 		}
 
