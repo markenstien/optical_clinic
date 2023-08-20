@@ -22,10 +22,11 @@
 
 		public function save($appointment_data , $id = null)
 		{
-
 			$fillable_datas = $this->getFillablesOnly($appointment_data);
 
-			if( !is_null($id) ){
+			if(!is_null($id) ){
+				if(!$this->checkAvailability($fillable_datas['date']) || $this->checkDuplicateAppointment($appointment_data)) 
+				return false;
 				return parent::update($fillable_datas , $id);
 			}else
 			{
@@ -56,12 +57,10 @@
 
 			if($appointment_id)
 			{
-				$user_id = $appointment_data['user_id'];
+				$user_model = model('UserModel');
 				if(!empty($appointment_data['user_id']))
 				{
-					$user_model = model('UserModel');
-
-					$user = $user_model->single(['id' => $user_id]);
+					$user = $user_model->single(['id' => $appointment_data['user_id']]);
 					$email = $user->email;
 					$user_mobile_number = $user->phone_number;
 				} else {
@@ -69,9 +68,18 @@
 					$user_mobile_number = $appointment_data['guest_phone'];
 				}
 
-				// _notify_include_email("Appointment to vitalcare is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
-				// send_sms("Appointment to vitalcare is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
-				_notify_operations("Appointment to vitalcare is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
+				$user = $user_model->getByKey('email', $email)[0] ?? false;
+
+				if($user) {
+					//update appintment
+					parent::update([
+						'user_id' => $user->id
+					], $appointment_id);
+				}
+
+				_notify_include_email("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference",[$user_id],[$email] , ['href' => $appointment_link ]);
+				send_sms("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
+				_notify_operations("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
 			}
 			parent::_addRetval('appointment_id', $appointment_id);
 			return $appointment_id;

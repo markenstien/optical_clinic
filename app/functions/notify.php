@@ -69,7 +69,7 @@
 			foreach($users as $user){
 				array_push($recipientIds , $user->id);
 			}
-			_notify( $message , $recipientIds , $attributes);
+			_notify($message , $recipientIds , $attributes);
 		}
 		
 	}
@@ -91,7 +91,7 @@
 			if( empty($email) )
 				continue;
 			
-			_mail($email , "Vital Care" , $message);
+			_mail($email , COMPANY_NAME , $content);
 		}
 	}
 
@@ -104,7 +104,7 @@
 			'text' => $message,
 		]);
 
-		_notify_email($message , $emails);
+		_notify_email($message , $content);
 	}
 
 	function _notify_pull_items( $user_id )

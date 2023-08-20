@@ -4,6 +4,7 @@
             <h4 class="mb-5">Attach Payment</h4>
                 <?php echo $paymentForm->start()?>
                     <?php Form::hidden('appointment_id', $appointment->id)?>
+                    <?php Form::hidden('origin', 'Reservation')?>
                     <div class="form-group"> <?php echo $paymentForm->getRow('amount', [
                         'attributes' => [
                             'readonly' => true,

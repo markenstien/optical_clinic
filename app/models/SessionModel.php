@@ -28,20 +28,19 @@
 		public function create($session_data)
 		{
 			$fillable_datas = $this->getFillablesOnly($session_data);
-			
+
 			$res = parent::store($fillable_datas);
 
 			if(!$res){
 				$this->addError("Creating patient session failed!");
 				return false;
 			} 
-
+			
 			//load appointment model if ok
 
-			if( isset($session_data['appointment_id']) )
+			if(!empty($session_data['appointment_id']))
 			{
 				$this->appointment_model = model('AppointmentModel');
-
 				$this->appointment_model->updateStatus($session_data['appointment_id'] , 'arrived');
 			}
 
@@ -65,14 +64,13 @@
 			/*
 			*email to guest email
 			*/
-			_notify_email( 'DRA/DR. '.$doctor_name ." . started a session with you"  , [$patient_email]);
+			_notify_email('DRA/DR. '.$doctor_name ." . started a session with you"  , [$patient_email]);
 			/*
 			*email to valid user number
 			*/
-			send_sms('DRA/DR. '.$doctor_name ." . started a session with you " , [$patient_phone]);
+			// send_sms('DRA/DR. '.$doctor_name ." . started a session with you " , [$patient_phone]);
 			/*notify operations*/
 			_notify_operations(" 'DRA/DR. '.{$doctor_name} started a session with {$patient_name}" , ['href' => $session_link]);
-
 
 			return $res;
 		}
@@ -86,10 +84,9 @@
 				$this->addError("Patient Session does not exists");
 				return false;
 			}
-
 			$this->user_model = model('UserModel');
-			
-			if( $session->user_id ){
+
+			if($session->user_id){
 				$patient = $this->user_model->get($session->user_id);
 				$session->patient_account = $patient;
 			}

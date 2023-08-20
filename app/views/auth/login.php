@@ -26,6 +26,7 @@
 							<h4 class="card-title">Login Form</h4>
 						</div>
 						<div class="card-body">
+							<?php Flash::show()?>
 							<div class="form-group">
 								<?php __($form->getRow('email')); ?>
 							</div>
@@ -34,7 +35,17 @@
 								<?php __($form->getRow('password'));?>
 							</div>
 
-							<?php __($form->get('submit' , ['value' => 'Login']) )?>
+							<div class="row">
+								<div class="col-md-6">
+									<?php __($form->get('submit' , ['value' => 'Login']) )?>
+								</div>
+								<div class="col-md-6 text-right">
+									<?php echo wLinkDefault(_route('forget-pw:index'), 'Forgot Password')?>
+								</div>
+							</div>
+							
+							<?php echo wDivider('30')?>
+							<p>Don't Have an account yet? <?php echo wLinkDefault(_route('user:register'), "Register Here.")?></p>
 						</div>
 					</div>
 				<?php __($form->end())?>

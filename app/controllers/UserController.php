@@ -1,8 +1,7 @@
 <?php
-	load(['UserForm' , 'DoctorForm' , 'DoctorSpecializationForm' , 'AddressForm'] , APPROOT.DS.'form');
+	load(['UserForm' , 'DoctorForm', 'AddressForm'] , APPROOT.DS.'form');
 	use Form\UserForm;
 	use Form\DoctorForm;
-	use Form\DoctorSpecializationForm;
 	use Form\AddressForm;
 
 
@@ -25,16 +24,15 @@
 		public function verification($user_id_sealed)
 		{
 			$user_id = unseal($user_id_sealed);
-
 			$res = $this->model->verification($user_id);
 
 			if($res) {
-				Flash::set( $this->model->getMessageString() );
-				return redirect( $this->model->redirect_to );
+				Flash::set($this->model->getMessageString());
+				return redirect($this->model->redirect_to);
 			}
 
-			Flash::set( $this->model->getErrorString() , 'danger');
-			return redirect( _route('user:register') );
+			Flash::set($this->model->getErrorString(), 'danger');
+			return redirect(_route('user:register'));
 		}
 
 		public function register()
@@ -52,23 +50,19 @@
 				$post = request()->posts();
 
 				//check if backer_user_code is not empty
-
 				if(!empty($post['backer_user_code'])) {
-
 					$backer = $this->model->single(['user_code' => $post['backer_user_code']]);
-
 					if(!$backer) {
 						Flash::set("Invalid Referral Code");
 						return request()->return();
 					}
-
 					$post['backer_id'] = $backer->id;
 				}
 
-				$res = $this->model->register($post , 'profile');
+				$profileFileName = isset($_FILES['profile']) ? 'profile' : null;
+				$res = $this->model->register($post , $profileFileName);
 
-				Flash::set( $this->model->getMessageString().  " Please Check your email '{$post['email']}' and verify your account. ");
-
+				Flash::set($this->model->getMessageString().  " Please Check your email '{$post['email']}' and verify your account. ");
 				if(!$res) {
 					Flash::set( $this->model->getErrorString() , 'danger');
 					return request()->return();
@@ -126,6 +120,8 @@
 
 			$this->_form->setValue('submit' , 'Register');
 			$this->_form->remove('user_type');
+			$this->_form->addIsVerified(false);
+
 			$this->_form->add([
 				'type' => 'hidden',
 				'value' => 'patient',
@@ -155,32 +151,27 @@
 		public function create()
 		{
 
-			if( isSubmitted() )
+			if(isSubmitted())
 			{
 				$post = request()->posts();
-
-				$post['is_verified'] = true;
+				dump($post);
 				$res = $this->model->create($post , 'profile');
 
-				Flash::set( $this->model->getMessageString());
+				Flash::set($this->model->getMessageString());
 
 				if(!$res) {
-					Flash::set( $this->model->getErrorString() , 'danger');
+					Flash::set($this->model->getErrorString(), 'danger');
 					return request()->return();
 				}
 
 				return redirect(_route('user:index'));
 			}
-
 			$doc_form = new DoctorForm();
-			$this->_form_address->remove('submit');
-
-
 			$data = [
 				'title' => 'Create User',
 				'form'  => $this->_form,
-				'doc_form' => $doc_form,
-				'form_address' => $this->_form_address
+				'form_address' => $this->_form_address,
+				'doc_form' => $doc_form
 			];
 
 			return $this->view('user/create_edit' , $data);
@@ -252,6 +243,8 @@
 			$data = [
 				'user' => $user
 			];
+
+			$backer = false;
 
 			switch(strtolower($user->user_type))
 			{

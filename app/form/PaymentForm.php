@@ -107,6 +107,16 @@
             ]);
         }
 
+        public function addOrigin($origin) {
+            $this->add([
+                'type' => 'hidden',
+                'name' => 'origin',
+                'class' => 'form-control',
+                'required' => true,
+                'value' => $origin
+            ]);
+        }
+
         public function addFileAttachment() {
             $this->add([
                 'type' => 'file',

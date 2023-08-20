@@ -140,7 +140,7 @@
         $icon = isset($attributes['icon']) ? "<i class='{$attributes['icon']}'> </i>" : null;
         $attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
         return <<<EOF
-            <a href="{$link}" style="text-decoration:underline" {$attributes}>{$icon} {$text}</a>
+            <a href="{$link}" style="text-decoration:underline !important;" {$attributes}>{$icon} {$text}</a>
         EOF;
     }
 

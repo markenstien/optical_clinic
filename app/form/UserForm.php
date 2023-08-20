@@ -160,7 +160,8 @@
 				'attributes' => [
 					'id' => 'id_phone_number',
 					'placeholder' => 'Eg. 09xxxxxxxxx'
-				]
+				],
+				'required' => true
 			]);
 		}
 
@@ -250,6 +251,14 @@
 				'attributes' => [
 					'id' => 'id_profile'
 				]
+			]);
+		}
+
+		public function addIsVerified($value) {
+			$this->add([
+				'type' => 'hidden',
+				'name' => 'is_verified',
+				'value' => $value
 			]);
 		}
 

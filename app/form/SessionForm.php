@@ -182,7 +182,8 @@
 		{
 			$this->add([
 				'type' => 'hidden',
-				'name' => 'appointment_id'
+				'name' => 'appointment_id',
+				'value' => $id
 			]);
 		}
 

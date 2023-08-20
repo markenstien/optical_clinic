@@ -5,7 +5,9 @@
 		</div>
 
 		<div class="card-body">
-			<?php echo wLinkDefault(_route('order:cashier'), 'New Order')?>
+			<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
+				<?php echo wLinkDefault(_route('order:cashier'), 'New Order')?>
+			<?php endif?>
 			<div class="table-responsive">
 				<table class="table table-bordered">
 					<thead>
@@ -30,7 +32,7 @@
 								<td><?php echo $row->discount_amount?></td>
 								<td><?php echo $row->discount_type?></td>
 								<td><?php echo $row->initial_amount?></td>
-								<td><?php echo $row->current_balance?></td>
+								<td><?php echo $row->current_balance == 0 ? 'Paid' : $row->current_balance?></td>
 								<td><?php echo wLinkDefault(_route('order:show', $row->id), 'Show')?></td>
 							</tr>
 						<?php endforeach?>

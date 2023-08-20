@@ -16,9 +16,9 @@
             define('DBHOST' , 'localhost');
             define('DBUSER' , 'root');
             define('DBPASS' , '');
-            define('DBNAME' , 'th_patientrecord');
+            define('DBNAME' , 'korpzpru_th_main');
 
-            define('BASECONTROLLER' , 'HomeController');
+            define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
   
             ini_set('display_errors', 1);

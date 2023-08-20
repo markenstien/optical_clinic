@@ -15,7 +15,7 @@
 	{
 		private $model,
 		$formPayment,$formOrder,$modelStock;
-		public $serviceOrder;
+		public $serviceOrder, $modelOrderItemModel;
 
 		public function __construct() {
 			parent::__construct();
@@ -39,35 +39,58 @@
 
 		public function index() {
 
-			$this->data['orders'] = $this->model->getAll();
-
+			if(isEqual(whoIs('user_type'), 'patient')) {
+				$this->data['orders'] = $this->model->getAll([
+					'where' => [
+						'user_id' => whoIs('id')
+					]
+				]);
+			} else {
+				$this->data['orders'] = $this->model->getAll();
+			}
 			return $this->view('order/index', $this->data);
 		}
 
 		public function cashierMode() 
 		{
 			$req = request()->inputs();
+			$customerData = null;
+			if(!empty($req['customerPayload'])){
+				$customerData = unseal($req['customerPayload']);
+			}
 
 			if(empty($this->_curOrderSession())) {
 				$this->_curOrderSessionReset();
 			}
-
+			
 			if(isSubmitted()) {
 				$post = request()->posts();
 
 				if(isset($post['btn_checkout'])) {
-					$this->model->checkOut($this->_curOrderSession(),$post);
-					$this->_curOrderSessionReset();
+					$res = $this->model->checkOut($this->_curOrderSession(),$post);
+					if(!$res) {
+						Flash::set($this->model->getErrorString(), 'danger');
+					} else{
+						$this->_curOrderSessionReset();
+						if(!empty($customerData)) {
+							return redirect(_route('session:show', $customerData['sessionId']));
+						} else {
+							$order = $this->model->_getRetval('order');
+							return redirect(_route('order:show', $order->id));
+						}
+					}
 				}
 
 				if(isset($post['btn_add_item'])) {
 					$this->model->addItem($this->_curOrderSession(), $post);
+					return redirectRaw(request()->referrer());
 				}
 
 				if(isset($post['btn_edit_item'])) {
 					$this->modelOrderItemModel->updateItem($post, $post['id']);
+					return redirectRaw(request()->referrer());
 				}
-				return redirect(_route('order:cashier'));
+				
 			}
 
 			$order =  $this->model->getComplete([
@@ -77,8 +100,9 @@
 			$this->data['order'] = $order;
 			$this->data['req'] = $req;
 
+			$formOrder = $this->data['formOrder'];
 			if($order) {
-				$this->data['formOrder']->setValueObject($order);
+				$formOrder->setValueObject($order);
 			}
 
 			if(isset($req['order_item_id'])) {
@@ -86,7 +110,17 @@
 				$this->data['formOrderItem']->setValueObject($orderItem);
 				$this->data['orderItem'] = $orderItem;
 			}
-			return $this->view('order/cashier_mode', $this->data);
+			
+			if($customerData) {
+				$formOrder->setValue('customer_name', $customerData['customerName']);
+				$formOrder->setValue('customer_number', $customerData['customerPhone']);
+				$formOrder->setValue('customer_email', $customerData['customerEmail']);
+			}
+
+			$this->data['formOrder'] = $formOrder;
+			$this->data['customerData'] = !empty($customerData) ? seal($customerData): null;
+			
+ 			return $this->view('order/cashier_mode', $this->data);
 		}
 
 		public function show($id) {
@@ -96,14 +130,16 @@
 			$this->data['order'] = $order;
 			$this->data['formOrder']->setValueObject($order);
 
+			$this->data['formPayment']->addOrigin("ORDER");
 			$this->data['formPayment']->setValue('bill_id', $order->id);
 			$this->data['formPayment']->setValue('amount', $order->current_balance);
 
 			$this->data['payments'] = $this->modelPayment->getAll([
 				'where' => [
-					'payment.bill_id' => $id
+					'payment.bill_id' => $id,
+					'payment.origin'  => 'ORDER'
 				]
-			]);
+			], 'ORDER');
 
 			return $this->view('order/show', $this->data);
 		}
@@ -235,7 +271,7 @@
 				$resp = $this->model->cancelSession($token);
 
 				if($resp) {
-					Flash::set("Order Session Cancelled");
+					Flash::set("Session Order Session");
 				}
 			} else {
 				Flash::set("No order session to cancel");

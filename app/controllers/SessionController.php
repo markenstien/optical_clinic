@@ -53,7 +53,7 @@
 			$appointment = $this->appointment->get($appointment_id);
 
 			if($appointment->user_id) {
-				$user = $this->user_model->get($params['user_id']);
+				$user = $this->user_model->get($appointment->user_id);
 				return[
 					'guest_name' => $user->first_name . ' '.$user->last_name,
 					'guest_phone' => $user->phone_number,
@@ -97,7 +97,7 @@
 			if(isSubmitted())
 			{
 				$post = request()->posts();
-
+				
 				$res = $this->model->create($post);
 
 				if($res) {
@@ -105,51 +105,41 @@
 					return redirect(_route('session:show' , $res));
 				}else
 				{
-					Flash::set( $this->model->getErrorString() , 'danger');
+					Flash::set($this->model->getErrorString() , 'danger');
 					return request()->return();
 				}
-			}
-
-			$form = $this->_form;
-
-			if(is_null($appointment_id)) {
-				$sesionData = $this->_createWalkin($req);
-				$form->init([
-					'url' => _route('session:create'),
-					'method' => 'post'
-				]);
-
 			} else {
-				$sesionData = $this->_createWithAppointment($appointment_id);
-				$form->init([
-					'url' => _route('session:create',$appointment_id),
-					'method' => 'post'
-				]);
+				$form = $this->_form;
 
-				// $form->add([
-				// 	'type' => 'hidden',
-				// 	'name' => 'appointment_id',
-				// 	'value' => $appointment_id
-				// ]);
+				if(is_null($appointment_id)) {
+					$sesionData = $this->_createWalkin($req);
+					$form->init([
+						'url' => _route('session:create'),
+						'method' => 'post'
+					]);
+
+				} else {
+					$sesionData = $this->_createWithAppointment($appointment_id);
+					$form->init([
+						'url' => _route('session:create',$appointment_id),
+						'method' => 'post'
+					]);
+					$form->addAppointment($appointment_id);
+				}
+
+				$form->setValue('doctor_id' , auth('id'));
+				$form->setValue('guest_name' , $sesionData['guest_name']);
+				$form->setValue('guest_phone' , $sesionData['guest_phone']);
+				$form->setValue('guest_email' , $sesionData['guest_email']);
+				$form->setValue('user_id' , $sesionData['user_id'] ?? '');
+
+				$form->customSubmit('Create Session');
+
+
+
+				$this->data['form'] = $form;
+				return $this->view('session/create' , $this->data);
 			}
-
-
-
-			$form->setValue('doctor_id' , auth('id'));
-			$form->setValue('guest_name' , $sesionData['guest_name']);
-			$form->setValue('guest_phone' , $sesionData['guest_phone']);
-			$form->setValue('guest_email' , $sesionData['guest_email']);
-			$form->setValue('user_id' , $sesionData['user_id'] ?? '');
-
-			$form->customSubmit('Create Session');
-
-
-
-			$this->data['form'] = $form;
-			
-			// $this->data['appointment'] = $appointment;
-
-			return $this->view('session/create' , $this->data);
 		}
 
 		public function edit( $id )
@@ -204,7 +194,6 @@
 
 
 			$this->data['form'] = $form;	
-
 			$this->data['has_control'] = isEqual( whoIs('user_type') , ['admin','doctor']);
 
 			return $this->view('session/show' , $this->data);

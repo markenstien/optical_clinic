@@ -33,11 +33,21 @@
 							</tr>
 						</table>
 					</div>
+					<div>
+						<?php echo wLinkDefault(_route('order:cashier', null, [
+							'customerPayload' => seal([
+								'customerName' => $session->guest_name,
+								'customerPhone' => $session->guest_phone,
+								'customerEmail' => $session->guest_email,
+								'sessionId' => $session->id
+							])
+						]),'Add Order')?>
+					</div>
 
-					<?php if( !isset($session->patient_account)) :?>
+					<?php if(!isset($session->patient_account)) :?>
 						<label>No Previous Record</label>
 					<?php else:?>
-						<a href="<?php echo _route('user:show' , $session->patient_account->user_id) ?>">View Patient Records</a>
+						<a href="<?php echo _route('user:show' , $session->patient_account->id) ?>">View Patient Records</a>
 					<?php endif?>
 				</div>
 				<div class="col-md-6">
@@ -84,7 +94,9 @@
 						<h4>Doctors Remarks</h4>
 						<p><?php echo $session->remarks?></p>
 						<?php if($has_control) :?>
-							<a href="#" data-toggle="modal" data-target="#modelDoctorRemarks"><?php echo empty($session->remarks) ? 'Add Remarks' : 'Edit Remarks'?></a>
+							<a href="#" 
+							data-toggle="modal"
+							data-target="#modelDoctorRemarks"><?php echo empty($session->remarks) ? 'Add Remarks' : 'Edit Remarks'?></a>
 						<?php endif?>
 					</section>
 

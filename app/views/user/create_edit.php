@@ -106,18 +106,18 @@
 						<div id="id_container_licensed_number" class="form-group"
 						<?php echo !isEqual($user->user_type ?? null , 'doctor') ? 'style="display:none"' : ''?>>
 							<?php
-								__( $doc_form->getRow('license_number') );
+								__($doc_form->getRow('license_number'));
 							?>
 						</div>
 						<div class="form-group">
 							<?php
-								__( $form->getRow('password') );
+								__($form->getRow('password'));
 							?>
 						</div>
 
 						<div>
 							
-							<?php __( $form->get('submit' , ['value' => 'Save']) )?>
+							<?php __($form->get('submit' , ['value' => 'Save']))?>
 						</div>
 					</div>
 				</div>

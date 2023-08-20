@@ -7,18 +7,18 @@
     define('DEFAULT_REPLY_TO' , '');
 
     const MAILER_AUTH = [
-        'username' => 'super@vitalcare.sbs',
-        'password' => 'c;6*CBlLMFFz',
-        'host'     => 'vitalcare.sbs',
-        'name'     => 'VitalCare',
-        'replyTo'  => 'super@vitalcare.sbs',
-        'replyToName' => 'VitalCare'
+        'username' => 'info@vividoptical.online',
+        'password' => '&GcK!Sbq[8N5',
+        'host'     => 'vividoptical.online',
+        'name'     => 'vividoptical',
+        'replyTo'  => 'info@vividoptical.online',
+        'replyToName' => 'vividoptical'
     ];
 
 
     const ITEXMO = [
-        'key' => 'ST-MARKG387451_V6YZ8',
-        'pwd' => '(7]8bu4]ja'
+        'key' => '#',
+        'pwd' => '#'
     ];
 
     #################################################
@@ -48,7 +48,7 @@
 
     define('TIME_SCHEDULE', '9:00AM - 6:30pm');
     define('WORK_DAYS', 'Sunday - Saturday');
-    define('COMPANY_ADDRESS', '#438 P. Gomez St., Corner Paterno St. Quiapo Manila.');
+    define('COMPANY_ADDRESS', '#438 P. Gomez St, Corner Paterno St. Quiapo Manila.');
 
     define('FILE_IMAGE_TYPES', ['png','jpg','jpeg','bitmap']);
 ?>

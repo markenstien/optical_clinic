@@ -31,7 +31,7 @@
 							$user->id
 						])])?>
 					</div>
-					<?php if(isset($backer)) :?>
+					<?php if(!empty($backer)) :?>
 						<?php echo wDivider()?>
 						<div>
 							<div><strong>Backer</strong></div>

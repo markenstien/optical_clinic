@@ -43,7 +43,7 @@
 
 						<tr>
 							<td>
-								<h4><?php echo $order->current_balance?></h4>
+								<h4><?php echo $order->current_balance == 0 ? 'PAID' : $order->current_balance?></h4>
 								<div>Balance</div>
 							</td>
 						</tr>
@@ -88,10 +88,14 @@
 			<?php echo wDivider(40)?>
 			<section>
 				<h4>Payments</h4>
-				<?php echo wLinkDefault('#', 'Add Payment', [
-					'data-toggle' => 'modal',
-					'data-target' => '#addPaymentModal'
-				])?>
+				<?php 
+					if(!isEqual(whoIs('user_type'), 'patient')) {
+						echo wLinkDefault('#', 'Add Payment', [
+							'data-toggle' => 'modal',
+							'data-target' => '#addPaymentModal'
+						]);
+					}
+				?>
 				<?php if(empty($payments)) :?>
 					<p class="text-center">No payments found</p>
 
@@ -137,7 +141,10 @@
       </div>
       <div class="modal-body">
       	<?php __($formPayment->start())?>
-      		<?php __($formPayment->getRow('bill_id'))?>
+      		<?php
+				__($formPayment->getRow('bill_id'));
+				__($formPayment->getRow('origin'));
+			?>
 			<div class="form-group">
 				<?php __($formPayment->getRow('amount'))?>
 			</div>

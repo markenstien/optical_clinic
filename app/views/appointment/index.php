@@ -1,19 +1,18 @@
-<?php build('page-control')?>
-	<a href="<?php echo _route('appointment:create')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm sr-only"><i
-    class="fas fa-plus fa-sm text-white-50"></i> Create Appointment </a>
-<?php endbuild()?>
 
 <?php build('content')?>
 	<div class="card">
-		<?php Flash::show()?>
+		<div class="card-header">
+			<?php echo wLinkDefault(_route('home:index').'#appointment', 'Make Appointment')?>
+		</div>
 		<div class="card-body">
+			<?php Flash::show()?>
 			<div class="table-responsive">
 				<table class="table table-bordered dataTable">
 					<thead>
 						<th>#</th>
 						<th>Reference</th>
 						<th>Guest</th>
+						<th>Has Account</th>
 						<th>Date</th>
 						<th>Time</th>
 						<th>Type</th>
@@ -29,6 +28,7 @@
 								<td><?php echo ++$key?></td>
 								<td><?php echo $appointment->reference?></td>
 								<td><?php echo $appointment->guest_name?></td>
+								<td><?php echo $appointment->user_id !=0 ? 'Yes' : 'No'?></td>
 								<td><?php echo $appointment->date?></td>
 								<td><?php echo is_null($appointment->start_time) ? 'Not Available on previous version' : $appointment->start_time?></td>
 								<td><?php echo $appointment->type?></td>

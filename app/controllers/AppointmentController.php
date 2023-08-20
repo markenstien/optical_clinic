@@ -10,7 +10,8 @@
 		$service_bundle,
 		$category,
 		$service_cart_model,
-		$reservationFeeModel;
+		$reservationFeeModel,
+		$modelPayment, $modelOrder, $modelSession;
 
 		public $_form,$_paymentForm;
 
@@ -19,11 +20,15 @@
 			parent::__construct();
 
 			$this->service = model('ServiceModel');
+			$this->modelPayment = model('PaymentModel');
+			$this->modelOrder = model('OrderModel');
+
 			$this->service_bundle = model('ServiceBundleModel');
 			$this->category = model('CategoryModel');
 			$this->service_cart_model = model('ServiceCartModel');
 			$this->model = model('AppointmentModel');
 			$this->reservationFeeModel  = model('ReservationFeeSettingModel');
+			$this->modelSession = model('SessionModel');
 
 			$this->_form = new AppointmentForm();
 			$this->_paymentForm = new PaymentForm();
@@ -74,7 +79,7 @@
 				$appointments = $this->model->getDesc('id' , ['user_id' => $auth->id]);
 			}else
 			{
-				$appointments = $this->model->getDesc('id');
+				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date asc");
 			}
 
 			$data = [
@@ -225,29 +230,21 @@
 		public function show($id)
 		{
 			$appointment = $this->model->getComplete($id);
+			$payment = $this->modelPayment->getByKey([
+				'origin' => 'RESERVATION_FEE',
+				'bill_id' => $id
+			]);
 
-			$bill = $appointment->bill;
-
-			$is_paid = false;
-
-			if( $bill )
-			{
-				$this->bill_model = model('BillModel');
-
-				$payments = $this->bill_model->getPayments($bill->id);
-
-				$is_paid = isEqual($bill->payment_status , 'paid');
-			}
+			$session = $this->modelSession->single([
+				'appointment_id' => $id
+			]);
 
 			$data = [
 				'appointment' => $appointment,
 				'title' => '#'.$appointment->reference. ' | Appointment',
-				'bill'  => $bill,
-				'is_paid' => $is_paid
+				'payment' => $payment,
+				'session' => $session
 			];
-
-			if( isset($payments) )
-				$data['payment'] = $payments[0] ?? false;
 			
 			return $this->view('appointment/show' , $data);
 		}
@@ -271,7 +268,7 @@
 				'attributes' => [
 					'readonly' => true
 				],
-				'value' => 'ONLINE PAYMENT'
+				'value' => 'Online'
 			]);
 
 			$this->data['paymentForm'] = $this->_paymentForm;

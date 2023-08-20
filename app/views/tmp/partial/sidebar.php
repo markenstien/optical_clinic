@@ -55,12 +55,6 @@
                 </div>
             </div>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="<?php echo _route('order:index')?>">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Order</span></a>
-        </li>
     <?php endif?>
 
 
@@ -75,7 +69,20 @@
             <i class="fas fa-calendar-check"></i>
             <span>Sessions</span></a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="<?php echo _route('order:index')?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Orders</span></a>
+    </li>
+
     <?php if(isEqual($auth->user_type , 'admin')):?>
+        <li class="nav-item">
+            <a class="nav-link" href="<?php echo _route('payment:index')?>">
+                <i class="fa fa-money-bill"></i>
+                <span>Payments</span></a>
+        </li>
+        
         <li class="nav-item">
             <a class="nav-link" href="<?php echo _route('setting:index')?>">
                 <i class="fas fa-calendar-check"></i>

@@ -485,12 +485,12 @@
 	}
 
 	public function _addRetval($name, $value) {
-			$this->_retVal[$name] = $value;
-		}
+		$this->_retVal[$name] = $value;
+	}
 
-		public function _getRetval($name) {
-			return $this->_retVal[$name];
-		}
+	public function _getRetval($name) {
+		return $this->_retVal[$name];
+	}
 
 
  }

@@ -1,3 +1,4 @@
+
 <?php build('content') ?>
 <?php __($formOrder->start())?>
 	<!-- GENERAL FORM -->
@@ -5,21 +6,32 @@
 		<div class="card-header">
 			<h4 class="card-title">Customer Ordering page</h4>
 			<p>Signed-In As <strong><?php echo whoIs('first_name') .' '.whoIs('last_name'). '::'?></strong><span class="badge badge-primary"><?php echo whoIs('user_type')?></span></p>
-			<?php echo wLinkDefault(_route('order:cancel-session'),'Cancel Order')?>
+
+			<?php if($order) :?>
+				<?php echo wLinkDefault(_route('order:cancel-session'),'New Order')?>
+			<?php else :?>
+				<?php echo wLinkDefault(_route('order:cancel-session'),'Cancel Order')?>
+			<?php endif?>
 		</div>
 
 		<div class="card-body">
 			<section>
 				<h4>Customer</h4>
-				<label>#<?php echo Session::get('cashier_mode_token')?></label>
+				<label>
+					<?php if($order) :?>
+						#<?php echo wLinkDefault(_route('order:show', $order->id), $order->order_reference)?>
+					<?php else:?>
+						#<?php echo Session::get('cashier_mode_token')?>
+					<?php endif?>
+				</label>
+				<?php if($order) :?>
 				<div class="row container">
 					<div class="mr-2"><?php __($formOrder->getCol('customer_name')) ?></div>
-					<div class="mr-2"><?php __($formOrder->getCol('customer_number')) ?>
-						<?php echo wLinkDefault('#', 'Search user')?>
-					</div>
+					<div class="mr-2"><?php __($formOrder->getCol('customer_number')) ?> </div>
 					<div class="mr-2"><?php __($formOrder->getCol('customer_email')) ?></div>
 					<div class="mr-2"><?php __($formOrder->getCol('customer_address')) ?></div>
 				</div>
+				<?php endif?>
 
 				<?php Form::close()?>
 			</section>
@@ -59,7 +71,8 @@
 								<td>
 									<?php
 										echo wLinkDefault(_route('order:cashier', null, [
-											'order_item_id' => $row->id
+											'order_item_id' => $row->id,
+											'customerPayload' => $customerData
 										]), 'Edit');
 
 										echo '&nbsp;';
@@ -96,9 +109,8 @@
 				<?php if(!empty($order->discount_amount)) :?>
 					<h4 class="mt-3">Sub Total : <?php echo amountHTMl($orderTotal - $order->discount_amount)?>(Discounted)</h4>
 				<?php endif?>
-				<div class="form-group mt-3">
-					<?php Form::submit('btn_checkout', 'Checkout')?>
-				</div>
+
+				<?php Form::submit('btn_checkout', 'Checkout')?>
 			</section>
 		</div>
 	</div>

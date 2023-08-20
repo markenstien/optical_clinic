@@ -31,7 +31,27 @@
 		}
 
 		public function getAll($params = []) {
-			return parent::getDesc('id');
+			$where = null;
+			$order = null;
+			$limit = null;
+
+			if(!empty($params['where'])){
+				$where = " WHERE ".parent::conditionConvert($params['where']);
+			}
+
+			if(!empty($params['order'])){
+				$order = " ORDER BY {$params['order']} ";
+			}
+
+			if(!empty($params['order'])){
+				$limit = " LIMIT {$params['limit']} ";
+			}
+			$this->db->query(
+				"SELECT * FROM {$this->table} as ordr
+					{$where}{$order}{$limit}"
+			);
+
+			return $this->db->resultSet();
 		}
 
 		public function addItem($token, $itemData) {
@@ -60,10 +80,14 @@
 		}
 
 		public function checkOut($token, $orderData) {
-			$hasDiscount = true;
+			$hasDiscount = false;
+			
 			if(!empty($orderData['discount_check'])) {
 				//check discount data
-				if($orderData['discount_amount'] <= 0) {
+				if(!is_numeric($orderData['discount_amount'])){
+					$this->addError("Invalid Discount Amount");
+					return false;
+				}elseif($orderData['discount_amount'] <= 0) {
 					$this->addError("Invalid Discount Amount");
 					return false;
 				} else {
@@ -71,11 +95,19 @@
 				}
 			}
 			$order = $this->_tokenExists($token);
+
+			if(!$order){
+				$this->addError("Invalid Order Checkout");
+				return false;
+			}
 			//update customerData
-
 			//set initial amount and balance
-
 			$orderItems = $this->getItems($order->id);
+
+			if(empty($orderItems)) {
+				$this->addError("There are no order items, invalid order checkout");
+				return false;
+			}
 
 			$orderTotal = $this->_totalOrderItems($orderItems);
 			//if empty do not allow			
@@ -85,6 +117,8 @@
 			// $_fillables['current_balance'] = 
 			if($hasDiscount) {
 				$_fillables['current_balance'] = ($_fillables['initial_amount'] - $orderData['discount_amount']);
+			} else {
+				$_fillables['current_balance'] = $_fillables['initial_amount'];
 			}
 
 			$_fillables['order_reference'] = 'ORDR-'.number_series(parent::lastId()+1);
@@ -106,6 +140,29 @@
 					]);
 				}
 			}
+
+			//check if user exists
+
+			if(!isset($this->modelUserModel)) {
+				$this->modelUserModel = model('UserModel');
+			}
+
+
+			$user = $this->modelUserModel->single([
+				'phone_number' => [
+					'condition' => 'equal',
+					'value' => $orderData['customer_number'],
+				]
+			]);
+
+			if($user) {
+				parent::update([
+					'user_id' => $user->id
+				], $order->id);
+			}
+
+			$this->_addRetval('order', $order);
+			return $updateOrder;
 		}
 
 		public function getComplete($condition) {

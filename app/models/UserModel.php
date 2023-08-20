@@ -59,31 +59,18 @@
 
 			$fillable_datas = $this->getFillablesOnly($user_data);
 
-			$validated = $this->validate($fillable_datas , $id );
+			$validated = $this->validate($fillable_datas , $id);
 
 			if(!$validated) return false;
 
-
-			/*
-			*update address info
-			*/
-
-			// $address_model = model('AddressModel');
-
-			// $address_id = $user_data['address_id'] ?? null;
-
-			// $address_id = $address_model->createOrUpdate($user_data , $address_id);
-
-			$fillable_datas['address_id'] = $address_id;
-			if( !is_null($id) )
+			if(!is_null($id))
 			{
 				//change password also
-				if( empty($fillable_datas['password']) )
+				if(empty($fillable_datas['password']))
 					unset($fillable_datas['password']);
-
 				$res = parent::update($fillable_datas , $id);
 
-				if( isset($user_data['profile']) ){
+				if(isset($user_data['profile']) ){
 					$this->uploadProfile('profile' , $id);
 				}
 
@@ -91,30 +78,8 @@
 			}else
 			{
 				$fillable_datas['user_code'] = $this->generateCode($user_data['user_type']);
-				$fillable_datas['is_verified'] = true;
 				$user_id = parent::store($fillable_datas);
 			}
-
-			// $is_doctor = isEqual($user_data['user_type'] , 'doctor');
-
-			// if( $is_doctor )
-			// {
-			// 	//load doctormodel
-			// 	$this->doctor_model = model('DoctorModel');
-
-			// 	$is_doctor_lincensed_valid = $this->doctor_model->validateLicensedNumber($user_data['license_number']);
-
-			// 	if(!$is_doctor_lincensed_valid){
-			// 		$this->addError( $this->doctor_model->getErrorString() );
-			// 		return false;
-			// 	}
-
-			// 	$this->doctor_model->save([
-			// 		'license_number' => $user_data['license_number'],
-			// 		'user_id'        => $user_id
-			// 	]);
-
-			// }
 
 			return $user_id;
 		}
@@ -164,9 +129,7 @@
 
 		public function create($user_data , $profile = '')
 		{
-
 			$res = $this->save($user_data);
-
 
 			if(!$res) {
 				$this->addError("Unable to create user");
@@ -201,8 +164,7 @@
 
 			$email_body = wEmailComplete($email_content);
 
-			// _mail($user_data['email'] , "Verify Account" , $email_body);
-
+			_mail($user_data['email'] , "Verify Account" , $email_body);
 			return $res;
 		}
 
@@ -236,6 +198,12 @@
 			return false;
 		}
 
+		public function changePassword($password,$userId) {
+			return parent::update([
+				'password' => $password
+			], $userId);
+		}
+		
 		public function update($user_data , $id)
 		{
 			$res = $this->save($user_data , $id);

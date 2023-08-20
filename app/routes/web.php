@@ -110,7 +110,8 @@
 		'edit' => $controller.'/edit',
 		'add' => $controller.'/add',
 		'delete' => $controller.'/destroy',
-		'show'   => $controller.'/show'
+		'show'   => $controller.'/show',
+		'approve' => $controller .'/approve'
 	];
 	
 
@@ -222,6 +223,17 @@
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show'
+	];
+
+
+	$controller = '/ForgetPasswordController';
+	$routes['forget-pw'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'send'   => $controller.'/send',
+		'resetPassword' => $controller .'/resetPassword '
 	];
 
 	

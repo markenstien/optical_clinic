@@ -8,11 +8,8 @@
 						<th>#</th>
 						<th>Reference</th>
 						<th>Amount</th>
-						<th>Method</th>
-						<th>Payer</th>
-						<th>External Reference</th>
-						<th>ORG</th>
 						<th>Bill</th>
+						<th>Origin</th>
 						<th>Action</th>
 					</thead>
 
@@ -22,12 +19,13 @@
 								<td><?php echo ++$key?></td>
 								<td><?php echo $row->reference?></td>
 								<td><?php echo amountHTML($row->amount)?></td>
-								<td><?php echo $row->method?></td>
-								<td><?php echo $row->acc_name?></td>
-								<td><?php echo $row->external_reference?></td>
-								<td><?php echo $row->org?></td>
+								<td><?php echo $row->origin?></td>
 								<td>
-									<a href="<?php echo _route('bill:show' , $row->bill_id)?>">Show Bill</a>
+									<?php if(isEqual($row->origin, 'RESERVATION_FEE')) : ?>
+										<a href="<?php echo _route('appointment:show' , $row->bill_id)?>">Show Origin</a> 
+									<?php else:?>
+										<a href="<?php echo _route('order:show' , $row->bill_id)?>">Show Origin</a> 
+									<?php endif?>
 								</td>
 								<td>
 									<?php

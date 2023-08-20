@@ -115,6 +115,10 @@
         return header("Location:".URL.DS.$location);
     }
 
+    function redirectRaw($location) {
+        return header("Location:{$location}");
+    }
+
     function makeRequest($request)
     {
         $firstChar = substr($request,0,1);

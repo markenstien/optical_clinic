@@ -15,12 +15,12 @@
         <!-- MENU LINKS -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#top" class="smoothScroll">Home</a></li>
-                    <li><a href="#about" class="smoothScroll">About Us</a></li>
-                    <li><a href="#news" class="smoothScroll">Services</a></li>
-                    <li><a href="#team" class="smoothScroll">Doctors</a></li>
-                    <li><a href="#google-map" class="smoothScroll">Contact</a></li>
-                    <li class="btn-blue"><a href="#appointment" style="color: #fff;">Make an appointment</a></li>
+                    <li><a href="<?php echo _route('home:index')?>#top" class="smoothScroll">Home</a></li>
+                    <li><a href="<?php echo _route('home:index')?>#about" class="smoothScroll">About Us</a></li>
+                    <li><a href="<?php echo _route('home:index')?>#news" class="smoothScroll">Services</a></li>
+                    <li><a href="<?php echo _route('home:index')?>#team" class="smoothScroll">Doctors</a></li>
+                    <li><a href="<?php echo _route('home:index')?>#google-map" class="smoothScroll">Contact</a></li>
+                    <li class="btn-blue"><a href="<?php echo _route('home:index')?>#appointment" style="color: #fff;">Make an appointment</a></li>
             </ul>
         </div>
 

@@ -20,16 +20,20 @@
 
 			<div class="col-md-5">
 				<?php __($form->start()) ?>
-					<?php Form::hidden('user_type', 'patient')?>
+					<?php 
+						Form::hidden('user_type', 'patient');
+						__($form->getRow('is_verified'));
+					?>
 					<div class="card card-theme-blue">
 						<div class="card-header card-theme-blue">
 							<h4 class="card-title">Registration Form</h4>
 						</div>
 						<div class="card-body">
+							<?php Flash::show()?>
 							<?php if($backerData) :?>
 								<?php 
 									__($form->getRow('backer_name')); 
-									__($form->getRow('backer_id')); 
+									__($form->getRow('backer_id'));  
 								?>
 							<?php else:?>
 								<?php
@@ -57,6 +61,9 @@
 							<label>Will be used for Authentication</label>
 							<div class="form-group">
 								<?php __($form->getRow('email')); ?>
+							</div>
+							<div class="form-group">
+								<?php __($form->getRow('phone_number')); ?>
 							</div>
 
 							<div class="form-group">
