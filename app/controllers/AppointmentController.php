@@ -73,12 +73,13 @@
 			/*
 			*select service that you want
 			*/
-			$auth = auth();
+			$auth = whoIs();
 
 			if(isEqual($auth->user_type , 'patient')){
-				$appointments = $this->model->getDesc('id' , ['user_id' => $auth->id]);
-			}else
-			{
+				$appointments = $this->model->all([
+					'user_id' => $auth->id
+				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date asc");
+			}else{
 				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date asc");
 			}
 
