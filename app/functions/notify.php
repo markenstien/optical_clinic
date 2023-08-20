@@ -75,7 +75,7 @@
 	}
 
 
-	function _notify_email( $message , $emails , $attributes = [] )
+	function _notify_email($message , $emails , $attributes = [])
 	{
 		$content = pull_view('tmp/emails/email_text_only_tmp' , [
 			'text' => $message,
@@ -88,7 +88,7 @@
 		{
 			$email = trim($email);
 
-			if( empty($email) )
+			if(empty($email))
 				continue;
 			
 			_mail($email , COMPANY_NAME , $content);
@@ -104,7 +104,7 @@
 			'text' => $message,
 		]);
 
-		_notify_email($message , $content);
+		_notify_email($message , $emails);
 	}
 
 	function _notify_pull_items( $user_id )
