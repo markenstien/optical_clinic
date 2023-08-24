@@ -307,16 +307,9 @@
 		public function sendVerification() {
 			$req = request()->inputs();
 			$user = $this->model->get(unseal($req['userId']));
-
 			$email_body = $this->model->verifyAccount($user->id);
 
-			dump([
-				$user,
-				$email_body
-			]);
-
-			_mail($user->email , "Verify Account" , $email_body);
-
+			_mail($user->email , "Complete your registration on ".COMPANY_NAME , $email_body);
 			Flash::set("Verification has been sent.");
 			return request()->return();
 		}

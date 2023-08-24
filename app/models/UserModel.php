@@ -148,11 +148,12 @@
 		{
 			$res = $this->create($user_data , $profile);
 
-			if(!$res)
+			if(!$res){
 				return false;
-			$email_body = $this->verifyAccount($res);
+			}
 
-			_mail($user_data['email'] , "Verify Account" , $email_body);
+			$email_body = $this->verifyAccount($res);
+			_mail($user_data['email'] , "Complete your registration on ".COMPANY_NAME , $email_body);
 			return $res;
 		}
 
