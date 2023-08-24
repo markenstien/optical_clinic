@@ -14,7 +14,8 @@
 		'sendAuth' => $controller.'/sendAuth',
 		'register' => $controller.'/register',
 		'verification' => $controller.'/verification',
-		'referrral'  => $controller .'/referrral'
+		'referrral'  => $controller .'/referrral',
+		'send-verification' => $controller .'/sendVerification'
 	];
 
 	$controller = '/AuthController';

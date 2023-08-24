@@ -20,17 +20,16 @@
 
 		public function login()
 		{
-			if( isSubmitted() )
+			if(isSubmitted())
 			{
 				$post = request()->posts();
 
 				$res = $this->user->authenticate($post['email'] , $post['password']);
 
 				if(!$res) {
-					Flash::set( $this->user->getErrorString() , 'danger');
+					Flash::set($this->user->getErrorString() , 'danger');
 					return request()->return();
-				}else
-				{
+				}else{
 					Flash::set( "Welcome Back !" . auth('first_name'));
 				}
 

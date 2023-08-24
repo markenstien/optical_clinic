@@ -304,8 +304,14 @@
 			/*registration with backer*/
 		}
 
+		public function sendVerification() {
+			$req = request()->inputs();
+			$user = $this->user->get(unseal($req['userId']));
 
+			$email_body = $this->user->verifyAccount($user->id);
+			_mail($user->email , "Verify Account" , $email_body);
 
-
-			
+			Flash::set("Verification has been sent.");
+			return request()->return();
+		}
 	}

@@ -4,7 +4,7 @@
 
     function wEmailHeader()
     {
-        $logo = URL.DS.'public/logo2.png';
+        $logo = 'https://seeklogo.com/images/H/hospital-clinic-plus-logo-7916383C7A-seeklogo.com.png';
 
         $COMPANY_NAME = COMPANY_NAME;
 
@@ -22,7 +22,7 @@
     
     function wEmailFooter()
     {
-        $logo = URL.DS.'public/logo2.png';
+        $logo = 'https://seeklogo.com/images/H/hospital-clinic-plus-logo-7916383C7A-seeklogo.com.png';
 
         $COMPANY_NAME = COMPANY_NAME;
 

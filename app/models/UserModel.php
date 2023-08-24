@@ -150,10 +150,16 @@
 
 			if(!$res)
 				return false;
+			$email_body = $this->verifyAccount($res);
 
+			_mail($user_data['email'] , "Verify Account" , $email_body);
+			return $res;
+		}
+
+		public function verifyAccount($userId) {
 			//create user-verification-link //send-to-email
 			//seal user-id
-			$_href = URL.DS._route('user:verification' , seal($res));
+			$_href = URL.DS._route('user:verification' , seal($userId));
 			$_anchor = "<a href='{$_href}'>clicking this link</a>";
 
 			$email_content = <<<EOF
@@ -163,9 +169,7 @@
 			EOF;
 
 			$email_body = wEmailComplete($email_content);
-
-			_mail($user_data['email'] , "Verify Account" , $email_body);
-			return $res;
+			return $email_body;
 		}
 
 		public function uploadProfile($file_name , $id)
@@ -308,8 +312,13 @@
 				return false;
 			}
 
-			if( !$user->is_verified){
-				$this->addError("Verify your account to access " . COMPANY_NAME . " Platform");
+			if(!$user->is_verified){
+
+				$link = wLinkDefault(_route('user:send-verification', null, [
+					'userId' => seal($user->id)
+				]), 'Send Verification Again');
+				
+				$this->addError("Verify your account to access " . COMPANY_NAME . "Platform {$link}" );
 				return false;
 			}
 
