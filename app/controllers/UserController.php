@@ -310,9 +310,11 @@
 
 			$email_body = $this->model->verifyAccount($user->id);
 
-			echo $email_body;
-			die();
-			
+			dump([
+				$user,
+				$email_body
+			]);
+
 			_mail($user->email , "Verify Account" , $email_body);
 
 			Flash::set("Verification has been sent.");
