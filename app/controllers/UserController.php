@@ -309,6 +309,10 @@
 			$user = $this->model->get(unseal($req['userId']));
 
 			$email_body = $this->model->verifyAccount($user->id);
+
+			echo $email_body;
+			die();
+			
 			_mail($user->email , "Verify Account" , $email_body);
 
 			Flash::set("Verification has been sent.");
