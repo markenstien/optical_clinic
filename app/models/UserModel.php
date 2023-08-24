@@ -161,12 +161,11 @@
 			//create user-verification-link //send-to-email
 			//seal user-id
 			$_href = URL.DS._route('user:verification' , seal($userId));
-			$_anchor = "<a href='{$_href}'>clicking this link</a>";
+			$_anchor = "<a href='{$_href}'>Verify your registration by clicking this link.</a>";
 
 			$email_content = <<<EOF
 				<h3> User Verification </h3>
-				<p> Thank you for registering on out platform , 
-					Verify your Registration by <br/>{$_anchor}</p>
+				<p> Thank you for registering on out platform <br/>{$_anchor}</p>
 			EOF;
 
 			$email_body = wEmailComplete($email_content);
