@@ -168,8 +168,8 @@
 				<p> Thank you for registering on out platform <br/>{$_anchor}</p>
 			EOF;
 
-			$email_body = wEmailComplete($email_content);
-			return $email_body;
+			// $email_body = wEmailComplete($email_content);
+			return $email_content;
 		}
 
 		public function uploadProfile($file_name , $id)
