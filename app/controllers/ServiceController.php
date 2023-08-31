@@ -4,16 +4,18 @@
 
 	class ServiceController extends Controller
 	{
-
-		private $model, $modelStock;
 		
 		public function __construct()
 		{
-			parent::__construct();
-
+			_authRequired([
+				'staff',
+				'admin',
+				'sub_admin'
+			]);
 			$this->_form = new ServiceForm();
 			$this->model = model('ServiceModel');
 			$this->modelStock = model('StockModel');
+			parent::__construct();
 		}
 
 		public function index()

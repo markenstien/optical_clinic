@@ -73,17 +73,6 @@
 					</div>
 				</div>
 
-				<div class="card mb-4">
-					<div class="card-header">
-						<h4 class="card-title">Address</h4>
-					</div>
-
-					<div class="card-body">
-						<div class="form-group">
-							<?php echo __( $form_address->getFormItems('col') )?>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<div class="col-md-5">
@@ -111,7 +100,13 @@
 						</div>
 						<div class="form-group">
 							<?php
-								__($form->getRow('password'));
+								if(isset($user)) {
+									__($form->getRow('password', [
+										'required' => false
+									]));
+								} else {
+									__($form->getRow('password'));
+								}
 							?>
 						</div>
 

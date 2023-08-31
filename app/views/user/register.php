@@ -71,6 +71,8 @@
 							</div>
 
 							<?php __( $form->get('submit' , ['value' => 'Save']) )?>
+							<?php echo wDivider('30')?>
+							<p>Already have an account? <?php echo wLinkDefault(_route('auth:login'), "Login Here.")?></p>
 						</div>
 					</div>
 				<?php __($form->end())?>

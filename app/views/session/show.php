@@ -91,7 +91,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<section>
-						<h4>Doctors Remarks</h4>
+						<h4>Staff Remarks</h4>
 						<p><?php echo $session->remarks?></p>
 						<?php if($has_control) :?>
 							<a href="#" 
@@ -103,7 +103,7 @@
 					<?php wDivider(30)?>
 						
 					</section>
-						<h4>Doctors Recommendations</h4>
+						<h4>Staff Recommendations</h4>
 						<p><?php echo $session->doctor_recommendations?></p>
 						<?php if($has_control) :?>
 							<a href="#" data-toggle="modal" data-target="#modeldoctorRecommendations"><?php echo empty($session->doctor_recommendations) ? 'Add Recommendations' : 'Edit Recommendations'?></a>

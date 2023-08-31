@@ -44,7 +44,7 @@
 				'type' => 'select',
 				'name' => 'doctor_id',
 				'options' => [
-					'label' => ' Attending Doctor ',
+					'label' => ' Attending Staff ',
 					'option_values' => $users
 				],
 				'class' => 'form-control',

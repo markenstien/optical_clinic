@@ -18,7 +18,7 @@
 		public function __construct()
 		{
 			parent::__construct();
-
+			_authRequired();
 			$this->service = model('ServiceModel');
 			$this->modelPayment = model('PaymentModel');
 			$this->modelOrder = model('OrderModel');
@@ -78,9 +78,9 @@
 			if(isEqual($auth->user_type , 'patient')){
 				$appointments = $this->model->all([
 					'user_id' => $auth->id
-				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date asc");
+				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date desc");
 			}else{
-				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date asc");
+				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date desc");
 			}
 
 			$data = [

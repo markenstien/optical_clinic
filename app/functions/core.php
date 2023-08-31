@@ -1,4 +1,20 @@
 <?php
+    function _authRequired($authType = [], $redirectPage = '') {
+        $whoIs = whoIs();
+        $redirectPage = empty($redirectPage) ? _route('auth:login') : $redirectPage;
+
+        if(empty($whoIs)) {
+            Flash::set("Unauthorized User access", 'danger');
+            return redirect($redirectPage);
+        }
+
+        if(!empty($authType)) {
+            if(!isEqual($whoIs->user_type, $authType)) {
+                Flash::set("Unauthorized User access", 'danger');
+                return redirect(_route('user:profile'));
+            }
+        }
+    }
     
     function _download_wrap($file_name , $path)
     {

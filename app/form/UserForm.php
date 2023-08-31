@@ -222,7 +222,7 @@
 				'type' => 'select',
 				'name' => 'user_type',
 				'class' => 'form-control',
-				'required' => '',
+				'required' => true,
 				'options' => [
 					'label' => 'User Type',
 					'option_values' => [

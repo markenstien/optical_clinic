@@ -8,10 +8,10 @@
 	class UserController extends Controller
 	{
 		private $_form;
-
-
 		public function __construct()
 		{
+			parent::__construct();
+
 			$this->_form = new UserForm('form_user');
 			$this->_form_address = new AddressForm();
 
@@ -139,7 +139,11 @@
 
 		public function index()
 		{
-
+			_authRequired([
+				'staff',
+				'admin'
+			]);
+			
 			$data = [
 				'users' => $this->model->getAll(),
 				'title' => 'Users'
@@ -150,11 +154,13 @@
 
 		public function create()
 		{
-
+			_authRequired([
+				'staff',
+				'admin'
+			]);
 			if(isSubmitted())
 			{
 				$post = request()->posts();
-				dump($post);
 				$res = $this->model->create($post , 'profile');
 
 				Flash::set($this->model->getMessageString());
@@ -210,9 +216,6 @@
 
 			$this->_form->setValueObject($user);
 
-			if( $user_address )
-			$this->_form_address->setValueObject($user_address);
-
 			$this->_form_address->remove('submit');
 
 			$data = [
@@ -228,11 +231,13 @@
 
 		public function profile()
 		{
+			_authRequired();
 			return $this->show( whoIs('id') );
 		}
 
 		public function show($id)
 		{
+			_authRequired();
 			$user = $this->model->get($id);
 
 			if(!$user){
@@ -249,25 +254,27 @@
 			switch(strtolower($user->user_type))
 			{
 				case 'patient':
-				
-				$data['appointments'] = $this->appointment->getDesc('id' , ['user_id' => $user->id]);
-				
-				$data['sessions'] = $this->session->getAll([
-					'where' => [
-						'user_id' => $user->id
-					]
-				]);
-
-				if(!is_null($user->backer_id)) {
-					$backer = $this->model->get($user->backer_id);
-				}
-				$data['backer'] = $backer;
-				$this->view('user/patient_view' , $data);
+					$data['appointments'] = $this->appointment->getDesc('id' , ['user_id' => $user->id]);
+					$data['sessions'] = $this->session->getAll([
+						'where' => [
+							'user_id' => $user->id
+						]
+					]);
+					if(!is_null($user->backer_id)) {
+						$backer = $this->model->get($user->backer_id);
+					}
+					$data['backer'] = $backer;
+					$this->view('user/patient_view' , $data);
 				break;
 
 				default:
 					//admin
-				$this->view('user/admin_view' , $data);
+					$data['sessions'] = $this->session->getAll([
+						'where' => [
+							'doctor_id' => $user->id
+						]
+					]);
+					$this->view('user/admin_view' , $data);
 				break;
 			}
 		}

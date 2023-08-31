@@ -6,6 +6,12 @@
     {
         public function __construct()
         {
+            parent::__construct();
+            _authRequired([
+				'staff',
+				'admin',
+				'sub_admin'
+			]);
             $this->data['stock_form'] = new StockForm();
             $this->model = model('StockModel');
             $this->itemModel = model('ServiceModel');

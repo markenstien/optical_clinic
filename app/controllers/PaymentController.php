@@ -8,6 +8,7 @@
 		public function __construct()
 		{
 			parent::__construct();
+			_authRequired();
 			$this->paymentModel = model('PaymentModel');
 			$this->modelOrder = model('OrderModel');
 			$this->modelAppointment = model('AppointmentModel');

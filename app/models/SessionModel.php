@@ -126,11 +126,16 @@
 
 			$this->db->query(
 				"SELECT session.* , user.first_name , user.last_name ,
-					concat(user.first_name , ' ' , user.last_name) as doctor_name
+					concat(user.first_name , ' ' , user.last_name) as doctor_name,
+					concat(patient.first_name , ' ' , patient.last_name) as patient_name
 
 					FROM {$this->table} as session
-					LEFT JOIN users as user 
-					ON session.doctor_id = user.id
+						LEFT JOIN users as user 
+						ON session.doctor_id = user.id
+
+						LEFT JOIN users as patient
+						ON patient.id = session.user_id
+
 					{$where} {$order}"
 			);
 

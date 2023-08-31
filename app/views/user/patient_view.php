@@ -91,7 +91,7 @@
 		<div class="card-body">
 			<table class="table table-bordered dataTable">
 				<thead>
-					<th>Doctor</th>
+					<th>Attending Staff</th>
 					<th>Remarks</th>
 					<th>Date</th>
 					<th>Action</th>

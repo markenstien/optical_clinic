@@ -38,7 +38,7 @@
 		}
 
 		public function index() {
-
+			_authRequired();
 			if(isEqual(whoIs('user_type'), 'patient')) {
 				$this->data['orders'] = $this->model->getAll([
 					'where' => [
@@ -53,6 +53,11 @@
 
 		public function cashierMode() 
 		{
+			_authRequired([
+				'staff',
+				'admin',
+				'sub_admin'
+			]);
 			$req = request()->inputs();
 			$customerData = null;
 			if(!empty($req['customerPayload'])){
@@ -124,6 +129,7 @@
 		}
 
 		public function show($id) {
+			_authRequired();
 			$order = $this->model->getComplete([
 				'id' => $id
 			]);
@@ -146,6 +152,7 @@
 
 		public function replacement($id) 
 		{
+			_authRequired();
 			$req = request()->inputs();
 
 			if(isSubmitted()) {

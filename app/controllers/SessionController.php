@@ -7,22 +7,18 @@
 
 		public function __construct()
 		{
-
 			parent::__construct();
-
-
+			_authRequired();
 			$this->model = model('SessionModel');
 			$this->user_model = model('UserModel');
-
 			$this->appointment = model('AppointmentModel');
-
 			$this->data['title'] = 'Start Patient Session';
-
 			$this->_form = new SessionForm();
 		}
 
 		public function index()
 		{
+			
 			$auth = auth();
 
 			$this->data['title'] = 'Sessions';
@@ -194,7 +190,7 @@
 
 
 			$this->data['form'] = $form;	
-			$this->data['has_control'] = isEqual( whoIs('user_type') , ['admin','doctor']);
+			$this->data['has_control'] = isEqual(whoIs('user_type') , ['staff','admin', 'sub_admin']);
 
 			return $this->view('session/show' , $this->data);
 		}
