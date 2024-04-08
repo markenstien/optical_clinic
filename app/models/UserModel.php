@@ -87,17 +87,17 @@
 
 		private function validate(&$user_data , $id = null)
 		{	
-			if(isset($user_data['email']))
+			if(!empty($user_data['email']))
 			{
 				$is_exist = $this->getByKey('email' , $user_data['email'])[0] ?? '';
 
-				if( $is_exist && !isEqual($is_exist->id , $id) ){
+				if($is_exist && !isEqual($is_exist->id , $id) ){
 					$this->addError("Email {$user_data['email']} already used");
 					return false;
 				}
 			}
 
-			if(isset($user_data['username']))
+			if(!empty($user_data['username']))
 			{
 				$is_exist = $this->getByKey('username' , $user_data['username'])[0] ?? '';
 
@@ -107,7 +107,7 @@
 				}
 			}
 
-			if(isset($user_data['phone_number']))
+			if(!empty($user_data['phone_number']))
 			{
 				$user_data['phone_number'] = str_to_mobile($user_data['phone_number']);
 
@@ -124,7 +124,37 @@
 				}
 			}
 
+			$limitCheck = [
+				'first_name' => 'First Name',
+				'middle_name' => 'Middle Name',
+				'last_name' => 'Last Name',
+				'user_name' => 'Username',
+				'password' => 'Password',
+			];
+			
+			foreach($limitCheck as $key => $row) {
+				if(!empty($user_data[$key])) {
+					if(!$this->validateStringLength($user_data[$key], 12, $row)) {
+						return false;
+					}
+				}
+			}
+
 			return true;
+		}
+
+		private function validateStringLength($value, $length, $label) {
+			if(strlen($value) > $length) {
+				$this->addError("Invalid {$label} character length.");
+				return false;
+			}
+
+			return true;
+			// first_name
+			// middle_name
+			// last_name
+			// username
+			// password
 		}
 
 		public function create($user_data , $profile = '')
