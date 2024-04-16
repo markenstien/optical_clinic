@@ -109,7 +109,7 @@
 
 			if(!empty($user_data['phone_number']))
 			{
-				$user_data['phone_number'] = str_to_mobile($user_data['phone_number']);
+				$user_data['phone_number'] = trim($user_data['phone_number']);
 
 				if( !is_mobile_number($user_data['phone_number']) ){
 					$this->addError("Invalid Phone Number {$user_data['phone_number']}");

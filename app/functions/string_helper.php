@@ -20,14 +20,19 @@
     function str_to_mobile($string)
     {
         $mobile = preg_replace("/[^0-9]/", "", trim($string));
+        $addPrefix = false;
 
         if(substr($mobile, 0, 2) == '63') {
             $mobile = '0'.substr($mobile, 2);
+            $addPrefix = true;
         } elseif(substr($mobile , 0 , 1) == '9') {
             $mobile = trim("0{$mobile}");
+            $addPrefix = true;
         }
 
-        $mobile = "63".substr($mobile, 1);
+        if($addPrefix) {
+            $mobile = "63".substr($mobile, 1);
+        }
         return $mobile;
     }
 
