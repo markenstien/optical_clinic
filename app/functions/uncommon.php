@@ -419,15 +419,15 @@
         try {
             $response = $request->send();
             if ($response->getStatus() == 200) {
-                echo $response->getBody();
+                // echo $response->getBody();
             }
             else {
-                echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
-                $response->getReasonPhrase();
+                // echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+                // $response->getReasonPhrase();
             }
         }
         catch(HTTP_Request2_Exception $e) {
-            echo 'Error: ' . $e->getMessage();
+            // echo 'Error: ' . $e->getMessage();
         }
     }
     function sms_itexmo($number,$message,$apicode,$passwd)
