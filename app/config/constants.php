@@ -28,6 +28,10 @@
 		'cxbook' => [
 			'base_controller' => 'Accounts',
 			'base_method'     => 'index'
+        ],
+
+        'open_sms' => [
+            'key' => 'ef3db740e6bed5196d2eb2018aa3db5e-1a4af984-29bf-41d3-9be4-e0cb38f7665a',
         ]
     ];
 

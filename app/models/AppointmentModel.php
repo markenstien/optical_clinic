@@ -79,7 +79,7 @@
 
 				_notify_include_email("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference",[$appointment_data['user_id']],[$email] , ['href' => $appointment_link ]);
 				if($user_mobile_number) {
-					// send_sms("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
+					send_sms("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , [$user_mobile_number]);
 				}
 				_notify_operations("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
 			}

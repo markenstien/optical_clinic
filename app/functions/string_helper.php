@@ -21,8 +21,10 @@
     {
         $mobile = preg_replace("/[^0-9]/", "", trim($string));
 
-        if( substr($mobile , 0 ,2) == '63' || substr($mobile , 0 , 1) == '9' ) {
-            $mobile = '09'.substr( $mobile , 0);
+        if(substr($mobile, 0, 2) == '63') {
+            $mobile = '0'.substr($mobile, 2);
+        } elseif(substr($mobile , 0 , 1) == '9') {
+            $mobile = trim("0{$mobile}");
         }
         return $mobile;
     }
@@ -32,12 +34,13 @@
     {
         $mobileNumber = trim($string);
 
-        if(strlen($string) != 11)
+        if(strlen($mobileNumber) != 11) {
             return false;
+        }
         
-        if( substr($string , 0 ,2)  != '09')
+        if(substr($mobileNumber , 0 ,2)  != '09'){
             return false;
-            
+        } 
         return true;
     }
 

@@ -4,13 +4,16 @@
 	
 	class HomeController extends Controller
 	{
-		private $model,$service,
-		$service_bundle,
-		$category,
-		$service_cart_model,
+		private
 		$reservationFeeModel;
-
 		public $_form;
+
+		public function sms() {
+			$numbers = [
+				'09063387451'
+			];
+			sms_open_sms("Sample text from infobib", $numbers);
+		}
 
 		public function __construct()
 		{

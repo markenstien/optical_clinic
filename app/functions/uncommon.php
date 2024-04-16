@@ -379,20 +379,57 @@
     function send_sms( $message , $recipients = [])
     {
         $ret_val = null;
-
-        foreach($recipients as $recipient => $row) 
-        {
-            $mobile_number = str_to_mobile($row);
-
-            if( !is_mobile_number($mobile_number) )
-                continue;
-
-            $ret_val = sms_itexmo( $mobile_number , $message , ITEXMO['key'] , ITEXMO['pwd'] );
-        }
+        $ret_val = sms_open_sms($message,$recipients);
 
         return $ret_val;
     }
 
+    function sms_open_sms($message, $recipients = []) {
+        require_once LIBS.DS.'http2/vendor/autoload.php';
+        $request = new HTTP_Request2();
+        $request->setUrl('https://y3y6dd.api.infobip.com/sms/2/text/advanced');
+        $request->setMethod(HTTP_Request2::METHOD_POST);
+        $request->setConfig(array(
+            'follow_redirects' => TRUE
+        ));
+        $request->setHeader(array(
+            'Authorization' => 'App '.APP_EXTENSIONS['open_sms']['key'],
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json'
+        ));
+        $destinations = [];
+
+        foreach($recipients as $key => $row) {
+            array_push($destinations, [
+                'to' => str_to_mobile($row)
+            ]);
+        }
+
+        $smsBody = [
+            'messages' => [
+                'destinations' => $destinations,
+                'from' => 'InfoSMS',
+                'text' => $message
+            ]
+        ];
+
+        $smsBodyStringify = json_encode($smsBody);
+        
+        $request->setBody($smsBodyStringify);
+        try {
+            $response = $request->send();
+            if ($response->getStatus() == 200) {
+                echo $response->getBody();
+            }
+            else {
+                echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
+                $response->getReasonPhrase();
+            }
+        }
+        catch(HTTP_Request2_Exception $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
     function sms_itexmo($number,$message,$apicode,$passwd)
     {
         $ch = curl_init();
@@ -405,3 +442,5 @@
         return curl_exec ($ch);
         curl_close ($ch);
     }
+    
+    
