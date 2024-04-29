@@ -12,7 +12,7 @@
 			$this->user = model('UserModel');
 			$this->_form = new UserForm();
 		}
-
+		
 		public function index()
 		{
 			return $this->login();

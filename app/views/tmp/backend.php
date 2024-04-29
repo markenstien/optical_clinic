@@ -102,7 +102,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Bootstrap core JavaScript-->
     <script src="<?php echo _path_tmp('sbadmin/vendor/jquery/jquery.min.js')?>"></script>
     <script src="<?php echo _path_tmp('sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js')?>"></script>
@@ -112,9 +112,8 @@
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo _path_tmp('sbadmin/js/sb-admin-2.min.js')?>"></script>
-
-    
     <script type="text/javascript" src="<?php echo _path_public('js/global.js')?>"></script>
+                        
     
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>

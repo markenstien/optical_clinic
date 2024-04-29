@@ -21,6 +21,7 @@
 			'created_at',
 			'created_by',
 			'user_type',
+			'user_preference',
 			'profile',
 			'updated_at',
 			'backer_id',

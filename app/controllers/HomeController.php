@@ -8,13 +8,6 @@
 		$reservationFeeModel;
 		public $_form;
 
-		public function sms() {
-			$numbers = [
-				'09063387451'
-			];
-			sms_open_sms("Sample text from infobib", $numbers);
-		}
-
 		public function __construct()
 		{
 			parent::__construct();
@@ -25,6 +18,7 @@
 			$this->service_cart_model = model('ServiceCartModel');
 			$this->model = model('AppointmentModel');
 			$this->reservationFeeModel  = model('ReservationFeeSettingModel');
+			$this->userModel = model('UserModel');
 
 			$this->_form = new AppointmentForm();
 		}
@@ -38,6 +32,16 @@
 			
 			$this->data['form'] = $this->_form;
 			$this->data['reservationFee']  = $this->reservationFeeModel->getActive();
+
+			$this->data['physicians'] = $this->userModel->getAll([
+				'where' => [
+					'user_preference' => [
+						'condition' => 'in',
+						'value' => ['physician', 'staff01']
+					]
+				]
+			]);
+			
 			return view('home/index', $this->data);
 		}
 	}

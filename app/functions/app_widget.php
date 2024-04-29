@@ -171,3 +171,22 @@
             <div style="margin-top:{$size}px"> </div>
         EOF;
     }
+
+    function wTransactionUserPreference($userPreference) {
+        $retVal = '';
+        switch($userPreference) {
+            case 'staff01':
+                $retVal = 'Attending Staff';
+            break;
+
+            case 'physician':
+                $retVal = 'Physician';
+            break;
+
+            case 'client':
+                $retVal = 'Patient';
+            break;
+        }
+
+        return $retVal;
+    }

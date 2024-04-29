@@ -82,7 +82,6 @@
 							</tr>
 						</table>
 					</div>
-					<a href="<?php echo _route('user:show' , $doctor->id)?>">Show Account</a>
 				</div>
 			</div>
 		</div>

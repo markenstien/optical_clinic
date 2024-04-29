@@ -18,7 +18,11 @@
 						<th>Category</th>
 						<th>Descriotion</th>
 						<th>Status</th>
+						<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
 						<th>Action</th>
+						<?php else:?>
+							<th>View</th>
+						<?php endif?>
 					</thead>
 
 					<tbody>
@@ -31,6 +35,7 @@
 								<td><?php echo $row->category?></td>
 								<td><?php echo $row->description?></td>
 								<td><?php echo $row->is_visible == true ? 'Active' : 'In-Active'?></td>
+								<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
 								<td>
 									<?php
 										__([
@@ -39,6 +44,9 @@
 										])
 									?>
 								</td>
+								<?php else:?>
+									<td><?php __(btnView(_route('service:show' , $row->id)))?></td>
+								<?php endif?>
 							</tr>
 						<?php endforeach?>
 					</tbody>

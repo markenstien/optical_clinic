@@ -7,11 +7,6 @@
 		
 		public function __construct()
 		{
-			_authRequired([
-				'staff',
-				'admin',
-				'sub_admin'
-			]);
 			$this->_form = new ServiceForm();
 			$this->model = model('ServiceModel');
 			$this->modelStock = model('StockModel');
@@ -20,6 +15,8 @@
 
 		public function index()
 		{
+			_authRequired();
+
 			$services = $this->model->getAll();
 
 			$data = [
@@ -33,6 +30,12 @@
 
 		public function create()
 		{
+			_authRequired([
+				'staff',
+				'admin',
+				'sub_admin'
+			]);
+
 			if( isSubmitted() )
 			{
 				$post = request()->posts();
@@ -68,6 +71,12 @@
 
 		public function edit($id)
 		{
+			_authRequired([
+				'staff',
+				'admin',
+				'sub_admin'
+			]);
+
 			if( isSubmitted() )
 			{
 				$post = request()->posts();

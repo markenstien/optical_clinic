@@ -31,6 +31,13 @@
 								<td>Gender</td>
 								<td><?php echo $user->gender?></td>
 							</tr>
+							
+							<?php if(!isEqual($user->user_type, 'admin')) :?>
+							<tr>
+								<td><?php echo $userForm->label('user_preference')?></td>
+								<td><?php echo wTransactionUserPreference($user->user_preference)?></td>
+							</tr>
+							<?php endif?>
 
 							<tr>
 								<td>Birth Date</td>

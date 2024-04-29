@@ -7,18 +7,26 @@ $( document ).ready( function()
 		$(`${target}`).show();
 	}
 
-
-	$("select[name='user_type']").change( function(e) 
-	{
-		let value = $(this).val();
-		let target = $(this).data('target');
-		
-		if( value == 'doctor') 
-		{
-			$(`${target}`).show();
-		}else{
-			$(`${target}`).hide();
+	$('#id_user_type').change(function(){
+		let userType = $(this).val();
+		let selectedUser = '';
+		switch(userType){
+			case 'staff':
+				selectedUser = 'physician';
+				break;
+			case 'patient':
+				selectedUser = 'client';
+				break;
+			case 'sub_admin':
+				selectedUser = 'staff01';
+				break;
 		}
+
+		$.each($('#user_preference').find(":selected"), function(index, element){
+			$(element).removeAttr('selected');
+		});
+		
+		$(`#user_preference option[value='${selectedUser}']`).attr('selected', true);
 	});
 
 });

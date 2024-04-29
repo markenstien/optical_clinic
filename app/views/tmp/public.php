@@ -37,8 +37,11 @@
                     </div>
                          
                     <div class="col-md-8 col-sm-7 text-align-right">
-                         <span class="date-icon"><i class="fa fa-calendar-plus-o"></i><?php echo TIME_SCHEDULE?>(<?php echo WORK_DAYS?>)</span>
-                         <span class="email-icon"><i class="fa fa-envelope-o"></i> <a href="#">info@company.com</a></span>
+                         <span class="date-icon"><i class="fa fa-calendar-plus-o"></i>
+                         <?php echo TIME_SCHEDULE?>(<?php echo WORK_DAYS?>)</span>
+                         <span class="email-icon"><i class="fa fa-envelope-o">
+                              
+                         </i> <a href="#">info@company.com</a></span>
                          <span>
                               <?php
                                    if(whoIs()) {

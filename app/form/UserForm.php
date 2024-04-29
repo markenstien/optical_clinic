@@ -29,7 +29,7 @@
 			$this->addMiddleName();
 			$this->addBirthDay();
 			$this->addGender();
-
+			$this->addUserPreference();
 			$this->addSubmit('');
 		}
 
@@ -259,6 +259,25 @@
 				'type' => 'hidden',
 				'name' => 'is_verified',
 				'value' => $value
+			]);
+		}
+
+		public function addUserPreference() {
+			$this->add([
+				'type' => 'select',
+				'name' => 'user_preference',
+				'options' => [
+					'label' => 'User Title',
+					'option_values' => [
+						'client' => 'Patient',
+						'physician' => 'Physicians',
+						'staff01' => 'Attending Staffs'
+					]
+				],
+				'class' => 'form-control',
+				'attributes' => [
+					'id' => 'user_preference'
+				]
 			]);
 		}
 

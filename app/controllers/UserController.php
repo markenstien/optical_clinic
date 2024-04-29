@@ -145,7 +145,14 @@
 			]);
 			
 			$data = [
-				'users' => $this->model->getAll(),
+				'users' => $this->model->getAll([
+					'where' => [
+						'user_type' => [
+							'condition' => 'not equal',
+							'value' => 'admin'
+						]
+					]
+				]),
 				'title' => 'Users'
 			];
 
@@ -246,7 +253,8 @@
 			}
 
 			$data = [
-				'user' => $user
+				'user' => $user,
+				'userForm' => $this->_form
 			];
 
 			$backer = false;

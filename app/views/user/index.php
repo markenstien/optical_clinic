@@ -16,6 +16,7 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Type</th>
+						<th>User Preference</th>
 						<th>Action</th>
 					</thead>
 
@@ -27,6 +28,7 @@
 								<td><?php echo $row->first_name . ' ' .$row->last_name?></td>
 								<td><?php echo $row->email?></td>
 								<td><?php echo $row->user_type?></td>
+								<td><?php echo wTransactionUserPreference($row->user_preference)?></td>
 								<td>
 									<?php
 										__([

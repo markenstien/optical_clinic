@@ -71,6 +71,12 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link" href="<?php echo _route('service:index')?>">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Products</span></a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('order:index')?>">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Orders</span></a>

@@ -82,6 +82,7 @@
 					</div>
 
 					<div class="card-body">
+						<?php if(!isEqual($user->user_type, 'admin')) :?>
 						<div class="form-group">
 							<?php __( $form->getRow('user_type' , [
 								'input' => [
@@ -92,12 +93,12 @@
 							]) )?>
 						</div>
 
-						<div id="id_container_licensed_number" class="form-group"
-						<?php echo !isEqual($user->user_type ?? null , 'doctor') ? 'style="display:none"' : ''?>>
-							<?php
-								__($doc_form->getRow('license_number'));
-							?>
+						<div class="form-group">
+							<?php __($form->getRow('user_preference'))?>
 						</div>
+
+						<?php endif?>
+
 						<div class="form-group">
 							<?php
 								if(isset($user)) {
