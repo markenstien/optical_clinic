@@ -50,9 +50,10 @@
     define('DESCRIPTION' , 'VIVID MOTION OPTIC Eye Clinic');
     define('AUTHOR' , SITE_NAME);
 
-    define('TIME_SCHEDULE', '9:00AM - 6:30pm');
+    define('TIME_SCHEDULE', '9am - 5pm');
     define('WORK_DAYS', 'Sunday - Saturday');
     define('COMPANY_ADDRESS', '#438 P. Gomez St, Corner Paterno St. Quiapo Manila.');
-
+    define('COMPANY_EMAIL', 'main@vividoptical.online');
+    define('COMPANY_CONTACT', '09945510322 ');
     define('FILE_IMAGE_TYPES', ['png','jpg','jpeg','bitmap']);
 ?>

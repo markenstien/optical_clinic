@@ -40,8 +40,8 @@
                          <span class="date-icon"><i class="fa fa-calendar-plus-o"></i>
                          <?php echo TIME_SCHEDULE?>(<?php echo WORK_DAYS?>)</span>
                          <span class="email-icon"><i class="fa fa-envelope-o">
-                              
-                         </i> <a href="#">info@company.com</a></span>
+
+                         </i> <a href="#"><?php echo COMPANY_EMAIL?></a></span>
                          <span>
                               <?php
                                    if(whoIs()) {
@@ -85,8 +85,9 @@
                               <p><?php echo COMPANY_ADDRESS?></p>
 
                               <div class="contact-info">
-                                   <p><i class="fa fa-phone"></i> 010-070-0170</p>
-                                   <p><i class="fa fa-envelope-o"></i> <a href="#">info@company.com</a></p>
+                                   <p><i class="fa fa-phone"></i> <?php echo COMPANY_CONTACT?></p>
+                                   <p><i class="fa fa-envelope-o"></i> <a href="#"><?php echo COMPANY_EMAIL?></a></p>
+                                   <p><i class="fa fa-user-plus"></i> <a href="/ToolController/bot">Talk To Chatbot</a></p>
                               </div>
                          </div>
                     </div>
@@ -110,9 +111,7 @@
                     <div class="col-md-12 col-sm-12 border-top">
                          <div class="col-md-4 col-sm-6">
                               <div class="copyright-text"> 
-                                   <p>Copyright &copy; 2018 Your Company 
-                                   
-                                   | Design: Tooplate</p>
+                                   <p>Copyright &copy; <?php echo COMPANY_NAME?></p>
                               </div>
                          </div>
                          <div class="col-md-6 col-sm-6">
