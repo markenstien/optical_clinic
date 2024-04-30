@@ -31,33 +31,6 @@
 	</section>
 
 
-	<!-- ABOUT -->
-	<section id="about">
-		<div class="container">
-			<div class="row">
-
-				<div class="col-md-6 col-sm-6">
-						<div class="about-info">
-							<h2 class="wow fadeInUp" data-wow-delay="0.6s">Welcome to Your <i class="fa fa-eye"></i><?php echo COMPANY_NAME?></h2>
-							<div class="wow fadeInUp" data-wow-delay="0.8s">
-								<p>Aenean luctus lobortis tellus, vel ornare enim molestie condimentum. Curabitur lacinia nisi vitae velit volutpat venenatis.</p>
-								<p>Sed a dignissim lacus. Quisque fermentum est non orci commodo, a luctus urna mattis. Ut placerat, diam a tempus vehicula.</p>
-							</div>
-							<figure class="profile wow fadeInUp" data-wow-delay="1s">
-								<img src="images/author-image.jpg" class="img-responsive" alt="">
-								<figcaption>
-									<h3>Dr. Neil Jackson</h3>
-									<p>General Principal</p>
-								</figcaption>
-							</figure>
-						</div>
-				</div>
-				
-			</div>
-		</div>
-	</section>
-
-
 	<!-- TEAM -->
 	<section id="team" data-stellar-background-ratio="1">
 		<div class="container">
@@ -83,8 +56,6 @@
 										<p><i class="fa fa-envelope-o"></i> <a href="#"><?php echo $row->email?></a></p>
 									</div>
 								</div>
-
-								
 						</div>
 					</div>
 				<?php endforeach?>
@@ -185,8 +156,6 @@
 								<?php else:?>
 									<?php
 											$form->setValue('date' , date('Y-m-d'));
-											// $form->setValue('type' , 'walk-in');
-
 											__( $form->getForm() );
 									?>
 								<?php endif?>

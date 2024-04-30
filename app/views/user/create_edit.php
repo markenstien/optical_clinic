@@ -82,7 +82,6 @@
 					</div>
 
 					<div class="card-body">
-						<?php if(!isEqual($user->user_type, 'admin')) :?>
 						<div class="form-group">
 							<?php __( $form->getRow('user_type' , [
 								'input' => [
@@ -96,8 +95,6 @@
 						<div class="form-group">
 							<?php __($form->getRow('user_preference'))?>
 						</div>
-
-						<?php endif?>
 
 						<div class="form-group">
 							<?php

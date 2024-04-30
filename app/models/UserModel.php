@@ -126,9 +126,6 @@
 			}
 
 			$limitCheck = [
-				'first_name' => 'First Name',
-				'middle_name' => 'Middle Name',
-				'last_name' => 'Last Name',
 				'user_name' => 'Username',
 				'password' => 'Password',
 			];
@@ -151,11 +148,6 @@
 			}
 
 			return true;
-			// first_name
-			// middle_name
-			// last_name
-			// username
-			// password
 		}
 
 		public function create($user_data , $profile = '')
@@ -270,12 +262,6 @@
 				$this->doctor = model('DoctorModel');
 				$user->license_number = $this->doctor->getByUser($id)->license_number ?? null;
 			}
-
-			// if( !is_null($user->address_id)  )
-			// {
-			// 	$address_model = model('AddressModel');
-			// 	$user->address_atomic_text = $address_model->getConcat($user->address_id);
-			// }
 
 			return $user;
 		}

@@ -51,7 +51,7 @@
     define('AUTHOR' , SITE_NAME);
 
     define('TIME_SCHEDULE', '9am - 5pm');
-    define('WORK_DAYS', 'Sunday - Saturday');
+    define('WORK_DAYS', 'Monday - Saturday');
     define('COMPANY_ADDRESS', '#438 P. Gomez St, Corner Paterno St. Quiapo Manila.');
     define('COMPANY_EMAIL', 'main@vividoptical.online');
     define('COMPANY_CONTACT', '09945510322 ');
