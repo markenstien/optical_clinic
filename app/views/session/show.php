@@ -57,7 +57,7 @@
 						<?php endif?>
 						<div class="col">
 							<h2><?php echo isEqual($doctor->gender ,'male') ? 'Dr.':'Dra.'?> <?php echo $doctor->first_name . ' ' .$doctor->last_name?></h2>
-							<label>Attending Doctor</label>
+							<label>Attending Staff</label>
 						</div>
 					</div>
 					

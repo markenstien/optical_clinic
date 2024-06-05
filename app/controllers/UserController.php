@@ -230,7 +230,8 @@
 				'form'  => $this->_form,
 				'doc_form' => $doc_form,
 				'user'   => $user,
-				'form_address' => $this->_form_address
+				'form_address' => $this->_form_address,
+				'user_id' => $id
 			];
 
 			return $this->view('user/create_edit' , $data);
