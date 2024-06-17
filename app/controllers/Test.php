@@ -10,13 +10,17 @@
 			$_anchor = "<a href='{$_href}'>clicking this link</a>";
 
 			$email_content = <<<EOF
-				<h3> User Verification </h3>
-				<p> Thank you for registering on out platform , 
-					Verify your Registration by <br/>{$_anchor}</p>
+				a simple message with reference #0912311, Colors
 			EOF;
 
 			$email_body = wEmailComplete($email_content);
 
-			_mail('chromaticsoftwares@gmail.com' , "Verify Account" , $email_body);
+
+			$mobileNumber = str_to_mobile('09063387451');
+			$response = send_sms($email_content, [$mobileNumber]);
+
+			dd($response);
+
+			// _mail('chromaticsoftwares@gmail.com' , "Verify Account" , $email_body);
 		}
 	}

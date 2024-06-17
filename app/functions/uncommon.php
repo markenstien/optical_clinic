@@ -414,21 +414,26 @@
         ];
 
         $smsBodyStringify = json_encode($smsBody);
-        
+        $notifications = [];
+
+        $notifications[] = ['message header', $smsBody];
+        $notifications[] = ['message string', $smsBodyStringify];
+
         $request->setBody($smsBodyStringify);
         try {
             $response = $request->send();
             if ($response->getStatus() == 200) {
-                // echo $response->getBody();
+                array_merge($notifications, ['success', $response->getBody()]);
             }
             else {
-                // echo 'Unexpected HTTP status: ' . $response->getStatus() . ' ' .
-                // $response->getReasonPhrase();
+                array_merge($notifications, ['sent-but-failed', [$response->getStatus(), $response->getReasonPhrase()]]);
             }
         }
         catch(HTTP_Request2_Exception $e) {
-            // echo 'Error: ' . $e->getMessage();
+            array_merge($notifications, ['error', [$e->getMessage()]]);
         }
+
+        return $notifications;
     }
     function sms_itexmo($number,$message,$apicode,$passwd)
     {

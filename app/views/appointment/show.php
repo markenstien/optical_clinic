@@ -28,7 +28,24 @@
 
 							<tr>
 								<td>Status</td>
-								<td><?php echo $appointment->status?></td>
+								<td>
+									<?php $statusColor = '';
+										switch($appointment->status) {
+											case 'arrived':
+												$statusColor = 'success';
+											break;
+
+											case 'pending':
+												$statusColor = 'warning';
+											break;
+
+											case 'cancelled':
+												$statusColor = 'danger';
+											break;
+										}
+									?>
+									<?php echo wSpanBuilder($appointment->status, $statusColor)?>
+								</td>
 							</tr>
 
 
@@ -90,12 +107,12 @@
 							</tr>
 							<tr>
 								<td>Status:</td>
-								<td><?php echo $payment->payment_status?></td>
+								<td><?php echo $payment->payment_status;?></td>
 							</tr>
 
 							<?php if(isEqual($payment->payment_status,'for-approval') && !isEqual(whoIs('user_type'), 'patient')) :?>
 								<tr>
-									<td>Payment Actio</td>
+									<td>Payment Action</td>
 									<td>
 										<?php echo wLinkDefault(_route('payment:approve', csrfGet(), [
 											'payment_id' => $payment->id,
@@ -126,6 +143,14 @@
 									</tr>
 								</tbody>
 							</table>
+						<?php endif?>
+
+						<?php if($attachment) :?>
+							<div class="card-body">
+								<h3>Payment Image</h3>
+								<img src="<?php echo $attachment->full_url?>" 
+									alt="Payment Image" style="width:300px; margin:0px auto;">
+							</div>
 						<?php endif?>
 					</div>
 					<?php endif?>

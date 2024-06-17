@@ -66,19 +66,19 @@
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('session:index')?>">
-            <i class="fas fa-calendar-check"></i>
+            <i class="fas fa-user-check"></i>
             <span>Sessions</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('service:index')?>">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-fw fa-search"></i>
             <span>Products</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('order:index')?>">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-list"></i>
             <span>Orders</span></a>
     </li>
 
@@ -99,7 +99,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="<?php echo _route('user:profile')?>">
-            <i class="fas fa-calendar-check"></i>
+            <i class="fas fa-user-cog"></i>
             <span>Profile</span></a>
     </li>
 

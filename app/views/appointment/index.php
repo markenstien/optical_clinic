@@ -23,7 +23,21 @@
 					</thead>
 
 					<tbody>
-						<?php foreach( $appointments as $key => $appointment) :?>
+						<?php foreach($appointments as $key => $appointment) :?>
+							<?php
+								$statusColor = '';
+								switch($appointment->status) {
+									case 'arrived':
+											$statusColor = 'success';
+										break;
+									case 'pending':
+											$statusColor = 'warning';
+										break;
+									case 'pending':
+											$statusColor = 'danger';
+										break;
+								}
+							?>
 							<tr>
 								<td><?php echo ++$key?></td>
 								<td><?php echo $appointment->reference?></td>
@@ -32,7 +46,7 @@
 								<td><?php echo $appointment->date?></td>
 								<td><?php echo is_null($appointment->start_time) ? 'Not Available on previous version' : $appointment->start_time?></td>
 								<td><?php echo $appointment->type?></td>
-								<td><?php echo $appointment->status?></td>
+								<td><?php echo wSpanBuilder($appointment->status, $statusColor)?></td>
 								<td><?php echo $appointment->guest_email?></td>
 								<td><?php echo $appointment->guest_phone?></td>
 								<td>

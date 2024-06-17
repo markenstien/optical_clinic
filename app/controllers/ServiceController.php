@@ -20,7 +20,7 @@
 			$services = $this->model->getAll();
 
 			$data = [
-				'title' => 'Services',
+				'title' => 'Products',
 				'services' => $services,
 				'form' => $this->_form
 			];

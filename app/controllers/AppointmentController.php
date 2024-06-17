@@ -80,7 +80,7 @@
 					'user_id' => $auth->id
 				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date desc");
 			}else{
-				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date desc");
+				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, id desc, date desc");
 			}
 
 			$data = [
@@ -240,11 +240,17 @@
 				'appointment_id' => $id
 			]);
 
+			$attachment = $this->_attachmentModel->single([
+				'global_key' => 'RESERVATION_PAYMENT_PHOTO',
+				'global_id' => $payment->id ?? 0
+			]);
+
 			$data = [
 				'appointment' => $appointment,
 				'title' => '#'.$appointment->reference. ' | Appointment',
 				'payment' => $payment,
-				'session' => $session
+				'session' => $session,
+				'attachment' => $attachment
 			];
 			
 			return $this->view('appointment/show' , $data);

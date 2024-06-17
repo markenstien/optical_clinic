@@ -163,6 +163,14 @@
         return $retVal;
     }
 
+    function wSpanBuilder($text, $badge_type = 'primary')
+    {
+        $retVal = '';
+        $retVal = "<span class='badge badge-{$badge_type}'> {$text} </span>";
+        return $retVal;
+    }
+
+
     
 
     function wDivider($size = '30')

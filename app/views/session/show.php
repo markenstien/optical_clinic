@@ -56,7 +56,7 @@
 						<div class="col-md-2"><img src="<?php echo $doctor->profile?>" style="height: 70px; width: 70px;"></div>
 						<?php endif?>
 						<div class="col">
-							<h2><?php echo isEqual($doctor->gender ,'male') ? 'Dr.':'Dra.'?> <?php echo $doctor->first_name . ' ' .$doctor->last_name?></h2>
+							<h2><?php echo $doctor->first_name . ' ' .$doctor->last_name?></h2>
 							<label>Attending Staff</label>
 						</div>
 					</div>
