@@ -10,13 +10,13 @@
 			$_anchor = "<a href='{$_href}'>clicking this link</a>";
 
 			$email_content = <<<EOF
-				a simple message with reference #0912311, Colors
+				a simple message with reference, Colors
 			EOF;
 
 			$email_body = wEmailComplete($email_content);
 
 			$mobileNumber = str_to_mobile('09063387451');
-			$response = send_sms($email_content, [$mobileNumber]);
+			$response = send_sms(trim($email_content), [$mobileNumber]);
 
 			dd($response);
 			
