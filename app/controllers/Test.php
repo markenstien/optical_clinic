@@ -25,7 +25,7 @@
 		}
 
 		public function demo() {
-			require_once 'HTTP/Request2.php';
+			require_once LIBS.DS.'http2/vendor/autoload.php';
 			$request = new HTTP_Request2();
 			$request->setUrl('https://y3y6dd.api.infobip.com/sms/2/text/advanced');
 			$request->setMethod(HTTP_Request2::METHOD_POST);
