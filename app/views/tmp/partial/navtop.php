@@ -15,7 +15,13 @@
         <!-- MENU LINKS -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<?php echo _route('home:index')?>#top" class="smoothScroll">Home</a></li>
+                    <?php if(whoIs()) :?>
+                        <li><a href="<?php echo _route('appointment:index')?>" class="smoothScroll">
+                            <span class="badge badge-primary">Back to my account</span> </a>
+                        </li>
+                    <?php else :?>
+                        <li><a href="<?php echo _route('home:index')?>#top" class="smoothScroll">Home</a></li>
+                    <?php endif?>
                     <li><a href="<?php echo _route('home:index')?>#about" class="smoothScroll">About Us</a></li>
                     <li><a href="<?php echo _route('home:index')?>#team" class="smoothScroll">Staffs</a></li>
                     <li><a href="<?php echo _route('home:index')?>#google-map" class="smoothScroll">Contact</a></li>

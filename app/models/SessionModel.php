@@ -35,7 +35,6 @@
 				$this->addError("Creating patient session failed!");
 				return false;
 			} 
-			
 			//load appointment model if ok
 
 			if(!empty($session_data['appointment_id']))
@@ -50,6 +49,8 @@
 			$patient_phone = $fillable_datas['guest_phone'];
 			$patient_name = $fillable_datas['guest_name'];
 
+			$doctor_name  = $user_model->fetchSigleSingleColumn('first_name' , ['id' => $session_data['doctor_id']]);
+
 			$session_link = _route('session:show' , $res);
 
 			if( isset($session_data['user_id']) && !isEqual($session_data['user_id'] , '0') )
@@ -59,8 +60,6 @@
 					[$session_data['user_id']] , ['href' => $session_link]);
 			}
 
-			$doctor_name  = $user_model->fetchSigleSingleColumn('first_name' , ['id' => $session_data['doctor_id']]);
-
 			/*
 			*email to guest email
 			*/
@@ -68,7 +67,7 @@
 			/*
 			*email to valid user number
 			*/
-			// send_sms('DRA/DR. '.$doctor_name ." . started a session with you " , [$patient_phone]);
+			send_sms('Doc '.$doctor_name ." . started a session with you check your email for more details" , [$patient_phone]);
 			/*notify operations*/
 			_notify_operations(" 'DRA/DR. '.{$doctor_name} started a session with {$patient_name}" , ['href' => $session_link]);
 

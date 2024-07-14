@@ -18,7 +18,6 @@
 		public function __construct()
 		{
 			parent::__construct();
-			_authRequired();
 			$this->service = model('ServiceModel');
 			$this->modelPayment = model('PaymentModel');
 			$this->modelOrder = model('OrderModel');
@@ -40,6 +39,7 @@
 		public function appointment_form() {
 			if(isSubmitted()) {
 				$post = request()->posts();
+
 				$res = $this->model->create($post);
 
 				if(!$res) {
@@ -70,6 +70,7 @@
 
 		public function index()
 		{
+			_authRequired();
 			/*
 			*select service that you want
 			*/
@@ -94,6 +95,7 @@
 
 		public function createWithBill()
 		{
+			_authRequired();
 			if( isSubmitted() )
 			{
 				$post = request()->posts();
@@ -190,6 +192,8 @@
 
 		public function edit($id)
 		{
+			
+			_authRequired();
 			if( isSubmitted() )
 			{
 				$post = request()->posts();
@@ -230,6 +234,7 @@
 
 		public function show($id)
 		{
+			
 			$appointment = $this->model->getComplete($id);
 			$payment = $this->modelPayment->getByKey([
 				'origin' => 'RESERVATION_FEE',
@@ -252,7 +257,6 @@
 				'session' => $session,
 				'attachment' => $attachment
 			];
-			
 			return $this->view('appointment/show' , $data);
 		}
 

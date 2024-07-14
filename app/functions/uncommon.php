@@ -379,8 +379,12 @@
     function send_sms($message , $recipients = [])
     {
         $ret_val = null;
-        $recipient = $recipients[0];//send to single user only
-        $ret_val = _sms_instance($message,$recipient);
+        if(is_array($recipients)) {
+            $recipient = $recipients[0];//send to single user only
+        } else {
+            $recipient = $recipients;
+        }
+        $ret_val = _sms_instance($message, str_to_mobile($recipient));
 
         return $ret_val;
     }
@@ -390,8 +394,12 @@
         $basic  = new \Vonage\Client\Credentials\Basic("f478e024", "Y94Zg9WvSS1cqK9C");
         $client = new \Vonage\Client($basic);
 
+        //convert number
+
+        $numberToValidNumber = str_to_mobile($number);
+
         $response = $client->sms()->send(
-            new \Vonage\SMS\Message\SMS($number, 'VVDOPTCL', $message)
+            new \Vonage\SMS\Message\SMS($number, 'VOPTICAL', $message)
         );
 
         $message = $response->current();

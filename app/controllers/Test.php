@@ -4,14 +4,17 @@
 	class Test extends Controller
 	{
 
+		public function __construct()
+		{
+			
+		}
+
 		public function index()
 		{
 			$_href = URL.DS._route('user:verification' , seal(1));
 			$_anchor = "<a href='{$_href}'>clicking this link</a>";
 
-			$email_content = <<<EOF
-				a simple message with reference, Colors
-			EOF;
+			$email_content = "Hello This is a sample sms";
 
 			$email_body = wEmailComplete($email_content);
 

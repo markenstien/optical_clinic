@@ -77,10 +77,8 @@
 
 	function _notify_email($message , $emails , $attributes = [])
 	{
-		$content = pull_view('tmp/emails/email_text_only_tmp' , [
-			'text' => $message,
-		]);
-		
+		$content = wEmailComplete($message);
+
 		if( empty($emails) )
 			return false;
 
@@ -88,8 +86,10 @@
 		{
 			$email = trim($email);
 
-			if(empty($email))
+			if(empty($email)) {
 				continue;
+			}
+				
 			
 			_mail($email , COMPANY_NAME , $content);
 		}
