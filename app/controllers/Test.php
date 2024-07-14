@@ -17,9 +17,13 @@
 
 
 			$mobileNumber = str_to_mobile('09063387451');
+
+			dd($mobileNumber);
+			
 			$response = send_sms($email_content, [$mobileNumber]);
 
 			dd($response);
+			
 
 			// _mail('chromaticsoftwares@gmail.com' , "Verify Account" , $email_body);
 		}

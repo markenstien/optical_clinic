@@ -387,7 +387,7 @@
     function sms_open_sms($message, $recipients = []) {
         require_once LIBS.DS.'http2/vendor/autoload.php';
         $request = new HTTP_Request2();
-        $request->setUrl('https://y3y6dd.api.infobip.com/sms/2/text/advanced');
+        $request->setUrl('https://y3y6dd.api.dfghj  /sms/2/text/advanced');
         $request->setMethod(HTTP_Request2::METHOD_POST);
         $request->setConfig(array(
             'follow_redirects' => TRUE
@@ -408,7 +408,7 @@
         $smsBody = [
             'messages' => [
                 'destinations' => $destinations,
-                'from' => 'InfoSMS',
+                'from' => 'VVDOPTCL',
                 'text' => $message
             ]
         ];
