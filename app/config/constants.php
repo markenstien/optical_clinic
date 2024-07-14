@@ -31,7 +31,7 @@
         ],
 
         'open_sms' => [
-            'key' => 'ef3db740e6bed5196d2eb2018aa3db5e-1a4af984-29bf-41d3-9be4-e0cb38f7665a',
+            'key' => 'd71ea555aa41dfeee82ef9756dd1ebbc-c7f1c849-adfc-4db4-ad1c-7c0fef56e928',
         ]
     ];
 
