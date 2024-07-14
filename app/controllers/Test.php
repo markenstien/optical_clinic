@@ -15,11 +15,7 @@
 
 			$email_body = wEmailComplete($email_content);
 
-
 			$mobileNumber = str_to_mobile('09063387451');
-
-			dd($mobileNumber);
-			
 			$response = send_sms($email_content, [$mobileNumber]);
 
 			dd($response);
