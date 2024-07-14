@@ -21,16 +21,8 @@
     {
         $mobile = preg_replace("/[^0-9]/", "", trim($string));
         $prefix = '63';
-
         $checkFor09 = substr($mobile, 0, 2);
         $checkForNoZero = substr($mobile, 0, 1);
-
-        // dd($mobile);
-        // dd([
-        //     $checkFor09,
-        //     $checkForNoZero
-        // ]);
-
         if($checkFor09 == '09') {
             $mobile = $prefix . substr($mobile, 1);
         } else if($checkForNoZero == '9') {
@@ -39,7 +31,6 @@
 
         return $mobile;
     }
-
 
     function is_mobile_number($string)
     {

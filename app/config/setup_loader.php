@@ -16,7 +16,7 @@
             define('DBHOST' , 'localhost');
             define('DBUSER' , 'root');
             define('DBPASS' , '');
-            define('DBNAME' , 'korpzpru_th_main');
+            define('DBNAME' , 'th_vivid');
 
             define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
