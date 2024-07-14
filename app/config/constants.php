@@ -7,11 +7,11 @@
     define('DEFAULT_REPLY_TO' , '');
 
     const MAILER_AUTH = [
-        'username' => 'main@vividoptical.online',
-        'password' => '&GcK!Sbq[8N5',
-        'host'     => 'vividoptical.online',
+        'username' => 'main@vividoptical.live',
+        'password' => 'd)WWlnDTEPP2',
+        'host'     => 'vividoptical.live',
         'name'     => 'vividoptical',
-        'replyTo'  => 'main@vividoptical.online',
+        'replyTo'  => 'main@vividoptical.live',
         'replyToName' => 'vividoptical'
     ];
 
