@@ -376,12 +376,31 @@
         return $retVal;
     }
 
-    function send_sms( $message , $recipients = [])
+    function send_sms($message , $recipients = [])
     {
         $ret_val = null;
-        $ret_val = sms_open_sms($message,$recipients);
+        $recipient = $recipients[0];//send to single user only
+        $ret_val = _sms_instance($message,$recipient);
 
         return $ret_val;
+    }
+
+    function _sms_instance($message, $number) {
+        require_once LIBS.DS.'sms/vendor/autoload.php';
+        $basic  = new \Vonage\Client\Credentials\Basic("f478e024", "Y94Zg9WvSS1cqK9C");
+        $client = new \Vonage\Client($basic);
+
+        $response = $client->sms()->send(
+            new \Vonage\SMS\Message\SMS($number, 'VVDOPTCL', $message)
+        );
+
+        $message = $response->current();
+
+        if ($message->getStatus() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function sms_open_sms($message, $recipients = []) {
@@ -435,6 +454,7 @@
 
         return $notifications;
     }
+
     function sms_itexmo($number,$message,$apicode,$passwd)
     {
         $ch = curl_init();
@@ -447,5 +467,7 @@
         return curl_exec ($ch);
         curl_close ($ch);
     }
+
+    
     
     
