@@ -32,6 +32,7 @@
 
         'open_sms' => [
             'key' => 'd71ea555aa41dfeee82ef9756dd1ebbc-c7f1c849-adfc-4db4-ad1c-7c0fef56e928',
+            'base_url' => 'y3y6dd.api.infobip.com'
         ]
     ];
 

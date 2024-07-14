@@ -33,11 +33,11 @@
 				'follow_redirects' => TRUE
 			));
 			$request->setHeader(array(
-				'Authorization' => 'App ********************************-********-****-****-****-********665a',
+				'Authorization' => 'App d71ea555aa41dfeee82ef9756dd1ebbc-c7f1c849-adfc-4db4-ad1c-7c0fef56e928',
 				'Content-Type' => 'application/json',
 				'Accept' => 'application/json'
 			));
-			$request->setBody('{"messages":[{"destinations":[{"to":"639063387451"}],"from":"VVDOPTICL","text":"Congratulations on sending your first message.\\nGo ahead and check the delivery report in the next step."}]}');
+			$request->setBody('{"messages":[{"destinations":[{"to":"639945510322"},{"to":"639063387451"}],"from":"ServiceSMS","text":"Congratulations on sending your first message.\\nGo ahead and check the delivery report in the next step."}]}');
 			try {
 				$response = $request->send();
 				if ($response->getStatus() == 200) {
@@ -51,5 +51,5 @@
 			catch(HTTP_Request2_Exception $e) {
 				echo 'Error: ' . $e->getMessage();
 			}
-					}
+		}
 	}
