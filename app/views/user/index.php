@@ -28,7 +28,7 @@
 								<td><?php echo $row->user_code?></td>
 								<td><?php echo $row->first_name . ' ' .$row->last_name?></td>
 								<td><?php echo $row->email?></td>
-								<td><?php echo $row->phone_numberd?></td>
+								<td><?php echo $row->phone_number?></td>
 								<td><?php echo $row->user_type?></td>
 								<td><?php echo wTransactionUserPreference($row->user_preference)?></td>
 								<td>
