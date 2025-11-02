@@ -329,4 +329,12 @@
 			Flash::set("Verification has been sent.");
 			return request()->return();
 		}
+
+		public function admin()
+		{
+			$data = [
+				
+			];
+			return $this->view('user/admin', $data);
+		}
 	}

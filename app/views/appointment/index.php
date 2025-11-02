@@ -1,5 +1,25 @@
 
 <?php build('content')?>
+
+<!-- Quick Stats Card -->
+	<div class="card">
+		<div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+			<div style="width: 56px; height: 56px; background: linear-gradient(135deg, #9a6f46, #b8824a); 
+				border-radius: 16px; display: flex; align-items: center; justify-content: center; 
+				font-size: 24px; box-shadow: 0 8px 20px rgba(154,111,70,.3);">📊</div>
+			<div>
+			<h3 style="margin: 0; color: #2c3e50; font-size: 20px; font-weight: 700;">Quick Stats</h3>
+			<p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Today's performance metrics</p>
+			</div>
+		</div>
+		<div class="muted-box">
+			<div class="kpi"></div>
+			<div style="font-weight: 600; color: #6c757d; font-size: 16px;">Appointments Today</div>
+			<div style="margin-top: 8px; padding: 8px 16px; background: rgba(154,111,70,.1); 
+			border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">LIVE DATA</div>
+		</div>
+	</div>
+	
 	<div class="card">
 		<div class="card-header">
 			<?php echo wLinkDefault(_route('home:index').'#appointment', 'Make Appointment')?>

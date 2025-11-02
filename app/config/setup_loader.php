@@ -11,12 +11,12 @@
     switch(SYSTEM_MODE)
     {
         case 'local':
-            define('URL' , 'http://dev.th_healthcare_system');
+            define('URL' , 'http://dev.merimeri');
             define('DBVENDOR' , 'mysql');
             define('DBHOST' , 'localhost');
             define('DBUSER' , 'root');
             define('DBPASS' , '');
-            define('DBNAME' , 'th_health_care_system');
+            define('DBNAME' , 'merimeri');
 
             define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
