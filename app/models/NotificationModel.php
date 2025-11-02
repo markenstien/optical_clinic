@@ -10,12 +10,16 @@
 		{	
 			$where = null;
 			$order = null;
+			$limit = null;
 
-			if( isset($params['where']) )
+			if(!empty($params['where']))
 				$where = " WHERE ".$this->conditionConvert($params['where']);
 
-			if( isset($params['order']) )
-				$order = " ORDER BY{$params['order']}";
+			if(!empty($params['order']))
+				$order = " ORDER BY {$params['order']}";
+
+			if(!empty($params['limit']))
+				$limit = " LIMIT {$params['limit']}";
 
 			$this->db->query(
 				"SELECT sn.* , snr.recipient_id as recipient_id ,
@@ -27,7 +31,7 @@
 
 					LEFT JOIN users as user 
 					ON user.id = snr.recipient_id 
-					{$where} {$order}"
+					{$where} {$order} {$limit}"
 			);
 
 			return $this->db->resultSet();

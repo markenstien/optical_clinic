@@ -1,3 +1,11 @@
+<?php
+  /**
+   * BAD PRACTICE PRELOAD PHP HERE
+   */
+  $notifications = db_get_notifications([
+    'recipient_id' => whoIs('id')
+  ], 'desc', '10');
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,139 +18,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo _path_asset('main-assets')?>/styles.css?v=1" />
     <style>
-      /* MICA Brand-Consistent Admin Dashboard Styling */
       body {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      }
-      
-      .banner{
-        background: linear-gradient(135deg, #9a6f46 0%, #b8824a 100%);
-        color: #fff;
-        border-radius: 24px;
-        padding: 32px 36px;
-        box-shadow: 0 20px 60px rgba(154, 111, 70, 0.3);
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 32px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .banner::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #9a6f46, #b8824a);
-      }
-      .banner::after{
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        border-radius: 50%;
-      }
-      .banner h2{
-        margin: 0 0 8px 0;
-        color: #fff;
-        font-size: 32px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-      }
-      .banner p{
-        position: relative;
-        z-index: 1;
-      }
-      
-      .grid-3{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 20px;
-        margin-top: 24px;
-      }
-      
-      .card{
-        background: #fff;
-        border-radius: 24px;
-        padding: 28px;
-        box-shadow: 0 4px 20px rgba(0,0,0,.06);
-        border: 1px solid rgba(255,255,255,0.8);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-      }
-      .card::before{
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #9a6f46, #b8824a);
-        opacity: 0;
-        transition: all 0.4s ease;
-      }
-      .card::after{
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, transparent, rgba(154,111,70,0.03), transparent);
-        transform: rotate(45deg);
-        transition: all 0.6s ease;
-        opacity: 0;
-      }
-      .card:hover{
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 25px 50px rgba(0,0,0,.15);
-        border-color: rgba(154,111,70,0.2);
-      }
-      .card:hover::before{
-        opacity: 1;
-      }
-      .card:hover::after{
-        opacity: 1;
-        transform: rotate(45deg) translate(50%, 50%);
-      }
-      
-      .muted-box{
-        background: linear-gradient(135deg, #ffffff, #f8f9fa);
-        border: 2px solid transparent;
-        border-radius: 20px;
-        padding: 24px;
-        text-align: center;
-        color: #2c3e50;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-      .muted-box::before{
-        content: '';
-        position: absolute;
-        inset: 0;
-        padding: 2px;
-        background: linear-gradient(135deg, #9a6f46, #b8824a);
-        border-radius: inherit;
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite: xor;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-      }
-      .muted-box:hover{
-        transform: translateY(-2px);
-        box-shadow: 0 15px 35px rgba(154,111,70,.15);
-      }
-      .muted-box:hover::before{
-        opacity: 1;
       }
       
       .kpi{
@@ -246,65 +124,7 @@
         100% { transform: rotate(360deg); }
       }
       
-      .notif-list{
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .notif-list li{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 20px;
-        margin-bottom: 12px;
-        background: linear-gradient(135deg, #ffffff, #f8f9fa);
-        border-radius: 16px;
-        border: 1px solid #e9ecef;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-      .notif-list li::before{
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(135deg, #9a6f46, #b8824a);
-        transform: scaleY(0);
-        transition: transform 0.4s ease;
-      }
-      .notif-list li:hover{
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        border-color: rgba(154,111,70,0.3);
-        transform: translateX(4px);
-        box-shadow: 0 8px 25px rgba(154,111,70,.1);
-      }
-      .notif-list li:hover::before{
-        transform: scaleY(1);
-      }
       
-      .badge{
-        padding: 8px 16px;
-        border-radius: 25px;
-        font-size: 12px;
-        font-weight: 700;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 4px 12px rgba(0,0,0,.15);
-        transition: all 0.3s ease;
-      }
-      .badge:hover{
-        transform: scale(1.05);
-      }
-      .badge.red{
-        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-      }
-      .badge.orange{
-        background: linear-gradient(135deg, #ffa726, #ff9800);
-      }
       
       /* Doctor Appointments Panel Styles */
       .doctor-panel {
@@ -431,6 +251,8 @@
         .appointment-meta{flex-direction: column; gap: 4px}
       }
     </style>
+
+    <?php produce('styles')?>
   </head>
   <body>
     <header class="site-header" role="banner">
@@ -442,30 +264,12 @@
             <div class="brand-center" style="color: #fff;">MICA AESTHETIC CLINIC</div>
             <div class="brand-right">
             <div class="header-icons">
-                <a class="header-icon" href="admin/inventory.php" title="Low-stock products" data-toggle="low-dd">
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 7V3h18v4H3Zm0 2h18v12H3V9Zm5 2v8h2v-8H8Zm6 0v8h2v-8h-2Z"/></svg>
-                    <span class="header-badge red">#</span>
-                </a>
-                <div class="dropdown-panel" id="low-dd" hidden>
-                    <div class="dd-header">Low-stock products</div>
-                    <ul class="dd-list">
-                    <li class="dd-empty">No low-stock items</li>
-                    </ul>
-                    <div class="dd-actions"><a class="btn ghost" href="admin/inventory.php">View all</a></div>
-                </div>
-                <a class="header-icon" href="admin/inventory.php" title="Near-expiry (30 days)" data-toggle="near-dd">
+                <a  href="#" class="header-icon openModalBtn" data-modal="notificationModal" title="Near-expiry (30 days)">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 15H5V9h14Z"/></svg>
                     <span class="header-badge orange">3</span>
                 </a>
-                <div class="dropdown-panel" id="near-dd" hidden>
-                    <div class="dd-header">Near-expiry (30 days)</div>
-                    <ul class="dd-list">
-                    <li class="dd-empty">No near-expiry items</li>
-                    </ul>
-                    <div class="dd-actions"><a class="btn ghost" href="admin/inventory.php">View all</a></div>
-                </div>
-                <a class="header-icon" href="/auth/logout.php" title="Logout" onclick="return confirm('Are you sure you want to log out?');">
+                <a class="header-icon" href="<?php echo _route('auth:logout')?>" title="Logout" onclick="return confirm('Are you sure you want to log out?');">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5v-2H5V5h5V3Zm9.707 8.293L16.414 8l-1.414 1.414L16.586 11H9v2h7.586l-1.586 1.586L16.414 16l3.293-3.293a1 1 0 0 0 0-1.414Z"/></svg>
                 </a>
             </div>
@@ -480,45 +284,138 @@
           <span>MICA AESTHETIC CLINIC</span>
         </div>
         <nav>
-          <a href="<?php echo _route('user:admin')?>" class="nav-item {$dashboard}">
+          <a href="<?php echo _route('user:admin')?>" class="nav-item ">
             <span class="icon">📊</span>
             <span>Dashboard</span>
           </a>
-          <a href="<?php echo _route('appointment:index')?>" class="nav-item {$appointment}" >
-            <span class="icon">📅</span>
-            <span>Appointments</span>
+          <a href="<?php echo _route('category:index')?>" class="nav-item" >
+            <span class="icon">⚙️</span>
+            <span>Categories</span>
           </a>
-          <a href="<?php echo _route('stock:index')?>" class="nav-item {$inventory}" >
+          <a href="<?php echo _route('service:index')?>" class="nav-item" >
             <span class="icon">📦</span>
             <span>Inventory</span>
           </a>
-          <!-- <a href="inventory-transactions.php" class="nav-item {$inventoryTransactions}">
-            <span class="icon">🔄</span>
-            <span>Inventory Transactions</span>
+          <a href="<?php echo _route('service-bundle:index')?>" class="nav-item" >
+            <span class="icon">🧰</span>
+            <span>Services</span>
           </a>
-          <a href="inventory-deductions.php" class="nav-item {$inventoryDeductions}">
-            <span class="icon">📉</span>
-            <span>Inventory Deductions</span>
-          </a> -->
-          <a href="manage-account.php" class="nav-item {$manageAccount}">
+          <a href="<?php echo _route('appointment:index')?>" class="nav-item" >
+            <span class="icon">📅</span>
+            <span>Appointments</span>
+          </a>
+          <a href="<?php echo _route('user:index')?>" class="nav-item">
             <span class="icon">👤</span>
             <span>Manage Account</span>
           </a>
-          <a href="manage-doctor.php" class="nav-item {$manageDoctor}">
-            <span class="icon">🩺</span>
-            <span>Manage Doctor</span>
-          </a>
-          <a href="../auth/logout.php" class="nav-item danger">
+          <a href="<?php echo _route('auth:logout')?>" class="nav-item danger">
             <span class="icon">🚪</span>
             <span>Logout</span>
           </a>
         </nav>
       </aside>
 
-    <main class="content">
-      <?php  produce('content')?>
-    </main>
+      <main class="content">
+        <?php  produce('page-control')?>
+        <?php  produce('content')?>
+
+
+        <div id="notificationModal" class="modal-overlay">
+          <div class="modal">
+            <span class="close-btn">&times;</span>
+            <h2>Notifications</h2>
+            
+            <div class="card">
+              <div class="card-body">
+                <?php if($notifications ?? '') :?>
+                <div class="table-wrap">
+                  <table class="table">
+                  <?php foreach($notifications as $key => $row) :?>
+                    <tr>
+                      <td>
+                        <?php if($row->href) :?>
+                          <a href="<?php echo $row->href?>"><?php echo $row->message?></a>
+                          <?php else:?>
+                            <?php echo $row->message?>
+                        <?php endif?>
+                      </td>
+                    </tr>
+                  <?php endforeach?>
+                </table>
+                </div>
+                <?php else :?>
+                <p class="text-center">....</p>
+                <?php endif?>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="overlay"></div>
+      </main>
     </div>
+
+    <script type="text/javascript" src="<?php echo _path_public('js/core.js')?>"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="<?php echo _path_public('js/global.js')?>"></script>
+    <script>
+      setTimeout(() => {
+        document.querySelectorAll('.flash').forEach(flash => {
+          flash.style.animation = 'fadeOut 0.3s forwards';
+          setTimeout(() => flash.style.display = 'none', 300);
+        });
+      }, 2000);
+
+      // Search filter for inventory table
+      (function(){
+        var input = document.getElementById('inv-search');
+        var table = document.getElementById('inv-table');
+        if (!input || !table) return;
+        var body = table.querySelector('tbody');
+        input.addEventListener('input', function(){
+        var q = (this.value || '').toLowerCase().trim();
+        Array.from(body.querySelectorAll('tr')).forEach(function(tr){
+          var cols = tr.querySelectorAll('td');
+          if (!cols || cols.length < 5) return;
+          var hay = (cols[0].textContent + ' ' + cols[1].textContent + ' ' + cols[2].textContent).toLowerCase();
+          tr.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+        });
+        });
+      })();
+
+      // Select all open buttons, overlays, and close buttons
+      const openButtons = document.querySelectorAll('.openModalBtn');
+      const modals = document.querySelectorAll('.modal-overlay');
+      const closeButtons = document.querySelectorAll('.close-btn');
+
+      // Open corresponding modal
+      openButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const modalId = button.getAttribute('data-modal');
+          const modal = document.getElementById(modalId);
+          modal.classList.add('active');
+        });
+      });
+
+      // Close when clicking X
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+          const modal = e.target.closest('.modal-overlay');
+          modal.classList.remove('active');
+        });
+      });
+
+      // Close when clicking outside modal
+      modals.forEach(modal => {
+        modal.addEventListener('click', e => {
+          if (e.target === modal) {
+            modal.classList.remove('active');
+          }
+        });
+      });
+
+    </script>
     <?php produce('scripts')?>
   </body>
 </html>

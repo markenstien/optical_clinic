@@ -1,11 +1,22 @@
+<?php build('page-control')?>
+<div class="page-header">
+	<div>
+		<h1>📦 <?php  echo $item->service?></h1>
+		<p>Manage your product here</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('service:show', $item->id)?>">
+			<span>⬅️</span> Back
+		</a>
+	</div>
+</div>
+<?php endbuild()?>
+
 <?php build('content') ?>
     <div class="card">
+        <?php Flash::show()?>
         <div class="card-header">
-            <h4 class="card-title">Add Stocks</h4>
-            <?php echo wLinkDefault(_route('service:show', $item->id), 'Back to Products')?>
-            <h3>Code : <?php echo $item->code?></h3>
-            <h3>Product Name : <?php echo $item->service?></h3>
-            <?php Flash::show()?>
+            <h1>Manage Stock Form</h1>
         </div>
 
         <div class="card-body">

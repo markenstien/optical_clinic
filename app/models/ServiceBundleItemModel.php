@@ -56,7 +56,8 @@
 					ss.price , ss.is_visible, ss.status as status,
 					ss.created_by ,cat.category as category, 
 					cat.description as cat_description,
-					sbi.id as id , ss.id as service_id
+					sbi.id as id , ss.id as service_id,
+					ifnull(stock_table.total_stock,0) as total_stock
 
 					FROM {$this->table} as sbi
 
@@ -66,6 +67,10 @@
 					LEFT JOIN categories as cat 
 					ON cat.id = ss.category_id
 
+					LEFT JOIN (SELECT sum(quantity) as total_stock, item_id 
+							FROM stocks GROUP BY item_id) as stock_table
+					ON stock_table.item_id = ss.id
+
 					WHERE sbi.bundle_id = '{$bundle_id}'
 
 					ORDER BY ss.service asc"
@@ -74,5 +79,12 @@
 			$results = $this->db->resultSet();
 
 			return $results;
+		}
+
+		public function updateItemQuantityPerUsage($id, $quantity)
+		{
+			return parent::update([
+				'quantity_per_usage' => $quantity
+			], $id);
 		}
 	}

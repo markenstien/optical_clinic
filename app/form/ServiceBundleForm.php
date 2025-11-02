@@ -19,7 +19,8 @@
 			// $this->addCategory();
 			$this->addDescription();
 			$this->addPriceCustom();
-			$this->addDiscount();
+			// $this->addDiscount();
+			$this->addImages();
 			$this->addStatus();
 			$this->addVisiblity();
 			$this->customSubmit('Save');
@@ -34,7 +35,7 @@
 				'class' => 'form-control',
 
 				'options' => [
-					'label' => 'Bundle Name'
+					'label' => 'Service Name'
 				]
 			]);
 		}
@@ -63,10 +64,10 @@
 				'type' => 'text',
 				'name' => 'price_custom',
 				'class' => 'form-control',
-
 				'options' => [
-					'label' => 'Market Price',
+					'label' => 'Price',
 				],
+				'required' => true,
 				'others' => $params['others'] ?? ''
 			];
 			
@@ -144,6 +145,20 @@
 				'options' => [
 					'label' => 'Category',
 					'option_values' => $option_values
+				]
+			]);
+		}
+
+		public function addImages() {
+			$this->add([
+				'type' => 'file',
+				'name' => 'image',
+				'class' => 'form-control',
+				'attributes' => [
+					'id' => 'images_upload'
+				],
+				'options' => [
+					'label' => 'Add Banner'
 				]
 			]);
 		}

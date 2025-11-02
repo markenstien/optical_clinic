@@ -6,6 +6,7 @@
 
 	$routes['user'] = [
 		'index' => $controller.'/index',
+		'admin' => $controller.'/admin',
 		'edit' => $controller.'/edit',
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
@@ -15,7 +16,9 @@
 		'register' => $controller.'/register',
 		'verification' => $controller.'/verification',
 		'referrral'  => $controller .'/referrral',
-		'send-verification' => $controller .'/sendVerification'
+		'send-verification' => $controller .'/sendVerification',
+		'add-specialization' => $controller .'/addSpecialization',
+		'remove-specialization' => $controller .'/removeSpecialization',
 	];
 
 	$controller = '/AuthController';
@@ -33,6 +36,7 @@
 		'edit' => $controller.'/edit',
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
+		'archive' => $controller.'/archive',
 		'show'   => $controller.'/show'
 	];
 
@@ -235,6 +239,18 @@
 		'delete' => $controller.'/destroy',
 		'send'   => $controller.'/send',
 		'resetPassword' => $controller .'/resetPassword '
+	];
+
+	$controller = '/PagesController';
+	$routes['page'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'resetPassword' => $controller .'/resetPassword',
+		'register' => $controller .'/register',
+		'login' => $controller .'/login',
+		'landing' => $controller .'/landing',
 	];
 
 	

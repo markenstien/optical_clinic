@@ -1,22 +1,43 @@
 <?php build('page-control')?>
-	<a href="<?php echo _route('service-bundle:create')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-plus fa-sm text-white-50"></i> Add Package </a>
+<div class="page-header">
+	<div>
+		<h1>⚙️ Service Management</h1>
+		<p>Products automatically deducted for each service</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('service-bundle:create')?>">
+		<span>➕</span> Add Service
+		</a>
+	</div>
+</div>
 <?php endbuild()?>
 
+
+
 <?php build('content')?>
+	<?php Flash::show()?>
 	<div class="card">
+		<div class="card-header">
+          <div class="header-content">
+            <h2>📋 Service Records</h2>
+          </div>
+          <div class="search-actions">
+            <div class="search-container">
+              <input id="inv-search" placeholder="🔍 Search products..." />
+            </div>
+          </div>
+        </div>
 		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered dataTable">
+			<div class="table-wrap">
+				<table class="table table-bordered" id="inv-table">
 					<thead>
 						<th>#</th>
-						<th>Code</th>
-						<th>Name</th>
-						<th>Price</th>
-						<th>Discount</th>
-						<th>Description</th>
-						<th>Status</th>
+						<th><?php echo $_form->getLabel('description')?></th>
+						<th><?php echo $_form->getLabel('name')?></th>
+						<th style="width: 10%;"><?php echo $_form->getLabel('price_custom')?></th>
+						<th style="width: 20%;"><?php echo $_form->getLabel('description')?></th>
+						<th><?php echo $_form->getLabel('status')?></th>
+						<th><?php echo $_form->getLabel('is_visible')?></th>
 						<th>Action</th>
 					</thead>
 
@@ -26,16 +47,14 @@
 								<td><?php echo ++$key?></td>
 								<td><?php echo $row->code?></td>
 								<td><?php echo $row->name?></td>
-								<td><?php echo amountHTML($row->public_price)?></td>
-								<td><?php echo $row->discount?></td>
-								<td><?php echo $row->description?></td>
+								<td><?php echo amountHTML($row->price_custom)?></td>
+								<td style=""><?php echo $row->description?></td>
 								<td><?php echo $row->status?></td>
+								<td><?php echo $row->is_visible ? 'Visible' : 'Not Visible'?></td>
 								<td>
 									<?php
 										__([
-											btnView(_route('service-bundle:show' , $row->id)),
-											btnEdit(_route('service-bundle:edit' , $row->id)),
-											btnDelete(_route('service-bundle:delete' , $row->id))
+											btnView(_route('service-bundle:show' , $row->id))
 										]);
 									?>
 								</td>

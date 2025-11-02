@@ -7,14 +7,13 @@
     define('DEFAULT_REPLY_TO' , '');
 
     const MAILER_AUTH = [
-        'username' => 'main@vividoptical.live',
-        'password' => 'd)WWlnDTEPP2',
-        'host'     => 'vividoptical.live',
-        'name'     => 'vividoptical',
-        'replyTo'  => 'main@vividoptical.live',
-        'replyToName' => 'vividoptical'
+        'username' => 'micaaestheticclinic@micaclinic.site',
+        'password' => 'Aesthetic.001',
+        'host'     => 'micaclinic.site',
+        'name'     => 'MICA Aesthetic Clinic',
+        'replyTo'  => '',
+        'replyToName' => ''
     ];
-
 
     const ITEXMO = [
         'key' => '#',
@@ -45,16 +44,17 @@
 
     define('GLOBALS' , APPROOT.DS.'classes/globals');
     define('SITE_NAME' , 'vividoptic.online');
-    define('COMPANY_NAME' , 'Vivid Motion Optical Clinic');
-    define('COMPANY_NAME_ABBR' , 'VM Optical');
-    define('KEY_WORDS' , 'VIVID MOTION OPTIC Eye Clinic');
-    define('DESCRIPTION' , 'VIVID MOTION OPTIC Eye Clinic');
+    define('COMPANY_NAME' , 'MICA AESTHETIC CLINIC');
+    define('COMPANY_NAME_ABBR' , 'MICA AESTHETIC CLINIC');
+    define('KEY_WORDS' , 'MICA AESTHETIC CLINIC');
+    define('DESCRIPTION' , 'MICA AESTHETIC CLINIC');
     define('AUTHOR' , SITE_NAME);
 
-    define('TIME_SCHEDULE', '9am - 5pm');
+    define('TIME_SCHEDULE', '');
     define('WORK_DAYS', 'Monday - Saturday');
-    define('COMPANY_ADDRESS', '#438 P. Gomez St, Corner Paterno St. Quiapo Manila.');
-    define('COMPANY_EMAIL', 'main@vividoptical.online');
-    define('COMPANY_CONTACT', '09945510322 ');
+    define('COMPANY_ADDRESS', '#0069 National Rd. Kalawaan Binangonan Rizal, Binangonan, Philippines.');
+    define('COMPANY_EMAIL', 'micaaestheticclinic@micaclinic.site');
+    define('COMPANY_CONTACT', '(+63) 995 322 5898 ');
+    
     define('FILE_IMAGE_TYPES', ['png','jpg','jpeg','bitmap']);
 ?>

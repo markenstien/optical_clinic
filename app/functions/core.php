@@ -131,3 +131,16 @@
     function _asset_key($name) {
         return Module::getAsset($name);
     }
+
+
+    function _group_db_result_by_column($results, $column)
+    {
+        $retVal = [];
+        foreach($results as $key => $row) {
+            if(!isset($retVal[$row->$column])) {
+                $retVal[$row->$column] = [];
+            }
+            $retVal[$row->$column][] = $row;
+        }
+        return $retVal;
+    }

@@ -16,11 +16,8 @@
 
 			if( isset($_GET['report_create']) )
 			{
-
 				$results = $this->model->createReport( $_GET );
 				$summary = $this->model->summarizeResults($results);
-
-
 				$sessions = $results['sessions'];
 				$appointments = $results['appointments'];
 				$services_catered = $results['services_catered'];

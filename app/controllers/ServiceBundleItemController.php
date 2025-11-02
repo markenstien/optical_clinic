@@ -1,4 +1,6 @@
-<?php 
+<?php
+	use Form\ServiceForm;
+	load(['ServiceForm'] , APPROOT.DS.'form');
 
 	class ServiceBundleItemController extends Controller
 	{
@@ -8,6 +10,7 @@
 			$this->service = model('ServiceModel');
 			$this->model = model('ServiceBundleItemModel');
 			$this->category = model('CategoryModel');
+			$this->formService = new ServiceForm();
 		}	
 
 
@@ -94,7 +97,8 @@
 				'bundle_id' => $bundle_id,
 				'bundle_items' => $bundle_items,
 				'bundle' => $bundle,
-				'categories' => $categories
+				'categories' => $categories,
+				'formService'   => $this->formService
 			];
 
 			return $this->view('service_bundle/add_item' , $data);

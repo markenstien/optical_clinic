@@ -1,7 +1,15 @@
 <?php build('page-control')?>
-	<a href="<?php echo _route('category:index')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-list fa-sm text-white-50"></i> Categories </a>
+<div class="page-header">
+	<div>
+		<h1>⚙️ Add Category</h1>
+		<p>Category Management</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('category:index')?>">
+		<span>📂</span> Categories
+		</a>
+	</div>
+</div>
 <?php endbuild()?>
 
 <?php build('content')?>

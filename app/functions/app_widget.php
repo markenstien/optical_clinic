@@ -119,7 +119,6 @@
     //depricated
     function divider()
     {
-        echo die("DIVIDER FUNCTION IS DEPRICATED");
         print <<<EOF
             <div style='margin:30px 0px'>
             </div>

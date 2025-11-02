@@ -1,4 +1,4 @@
-const URL = 'http://dev.th_healthcare_system/api';
+const URL = 'http://dev.merimeri/api';
 // const URL = 'http://th.vitalcare';
 
 const DS  = '/';

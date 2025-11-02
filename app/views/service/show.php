@@ -1,13 +1,47 @@
+<?php build('page-control')?>
+<div class="page-header">
+	<div>
+		<h1>📦 <?php  echo $service->service?></h1>
+		<p>Manage your product here</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('service:edit', $service->id)?>">
+			<span>⚙️</span> Edit Product
+		</a>
+		<a class="btn secondary" href="<?php echo _route('stock:add', null, [
+			'item_id' => $service->id,
+			'csrfToken' => csrfGet()
+		])?>">
+			<span>🛠️</span> Manage Stocks
+		</a>
+		<a class="btn primary" href="<?php echo _route('service:archive', $service->id)?>">
+			<span>⚙️</span>
+			<?php 
+				if(!$service->is_visible) {
+					echo 'Restore Product';
+				} else {
+					echo 'Archive Product';
+				}
+			?>
+		</a>
+
+		<a class="btn secondary" href="<?php echo _route('service:index')?>">
+			<span>📂</span> Products
+		</a>
+	</div>
+</div>
+<?php endbuild()?>
+
 <?php build('content') ?>
 	<div class="card">
-		<div class="card-header">
-			<h4 class="card-title">Product View</h4>
-		</div>
-
+		<?php Flash::show()?>
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-7">
 					<section>
+						<?php if(!$service->is_visible) : ?>
+							<h1 style="color:red">Product Is currently Disabled</h1>
+						<?php endif?>
 						<h4>Product Detail</h4>
 							<div class="table-responsive">
 								<table class="table table-bordered">
@@ -21,37 +55,20 @@
 									</tr>
 
 									<tr>
-										<td><?php echo $_form->getLabel('price')?></td>
-										<td><?php echo $_form->getValue('price')?></td>
-									</tr>
-
-									<tr>
 										<td><?php echo $_form->getLabel('description')?></td>
 										<td><?php echo $_form->getValue('description')?></td>
 									</tr>
 
 									<tr>
-										<td>Category</td>
+										<td><?php echo $_form->getLabel('category_id')?></td>
 										<td><?php echo $service->category?></td>
 									</tr>
 									<tr>
 										<td>Stocks</td>
 										<td>
 											<h5><?php echo $service->total_stock?></h5>
-											<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
-												<?php echo wLinkDefault(_route('stock:add', null, [
-													'item_id' => $service->id,
-													'csrfToken' => csrfGet()
-												]),'Manage Stock')?>
-											<?php endif?>
 										</td>
 									</tr>
-									<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
-									<tr>
-										<td>Action</td>
-										<td><?php echo wLinkDefault(_route('service:edit', $service->id),'Edit Product')?></td>
-									</tr>
-									<?php endif?>
 								</table>
 							</div>
 					</section>
@@ -59,6 +76,7 @@
 					<?php echo wDivider(30)?>
 					<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
 						<section>
+							<h3>Stocks/Inventory Logs</h3>
 							<div class="table-responsive">
 								<table class="table table-bordered">
 									<thead>
@@ -83,32 +101,6 @@
 								</table>
 							</div>
 						</section>	
-					<?php endif?>
-				</div>
-
-				<div class="col-md-5">
-					<h4>Images</h4>
-					<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
-					<div class="mt-3 mb-5">
-						<?php echo $_attachmentForm->getForm(); ?>
-					</div>
-					<?php endif?>
-
-					<?php if($images) :?>
-						<div  class="row">
-						<?php foreach($images as $key => $row) :?>
-							<div class="col-md-3">
-								<img src="<?php echo $row->full_url?>" style="width: 100%; height: 150px;">
-								<?php if(!isEqual(whoIs('user_type'), 'patient')) :?>
-									<?php echo wLinkDefault(_route('attachment:delete', $row->id, [
-										'route' => seal(_route('service:show', $service->id))
-									]), ' Delete ')?>
-								<?php endif?>
-								<p><?php echo $row->label?></p>
-								
-							</div>
-						<?php endforeach?>
-						</div>
 					<?php endif?>
 				</div>
 			</div>

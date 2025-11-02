@@ -19,6 +19,8 @@
 			$this->session = model('SessionModel');
 			$this->appointment = model('AppointmentModel');
 			$this->adddess_model = model('AddressModel');
+			$this->service_bundle_model = model('ServiceBundleModel');
+			$this->user_service_specialization_model = model('UserServiceSpecializationModel');
 		}
 
 		public function verification($user_id_sealed)
@@ -48,6 +50,10 @@
 			if(isSubmitted())
 			{
 				$post = request()->posts();
+
+				if(!isset($post['from_another_form'])) {
+					request()->saveEntries();
+				}
 
 				//check if backer_user_code is not empty
 				if(!empty($post['backer_user_code'])) {
@@ -140,7 +146,6 @@
 		public function index()
 		{
 			_authRequired([
-				'staff',
 				'admin'
 			]);
 			
@@ -231,7 +236,8 @@
 				'doc_form' => $doc_form,
 				'user'   => $user,
 				'form_address' => $this->_form_address,
-				'user_id' => $id
+				'user_id' => $id,
+				'type' => 'edit'
 			];
 
 			return $this->view('user/create_edit' , $data);
@@ -255,14 +261,24 @@
 
 			$data = [
 				'user' => $user,
-				'userForm' => $this->_form
+				'userForm' => $this->_form,
+				'serviceBundles' => $this->service_bundle_model->getAll([
+					'where' => [
+						'bundle.status' => 'available'
+					]
+					]),
+				'userSpecializations' => $this->user_service_specialization_model->getAll([
+					'where' => [
+						'user_id' => $user->id
+					]
+				])
 			];
 
 			$backer = false;
 
 			switch(strtolower($user->user_type))
 			{
-				case 'patient':
+				case 'customer':
 					$data['appointments'] = $this->appointment->getDesc('id' , ['user_id' => $user->id]);
 					$data['sessions'] = $this->session->getAll([
 						'where' => [
@@ -332,9 +348,30 @@
 
 		public function admin()
 		{
+			$appointments = $this->appointment->all();
 			$data = [
-				
+				'appointments' => _group_db_result_by_column($appointments, 'user_id'),
+				'todaysAppointmentCount' => count($appointments),
+				'lowCount' => 0,
+				'nearExpiryCount' => 0,
 			];
 			return $this->view('user/admin', $data);
+		}
+
+		public function addSpecialization() {
+			$req = request()->inputs();
+
+			$resp = $this->user_service_specialization_model->addSpecialization(...[
+				$req['user_id'],
+				$req['service_id']
+			]);
+			Flash::set($this->user_service_specialization_model->getMessageString(), $resp == true? 'success' : 'danger');
+			return request()->return();
+		}
+
+		public function removeSpecialization($id) {
+			Flash::set("Specialization Removed");
+			$this->user_service_specialization_model->delete($id);
+			return request()->return();
 		}
 	}

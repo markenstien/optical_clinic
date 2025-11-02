@@ -3,6 +3,7 @@
      * CORE CONSTANT OF THE TEMPLATE
     */
     define('DS', DIRECTORY_SEPARATOR);
+    define('URL_SEPERATOR', '/');
     //application root
     define('APPROOT' , dirname(dirname(__FILE__)));
     //core root

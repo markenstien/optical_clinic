@@ -1,104 +1,143 @@
 <?php build('page-control')?>
-	<a href="<?php echo _route('category:create')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-plus fa-sm text-white-50"></i> Add Category</a>
+<div class="page-header">
+	<div>
+		<h1><?php echo $service_bundle->name?></h1>
+		<p>Manage your service, product bundle here</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('service-bundle:edit', $service_bundle->id)?>">
+			<span>⚙️</span> Edit
+		</a>
+
+		<a class="btn secondary" href="<?php echo _route('service-bundle:index')?>">
+			<span>📂</span> Services
+		</a>
+	</div>
+</div>
 <?php endbuild()?>
 
-<?php build('content')?>
-	
+<?php build('content')?>	
 	<div class="card">
 		<div class="row">
-			<div class="col">
+			<div class="col-md-6">
+				<div class="card">
 				<div class="card-body">
-					<h4 class="card-title">Details</h4>
-					<div class="table">
-						 <table class="table table-bordered">
-						 	<thead>
-						 		<th>Code</th>
-						 		<th>Name</th>
-						 		<th>Price</th>
-						 		<th>Discount</th>
-						 		<th>Description</th>
-						 	</thead>
+					<h1>Service Bundle Details</h1>
+					<div class="row">
+						<div class="col-md-3">
+							#Reference
+						</div>
 
-						 	<tbody>
-						 		<tr>
-						 			<td><?php echo $service_bundle->code?></td>
-						 			<td><?php echo $service_bundle->name?></td>
-						 			<td><?php echo amountHTML($service_bundle->public_price)?></td>
-						 			<td><?php echo $service_bundle->discount?></td>
-						 			<td><?php echo $service_bundle->description?></td>
-						 		</tr>
-						 	</tbody>
-						 </table>
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->code?>" disabled>
+						</div>
 					</div>
-					<a href="<?php echo _route('service-bundle-item:add' , $service_bundle->id)?>">Add Items</a>
-					<a href="<?php echo _route('service-bundle:edit' , $service_bundle->id)?>">Edit</a>
+
+					<div class="row">
+						<div class="col-md-3">
+							<?php echo $form->label('name')?>
+						</div>
+
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->name?>" disabled>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3">
+							<?php echo $form->label('description')?>
+						</div>
+
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->description?>" disabled>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3">
+							<?php echo $form->label('price_custom')?>
+						</div>
+
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->price_custom?>" disabled>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3">
+							<?php echo $form->label('status')?>
+						</div>
+
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->status?>" disabled>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3">
+							<?php echo $form->label('is_visible')?>
+						</div>
+
+						<div class="col-md-9">
+							<input type="text" value="<?php echo $service_bundle->is_visible ? 'Yes' : 'No'?>" disabled>
+						</div>
+					</div>
+					
+					</div>
 				</div>
 			</div>
 
-			<div class="col">
-				<div class="card-body">
-					<h4 class="card-title">Categories</h4>
-					<?php foreach($services as $key => $row) :?>
-						<a href="#"><span class="badge badge-primary">#<?php echo $row->category?></span></a>
-					<?php endforeach?>
+			<?php if($images) :?>
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-body">
+						<h1>Image</h1>
+						<img src="<?php echo $images[0]->full_url?>" alt="<?php echo $service_bundle->name?> banner" style="width: 100%;">
+					</div>
 				</div>
 			</div>
-		</div>
-		
-	</div>
-
-	<?php divider()?>
-
-	<div class="card">
-		<div class="card-header">
-			<h4 class="card-title">Items</h4>
-		</div>
-
-		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered dataTable">
-					<thead>
-						<th>#</th>
-						<th>Ref</th>
-						<th>Service</th>
-						<th>Price</th>
-						<th>Category</th>
-						<th>Descriotion</th>
-						<th>Status</th>
-						<th>Action</th>
-					</thead>
-
-					<tbody>
-						<?php $total = 0?>
-						<?php foreach($services as $key => $row) :?>
-							<?php $total += $row->price?>
-							<tr>
-								<td><?php echo ++$key?></td>
-								<td><?php echo $row->code?></td>
-								<td><?php echo $row->service?></td>
-								<td><?php echo amountHTML($row->price)?></td>
-								<td><?php echo $row->category?></td>
-								<td><?php echo $row->description?></td>
-								<td><?php echo $row->status?></td>
-								<td>
-									<?php
-										__([
-											btnDelete(_route('service-bundle-item:delete' , $row->id))
-										])
-									?>
-								</td>
-							</tr>
-						<?php endforeach?>
-					</tbody>
-				</table>
-			</div>
-			<h5>Total Services Amount : <?php echo amountHTML($service_bundle->public_price)?></h5>
-
-			<?php if( $service_bundle->discount ) :?>
-			<h5>Total Discounted Amount : <?php echo amountHTML($service_bundle->public_price - $service_bundle->discount)?></h5>
 			<?php endif?>
+		</div>
+
+		<div class="card">
+			<div class="card-body">
+				<h1>Service -> Products</h1>
+				<div>
+					<a class="btn secondary" href="<?php echo _route('service-bundle-item:add', $service_bundle->id)?>">
+						<span>📂</span> Manage Products
+					</a>
+				</div>
+				<?php echo wDivider()?>
+				<div class="table-responsive">
+					<table class="table table-bordered dataTable">
+						<thead>
+							<th>#</th>
+							<th>Ref</th>
+							<th><?php echo $formService->getLabel('service')?></th>
+							<th><?php echo $formService->getLabel('category_id')?></th>
+							<th><?php echo $formService->getLabel('description')?></th>
+							<th><?php echo $formService->getLabel('status')?></th>
+							<th>Stocks</th>
+						</thead>
+
+						<tbody>
+							<?php $total = 0?>
+							<?php foreach($services as $key => $row) :?>
+								<?php $total += $row->price?>
+								<tr>
+									<td><?php echo ++$key?></td>
+									<td><?php echo $row->code?></td>
+									<td><?php echo $row->service?></td>
+									<td><?php echo $row->category?></td>
+									<td><?php echo $row->description?></td>
+									<td><?php echo $row->status?></td>
+									<td><?php echo $row->total_stock?></td>
+								</tr>
+							<?php endforeach?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 <?php endbuild()?>

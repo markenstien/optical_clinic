@@ -1,0 +1,9 @@
+[03-Nov-2025 06:10:57 Asia/Manila] PHP Warning:  require_once(C:\xampp7\htdocs\merimedi\app\views/config/db.php): failed to open stream: No such file or directory in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 9
+[03-Nov-2025 06:10:57 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required 'C:\xampp7\htdocs\merimedi\app\views/config/db.php' (include_path='C:\xampp7\php\PEAR') in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 9
+[03-Nov-2025 06:11:05 Asia/Manila] PHP Warning:  require_once(C:\xampp7\htdocs\merimedi\app\views/config/db.php): failed to open stream: No such file or directory in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 8
+[03-Nov-2025 06:11:05 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required 'C:\xampp7\htdocs\merimedi\app\views/config/db.php' (include_path='C:\xampp7\php\PEAR') in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 8
+[03-Nov-2025 06:11:05 Asia/Manila] PHP Warning:  require_once(C:\xampp7\htdocs\merimedi\app\views/config/db.php): failed to open stream: No such file or directory in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 8
+[03-Nov-2025 06:11:05 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required 'C:\xampp7\htdocs\merimedi\app\views/config/db.php' (include_path='C:\xampp7\php\PEAR') in C:\xampp7\htdocs\merimedi\app\views\pages\sign-in.php on line 8
+2025-11-03T07:03:22+08:00 signup.php reached
+[03-Nov-2025 07:03:22 Asia/Manila] PHP Warning:  require_once(C:\xampp7\htdocs\merimedi\app\views/config/db.php): failed to open stream: No such file or directory in C:\xampp7\htdocs\merimedi\app\views\pages\sign-up.php on line 11
+[03-Nov-2025 07:03:22 Asia/Manila] PHP Fatal error:  require_once(): Failed opening required 'C:\xampp7\htdocs\merimedi\app\views/config/db.php' (include_path='C:\xampp7\php\PEAR') in C:\xampp7\htdocs\merimedi\app\views\pages\sign-up.php on line 11

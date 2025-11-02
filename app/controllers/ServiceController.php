@@ -57,7 +57,7 @@
 					], 'images');
 				}
 
-				return redirect( _route('service:index') );
+				return redirect( _route('service:show', $res) );
 			}
 
 			$data = [
@@ -127,5 +127,20 @@
 
 			$this->data['logs'] = $this->modelStock->getProductLogs($id);
 			return $this->view('service/show' , $this->data);
+		}
+		
+		public function archive($id) {
+			$current = $this->model->get($id);
+			$currentState = $current->is_visible;
+			$this->model->update([
+				'is_visible' => $currentState == 1 ? 0 : 1
+			], $id);
+
+			if($currentState) {
+				Flash::set("Product Moved to archived");
+			} else {
+				Flash::set("Product Restored from archive");
+			}
+			return request()->return();
 		}
 	}

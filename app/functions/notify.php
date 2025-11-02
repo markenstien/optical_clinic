@@ -50,14 +50,12 @@
 		/*
 		*recipient id's must be changeable always
 		*/
-
 		$user_model = model('UserModel');
-
 		$users = $user_model->getAll([
 			'where' => [
 				'user_type' => [
 					'condition' => 'in',
-					'value' => ['doctor' , 'admin']
+					'value' => ['staff','admin']
 				]
 			]
 		]);

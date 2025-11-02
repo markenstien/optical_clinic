@@ -1,15 +1,34 @@
 <?php build('page-control')?>
-	<a href="<?php echo _route('user:create')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-user-plus fa-sm text-white-50"></i> Add User </a>
+<div class="page-header">
+	<div>
+		<h1>👤 User Management</h1>
+		<p>Manage client profiles, information, and account details</p>
+	</div>
+	<div class="header-actions">
+		<a class="btn secondary" href="<?php echo _route('user:create')?>">
+		<span>➕</span> Add User
+		</a>
+	</div>
+</div>
 <?php endbuild()?>
 
 <?php build('content')?>
 	<div class="card">
 		<?php Flash::show()?>
+		<div class="card-header">
+          <div class="header-content">
+            <h2>📋 User Records</h2>
+          </div>
+          <div class="search-actions">
+            <div class="search-container">
+              <input id="inv-search" placeholder="🔍 Search products..." />
+            </div>
+          </div>
+        </div>
+
 		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered dataTable">
+			<div class="table-wrap">
+				<table class="table table-bordered dataTable" id="inv-table">
 					<thead>
 						<th>#</th>
 						<th>Ref</th>
@@ -17,7 +36,6 @@
 						<th>Email</th>
 						<th>Mobile #</th>
 						<th>Type</th>
-						<th>User Preference</th>
 						<th>Action</th>
 					</thead>
 
@@ -30,12 +48,10 @@
 								<td><?php echo $row->email?></td>
 								<td><?php echo $row->phone_number?></td>
 								<td><?php echo $row->user_type?></td>
-								<td><?php echo wTransactionUserPreference($row->user_preference)?></td>
 								<td>
 									<?php
 										__([
-											btnView(_route('user:show' , $row->id)),
-											btnEdit(_route('user:edit' , $row->id))
+											btnEdit(_route('user:show' , $row->id))
 										])
 									?>
 								</td>

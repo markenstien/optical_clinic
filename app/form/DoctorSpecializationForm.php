@@ -27,9 +27,9 @@
 
 		public function addDoctor()
 		{
-			$doctor_model = model('DoctorModel');
-			$doctors = $doctor_model->getAll();
-			$doctors = arr_layout_keypair($doctors, ['user_id' , 'first_name@last_name']);
+			$userModel = model('UserModel');
+			$doctors = $userModel->getAll();
+			$doctors = arr_layout_keypair($doctors, ['id' , 'first_name@last_name']);
 
 			$this->add([
 				'type'  => 'select',

@@ -147,6 +147,6 @@
 
 		public function generateCode( $service )
 		{
-			return strtoupper(substr($service , 0 , 4).random_letter(3));
+			return str_replace(' ', '', strtoupper(substr($service , 0 , 4).random_letter(3)));
 		}
 	}

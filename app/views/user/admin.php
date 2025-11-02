@@ -119,18 +119,9 @@
             <h3 style="margin: 0; color: #2c3e50; font-size: 20px; font-weight: 700;">Doctor Appointments</h3>
             <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Current and upcoming appointments by doctor</p>
             </div>
-            <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1); border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
-            <?php 
-            $totalAppointments = 0;
-            if (!empty($appointmentsByDoctor) && is_array($appointmentsByDoctor)) {
-                foreach ($appointmentsByDoctor as $appointments) {
-                if (is_array($appointments)) {
-                    $totalAppointments += count($appointments);
-                }
-                }
-            }
-            echo $totalAppointments; 
-            ?> APPOINTMENTS
+            <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1);
+             border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
+            
             </div>
         </div>
 
@@ -156,49 +147,6 @@
 <?php endbuild()?>
 
 <?php build('scripts')?>
-    <script defer>
-        // Toggle doctor panels (collapsed by default)
-        document.querySelectorAll('[data-doctor-panel]').forEach(function(panel){
-          var header = panel.querySelector('[data-toggle]');
-          if (!header) return;
-          header.addEventListener('click', function(){
-            var isExpanded = panel.classList.contains('expanded');
-            document.querySelectorAll('[data-doctor-panel]').forEach(function(p){ p.classList.remove('expanded'); p.classList.add('collapsed'); });
-            if (!isExpanded) { panel.classList.add('expanded'); panel.classList.remove('collapsed'); }
-          });
-        });
 
-        // Add smooth animations on scroll
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.style.opacity = '1';
-              entry.target.style.transform = 'translateY(0)';
-            }
-          });
-        }, observerOptions);
-        
-        // Observe all cards
-        document.querySelectorAll('.card, .mica-card, .quote-card, .doctor-panel').forEach(card => {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(20px)';
-          card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-          observer.observe(card);
-        });
-        
-        // Add click animations to cards
-        document.querySelectorAll('.card').forEach(card => {
-          card.addEventListener('click', function() {
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-              this.style.transform = '';
-            }, 150);
-          });
-        });
 <?php endbuild()?>
 <?php loadTo()?>

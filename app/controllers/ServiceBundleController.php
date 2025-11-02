@@ -1,14 +1,17 @@
 <?php 
-	load(['ServiceBundleForm'] , APPROOT.DS.'form');
+	load(['ServiceBundleForm', 'ServiceForm'] , APPROOT.DS.'form');
 	use Form\ServiceBundleForm;
+	use Form\ServiceForm;
 
 	class ServiceBundleController extends Controller
 	{
 
 		public function __construct()
 		{
+			parent::__construct();
 			$this->_form = new ServiceBundleForm();
 			$this->model = model('ServiceBundleModel');
+			$this->formService = new ServiceForm();
 		}
 
 		public function index()
@@ -17,7 +20,8 @@
 
 			$data = [
 				'service_bundles' => $service_bundles,
-				'title' => 'Packages'
+				'title' => 'Packages',
+				'_form' => $this->_form
 			];
 
 			return $this->view('service_bundle/index' , $data);
@@ -39,7 +43,14 @@
 					return request()->return();
 				}
 
-				return redirect( _route('service-bundle-item:add' , $res));
+				if(!upload_empty('image')) {
+					//upload images
+					$this->_attachmentModel->upload([
+						'global_key' => 'PRODUCT_IMAGES',
+						'global_id'  => $res
+					], 'image');
+				}
+				return redirect( _route('service-bundle:show' , $res));
 			}
 
 			$this->_form->init([
@@ -68,8 +79,19 @@
 					return request()->return();
 				}
 
+				if(!upload_empty('image')) {
+					$this->_attachmentModel->delete([
+						'global_key' => 'PRODUCT_IMAGES',
+						'global_id'  => $post['id']
+					]);
+					//upload images
+					$this->_attachmentModel->upload([
+						'global_key' => 'PRODUCT_IMAGES',
+						'global_id'  => $post['id']
+					], 'image');
+				}
 				Flash::set( $this->model->getMessageString() );
-				return redirect( _route('service-bundle:index'));
+				return redirect( _route('service-bundle:show', $post['id']));
 			}
 
 			$service_bundle = $this->model->get($id);
@@ -84,25 +106,6 @@
 			$form->init([
 				'url' => _route('service-bundle:edit' , $id)
 			]);
-
-			/*
-			*Add price field after description
-			*/
-			$form->addAfter(
-				'description' , 
-				[
-					'type' => 'text',
-					'name' => 'price',
-					'attributes' => [
-						'readonly' => true
-					],
-					'options' => [
-						'label' => 'Price'
-					],
-					'class' => 'form-control',
-					'value' => $service_bundle->price
-				]
-			);
 
 			$form->addId($id);
 			$form->setValueObject($service_bundle);
@@ -120,12 +123,18 @@
 		public function show($id)
 		{
 			$service_bundle = $this->model->getWithItems($id);
-
+			$images = $this->_attachmentModel->all([
+				'global_key' => _asset_key('PRODUCT_IMAGES'),
+				'global_id'  => $id
+			]);
 
 			$data = [
 				'title' => $service_bundle->name,
 				'service_bundle' => $service_bundle,
-				'services'  => $service_bundle->items
+				'services'  => $service_bundle->items,
+				'form' => $this->_form,
+				'formService' => $this->formService,
+				'images' => $images
 			];
 
 			return $this->view('service_bundle/show' , $data);

@@ -78,7 +78,7 @@
 				$user_id = $id;
 			}else
 			{
-				$fillable_datas['user_code'] = $this->generateCode($user_data['user_type']);
+				$fillable_datas['user_code'] = $this->generateCode($user_data['user_type'] ?? 'Customer');
 				$user_id = parent::store($fillable_datas);
 			}
 
@@ -190,6 +190,9 @@
 				<h3> User Verification </h3>
 				<p> Thank you for registering on out platform <br/>{$_anchor}</p>
 			EOF;
+
+			echo $email_content;
+			die();
 
 			// $email_body = wEmailComplete($email_content);
 			return $email_content;

@@ -17,7 +17,7 @@
 			]);
 
 			$this->addService();
-			$this->addPrice();
+			// $this->addPrice();
 			$this->addStatus();
 			$this->addDescription();
 			$this->addCategory();
@@ -37,7 +37,7 @@
 				'required' => true,
 
 				'options' => [
-					'label' => 'Product Name'
+					'label' => 'Product'
 				],
 
 				'attributes' => [
@@ -117,7 +117,7 @@
 				'required' => true,
 
 				'options' => [
-					'label' => 'Category',
+					'label' => 'Product Category',
 					'option_values' => $option_values
 				],
 

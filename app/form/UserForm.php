@@ -226,8 +226,8 @@
 				'options' => [
 					'label' => 'User Type',
 					'option_values' => [
-						'staff','patient',
-						'sub_admin'
+						'Doctor','Staff',
+						'Customer'
 					]
 				],
 
