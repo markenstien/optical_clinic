@@ -190,11 +190,7 @@
 				<h3> User Verification </h3>
 				<p> Thank you for registering on out platform <br/>{$_anchor}</p>
 			EOF;
-
-			echo $email_content;
-			die();
-
-			// $email_body = wEmailComplete($email_content);
+			$email_body = wEmailComplete($email_content);
 			return $email_content;
 		}
 

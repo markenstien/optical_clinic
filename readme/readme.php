@@ -22,4 +22,10 @@
  * db = u635751818_prod
  * user = u635751818_prod
  */
+
+/**
+ * accounts for testing
+ * admin@micaclinic.site
+ * admin101
+ */
 ?>
