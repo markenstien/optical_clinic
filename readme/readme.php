@@ -14,4 +14,12 @@
 *
 */
 
+/**
+ * SSH KEYS 
+ * Aesthetic.001 -- password for terminal ssdh
+ * database
+ * password = Aesthetic.001
+ * db = u635751818_prod
+ * user = u635751818_prod
+ */
 ?>

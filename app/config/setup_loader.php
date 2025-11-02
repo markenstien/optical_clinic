@@ -18,7 +18,7 @@
             define('DBPASS' , '');
             define('DBNAME' , 'merimeri');
 
-            define('BASECONTROLLER' , 'AuthController');
+            define('BASECONTROLLER' , 'PagesController');
             define('BASEMETHOD' , 'index');
   
             ini_set('display_errors', 1);
@@ -62,11 +62,11 @@
             define('URL' , 'https://www.vividoptical.online');
             define('DBVENDOR' , 'mysql');
             define('DBHOST' , 'localhost');
-            define('DBUSER' , 'korpzpru_th_main');
-            define('DBPASS' , 'Y[@h=Ytz;(f}');
-            define('DBNAME' , 'korpzpru_vivid_optical');
+            define('DBUSER' , 'u635751818_prod');
+            define('DBPASS' , 'Aesthetic.001');
+            define('DBNAME' , 'u635751818_prod');
 
-            define('BASECONTROLLER' , 'AuthController');
+            define('BASECONTROLLER' , 'PagesController');
             define('BASEMETHOD' , 'index');
         break;
     }
