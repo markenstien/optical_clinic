@@ -59,7 +59,7 @@
         break;
 
         case 'up':
-            define('URL' , 'https://www.vividoptical.online');
+            define('URL' , 'https://www.micaclinic.site');
             define('DBVENDOR' , 'mysql');
             define('DBHOST' , 'localhost');
             define('DBUSER' , 'u635751818_prod');
