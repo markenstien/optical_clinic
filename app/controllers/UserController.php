@@ -74,7 +74,7 @@
 					return request()->return();
 				}
 
-				return redirect(_route('auth:login'));
+				return redirect(_route('page:login'));
 			}
 
 			$this->_form->init([

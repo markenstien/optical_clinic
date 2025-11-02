@@ -48,9 +48,10 @@
           <?php Flash::show()?>
           <form method="post" class="profile-form" action="<?php echo _route('user:register')?>">
             <input type="hidden" value="from_another_form">
+            <input type="hidden" value="customer" name="user_type">
             <div class="form-grid">
               <label><span>First Name</span><input type="text" name="first_name" value="<?php echo htmlspecialchars($_POST['first_name'] ?? ''); ?>" required /></label>
-              <label><span>Last Name</span><input type="text" name="first_name" value="<?php echo htmlspecialchars($_POST['last_name'] ?? ''); ?>" required /></label>
+              <label><span>Last Name</span><input type="text" name="last_name" value="<?php echo htmlspecialchars($_POST['last_name'] ?? ''); ?>" required /></label>
               <label><span>Phone</span><input type="text" name="phone_number" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" /></label>
               <label><span>Email</span><input type="email" name="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required /></label>
               <label>

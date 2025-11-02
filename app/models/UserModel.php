@@ -132,7 +132,7 @@
 			
 			foreach($limitCheck as $key => $row) {
 				if(!empty($user_data[$key])) {
-					if(!$this->validateStringLength($user_data[$key], 12, $row)) {
+					if(!$this->validateStringLength($user_data[$key], 50, $row)) {
 						return false;
 					}
 				}
@@ -190,7 +190,7 @@
 				<h3> User Verification </h3>
 				<p> Thank you for registering on out platform <br/>{$_anchor}</p>
 			EOF;
-			$email_body = wEmailComplete($email_content);
+			// $email_body = wEmailComplete($email_content);
 			return $email_content;
 		}
 
