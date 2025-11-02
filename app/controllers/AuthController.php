@@ -38,6 +38,7 @@
 
 				return redirect('DashboardController');
 			}
+			return redirect(_route('page:index'));
 
 			$form = $this->_form;
 
@@ -60,9 +61,7 @@
 		public function logout()
 		{
 			session_destroy();
-
-			
 			Flash::set("Successfully logged-out");
-			return redirect( _route('auth:login') );
+			return redirect( _route('page:index') );
 		}
 	}
