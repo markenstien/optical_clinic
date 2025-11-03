@@ -7,11 +7,11 @@
 		public function __construct()
 		{
 			parent::__construct();
-			_authRequired([
-				'staff',
-				'admin',
-				'sub_admin'
-			]);
+			// _authRequired([
+			// 	'staff',
+			// 	'admin',
+			// 	'sub_admin'
+			// ]);
 			$this->_form = new CategoryForm();
 			$this->model = model('CategoryModel');
 		}
