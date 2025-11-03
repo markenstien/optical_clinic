@@ -9,7 +9,7 @@
     const MAILER_AUTH = [
         'username' => 'micaaestheticclinic@micaclinic.site',
         'password' => 'Aesthetic.001',
-        'host'     => 'micaclinic.site',
+        'host'     => 'smtp.hostinger.com',
         'name'     => 'MICA Aesthetic Clinic',
         'replyTo'  => '',
         'replyToName' => ''
@@ -55,6 +55,6 @@
     define('COMPANY_ADDRESS', '#0069 National Rd. Kalawaan Binangonan Rizal, Binangonan, Philippines.');
     define('COMPANY_EMAIL', 'micaaestheticclinic@micaclinic.site');
     define('COMPANY_CONTACT', '(+63) 995 322 5898 ');
-    
+
     define('FILE_IMAGE_TYPES', ['png','jpg','jpeg','bitmap']);
 ?>
