@@ -1,5 +1,4 @@
-const URL = 'http://dev.merimeri/api';
-// const URL = 'http://th.vitalcare';
+const URL = 'https://www.micaclinic.site';
 
 const DS  = '/';
 
