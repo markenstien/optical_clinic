@@ -11,8 +11,8 @@
         'password' => 'Aesthetic.001',
         'host'     => 'smtp.hostinger.com',
         'name'     => 'MICA Aesthetic Clinic',
-        'replyTo'  => '',
-        'replyToName' => ''
+        'replyTo'  => 'micaaestheticclinic@micaclinic.site',
+        'replyToName' => 'MICA Aesthetic'
     ];
 
     const ITEXMO = [
