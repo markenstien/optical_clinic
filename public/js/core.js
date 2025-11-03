@@ -1,4 +1,4 @@
-const URL = 'https://www.micaclinic.site';
+const URL = 'https://www.micaclinic.site/api';
 
 const DS  = '/';
 
