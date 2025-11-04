@@ -1,13 +1,19 @@
 <?php build('content')?>
-
 <!-- Quick Stats Card -->
 	<div class="page-header">
 		<div>
 			<h1>📅 Appointment Management</h1>
 			<p>Manage and track all client appointments with comprehensive scheduling tools</p>
 		</div>
+
+		<div class="header-actions">
+			<a class="btn secondary" href="<?php echo _route('appointment:create')?>">
+				<span>➕</span> Create Appointment
+			</a>
+		</div>
 	</div>
 	<section class="card" style="margin-bottom:24px;">
+		<?php Flash::show()?>
 		<div class="card-header">
           <div class="header-content">
             <h2>📋 Appointment Records</h2>

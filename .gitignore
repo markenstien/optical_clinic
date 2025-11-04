@@ -1,3 +1,4 @@
+#important files
 app/config/setup.php
 app/config/setup_loader.php
-public/
+public/js/core.js

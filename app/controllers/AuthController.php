@@ -33,10 +33,25 @@
 					Flash::set( "Welcome Back !" . auth('first_name'));
 				}
 
-				if( isEqual(auth('user_type'),'patient') )
-					return redirect( _route('appointment:index') );
+				// switch(auth('user_type'))
+				// {
+				// 	case USER_TYPES['ADMIN'] :
+				// 		return redirect(_route('user:admin'));
+				// 	break;
 
-				return redirect('DashboardController');
+				// 	case USER_TYPES['CUSTOMER'] :
+				// 		return redirect(_route('user:admin'));
+				// 	break;
+
+				// 	case USER_TYPES['DOCTOR'] :
+				// 		return redirect(_route('user:admin'));
+				// 	break;
+
+				// 	case USER_TYPES['STAFF'] :
+				// 		return redirect(_route('user:admin'));
+				// 	break;
+				// }
+				return redirect(_route('user:admin'));
 			}
 			return redirect(_route('page:index'));
 

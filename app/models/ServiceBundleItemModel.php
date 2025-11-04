@@ -14,7 +14,8 @@
 
 			$res = parent::store([
 				'service_id' => $service_id,
-				'bundle_id'  => $bundle_id
+				'bundle_id'  => $bundle_id,
+				'quantity_per_usage'  => 1, //default
 			]);
 
 			$this->reloadBundlePrice($bundle_id);

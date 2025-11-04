@@ -1,159 +1,100 @@
+<?php build('page-control')?>
+<div class="page-header">
+	<div>
+		<h1>Appointment -> <?php echo $appointment->reference?></h1>
+		<p>Check Appointment Details Here</p>
+	</div>
+	<div class="header-actions">
+		<?php if(isEqual(whoIs('user_type'), [USER_TYPES['ADMIN'], USER_TYPES['STAFF']])) :?>
+			<?php if(isEqual($appointment->status, 'pending')) :?>
+				<a class="btn btn-success" href="<?php echo _route('appointment:approve', $appointment->id)?>">
+					<span>✅</span> Approve
+				</a>
+			<?php endif?>
+			<?php if(isEqual($appointment->status, 'approved')) :?>
+				<a class="btn btn-success" href="<?php echo _route('appointment:arrived', $appointment->id)?>">
+					<span>✅</span> Arrived
+				</a>
+			<?php endif?>
+
+			<?php if(isEqual($appointment->status, 'arrived')) :?>
+				<a class="btn btn-success" href="<?php echo _route('appointment:complete', $appointment->id)?>">
+					<span>✅</span> Completed
+				</a>
+			<?php endif?>
+		<?php endif?>
+
+
+		<?php if(!isEqual($appointment->status, 'completed')) :?>
+			<a class="btn danger" href="<?php echo _route('appointment:cancel', $appointment->id)?>">
+				<span>⚙️</span> Cancel
+			</a>
+		<?php endif?>
+
+		<a class="btn secondary" href="<?php echo _route('appointment:create')?>">
+			<span>📂</span> Add New
+		</a>
+
+		<a class="btn secondary" href="<?php echo _route('appointment:index')?>">
+			<span>⬅️</span> Back
+		</a>
+	</div>
+</div>
+<?php endbuild()?>
+
 <?php build('content')?>
 	<?php Flash::show()?>
 	<div class="row">
 		<div class="col-md-7">
 			<div class="card">
-				<div class="card-header">
+				<div class="card-body">
 					<h4 class="card-title">Appointment</h4>
-					<label><?php echo $appointment->type?></label>
-				</div>
-
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table table-bordered">
-							<tr>
-								<td>Date</td>
-								<td><?php echo $appointment->date?></td>
-							</tr>
-							<tr>
-								<td>Arrival Time</td>
-								<td><?php echo $appointment->start_time?></td>
-							</tr>
-
-							<tr>
-								<td>Type</td>
-								<td><?php echo $appointment->type?></td>
-							</tr>
-
-
-							<tr>
-								<td>Status</td>
-								<td>
-									<?php $statusColor = '';
-										switch($appointment->status) {
-											case 'arrived':
-												$statusColor = 'success';
-											break;
-
-											case 'pending':
-												$statusColor = 'warning';
-											break;
-
-											case 'cancelled':
-												$statusColor = 'danger';
-											break;
-										}
-									?>
-									<?php echo wSpanBuilder($appointment->status, $statusColor)?>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>Guest</td>
-								<td><?php echo $appointment->guest_name?></td>
-							</tr>
-
-							<tr>
-								<td>Email</td>
-								<td><?php echo $appointment->guest_email?></td>
-							</tr>
-
-							<tr>
-								<td>Mobile</td>
-								<td><?php echo $appointment->guest_phone?></td>
-							</tr>
-							
-							<tr>
-								<td>Fee</td>
-								<td><?php echo $appointment->reservation_fee?></td>
-							</tr>
-						</table>
+					<div class="row">
+						<div class="col-md-3">Guest</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->guest_name?>">
+						</div>
 					</div>
-				</div>
-				<?php if($session) :?>
-				  <div class="card-footer">
-				    <?php echo wLinkDefault(_route('session:show', $session->id), 'View Session') ?>
-				  </div>
-			    <?php endif?>
-
-				<?php if( !isEqual($appointment->status , 'arrived') && isEqual(auth('user_type') , ['staff','admin' , 'doctor'])):?>
-					<a href="<?php echo _route('session:create' , $appointment->id)?>" class="btn btn-danger"> Start Session Session</a>
-				<?php endif?>
-			</div>
-		</div>
-
-		<div class="col-md-5">
-			<div class="card">
-				<div class="card-header"><div class="card-title">Payment</div></div>
-				<div class="card-body">
-					<?php if(!$payment) :?>
-						<p>No Payment</p>
-					<?php else:?>
-					<?php csrfReload()?>
-					<div class="table-responsive">
-						<table class="table table-bordered">
-							<tr>
-								<td>Reference:</td>
-								<td><?php echo $payment->payment_reference?></td>
-							</tr>
-							<tr>
-								<td>Amount:</td>
-								<td><?php echo $payment->amount?></td>
-							</tr>
-							<tr>
-								<td>Method:</td>
-								<td><?php echo $payment->method?></td>
-							</tr>
-							<tr>
-								<td>Status:</td>
-								<td><?php echo $payment->payment_status;?></td>
-							</tr>
-
-							<?php if(isEqual($payment->payment_status,'for-approval') && !isEqual(whoIs('user_type'), 'patient')) :?>
-								<tr>
-									<td>Payment Action</td>
-									<td>
-										<?php echo wLinkDefault(_route('payment:approve', csrfGet(), [
-											'payment_id' => $payment->id,
-											'origin' => 'RESERVATION_FEE'
-										]), 'Approve', [
-											'class' => 'form-verify',
-										])?> | 
-										<a href="#">Decline</a>
-									</td>
-								</tr>
-							<?php endif?>
-						</table>
-
-						<?php if($payment->external_reference) :?>
-							<table class="table table-bordered">
-								<thead>
-									<th>ORG</th>
-									<th>External Reference</th>
-									<th>Account Number</th>
-									<th>Account Name</th>
-								</thead>
-								<tbody>
-									<tr>
-										<td><?php echo $payment->org?></td>
-										<td><?php echo $payment->external_reference?></td>
-										<td><?php echo $payment->acc_no?></td>
-										<td><?php echo $payment->acc_name?></td>
-									</tr>
-								</tbody>
-							</table>
-						<?php endif?>
-
-						<?php if($attachment) :?>
-							<div class="card-body">
-								<h3>Payment Image</h3>
-								<img src="<?php echo $attachment->full_url?>" 
-									alt="Payment Image" style="width:300px; margin:0px auto;">
-							</div>
-						<?php endif?>
+					<hr>
+					<div class="row">
+						<div class="col-md-3">Date</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->date?> (<?php echo date('H:i A', strtotime($appointment->start_time))?> - <?php echo date('H:i A', strtotime($appointment->end_time))?>)">
+						</div>
 					</div>
-					<?php endif?>
+					<div class="row">
+						<div class="col-md-3">Service</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->service_bundle->name?> - <?php echo $appointment->reservation_fee?> ">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">Doctor</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->doctor->last_name . ', '. $appointment->doctor->first_name ?>">
+						</div>
+					</div>
+					<hr>
+
+					<div class="row">
+						<div class="col-md-3">Status</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->status?>">
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">Email</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->guest_email?>">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">Mobile</div>
+						<div class="col-md-9">
+							<input type="text" disabled value="<?php echo $appointment->guest_phone?>">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

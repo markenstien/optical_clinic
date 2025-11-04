@@ -51,7 +51,7 @@
 								<td>
 									<?php
 										__([
-											btnEdit(_route('user:show' , $row->id))
+											btnView(_route('user:show' , $row->id))
 										])
 									?>
 								</td>

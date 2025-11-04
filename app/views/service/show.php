@@ -80,25 +80,31 @@
 							<div class="table-responsive">
 								<table class="table table-bordered">
 									<thead>
-										<th>#</th>
+										<th>Ref</th>
 										<th>Quantity</th>
-										<th>Remarks</th>
 										<th>Origin</th>
-										<th>Date Time</th>
+										<th>Date</th>
+										<th>Expiry</th>
 									</thead>
 
 									<tbody>
 										<?php foreach($logs as $key => $row) :?>
+											<?php if($key > 10) break?>
 											<tr>
-												<td><?php echo ++$key?></td>
+												<td>#<?php echo $row->stock_reference?></td>
 												<td><?php echo amountHTML($row->quantity) ?></td>
-												<td><?php echo $row->remarks?></td>
 												<td><?php echo $row->entry_origin?></td>
-												<td><?php echo $row->created_at?></td>
+												<td><?php echo $row->date?></td>
+												<td><?php echo $row->expiry_date?></td>
 											</tr>
 										<?php endforeach?>
 									</tbody>
 								</table>
+								<?php if($logs > 10) :?>
+									<tr>
+										<td><a href="javascript:void(0)">Show More</a></td>
+									</tr>
+								<?php endif?>
 							</div>
 						</section>	
 					<?php endif?>

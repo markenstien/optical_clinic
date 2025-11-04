@@ -20,6 +20,7 @@
             $this->addEntryType();
             $this->addEntryOrigin();
             $this->addDate();
+            $this->addExpiry();
             $this->addRemarks();
             $this->addItem();
             $this->addPurchaseOrder();
@@ -57,6 +58,7 @@
                 'options' => [
                     'label' => 'Entry Date'
                 ],
+                'required' => true,
                 'class' => 'form-control'
             ]);
         }
@@ -126,5 +128,13 @@
             ]);
         }
 
-
+        public function addExpiry() {
+            $this->add([
+                'name' => 'expiry_date',
+                'type' => 'date',
+                'options' => [
+                    'label' => 'Expiry Date'
+                ]
+            ]);
+        }
     }

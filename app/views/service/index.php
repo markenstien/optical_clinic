@@ -64,6 +64,52 @@
 				</table>
 			</div>
 		</div>
+		<?php echo wDivider()?>
+		<div class="card-body">
+			<h1>Inventory Reports</h1>
+
+			<div class="card-body">
+				<h3>Expiring Product</h3>
+				<table class="table">
+					<thead>
+						<th>Product</th>
+						<th>Stock Reference</th>
+						<th>Days to Expire</th>
+						<th>Entry Date</th>
+						<th>Expiry Date</th>
+						<th>Action</th>
+					</thead>
+
+					<tbody>
+						<?php $date = date('Y-m-d')?>
+						<?php foreach($expiringStocks as $key => $row): ?>
+							<?php
+								if((($date > $row->expiry_date) && (date_difference_number_format($date, $row->expiry_date) > 20)) || isEqual($row->meta_status,'consumed'))
+									continue;
+							?>
+							<tr>
+								<td><?php echo $row->service?></td>
+								<td><?php echo $row->stock_reference?></td>
+								<td>
+									<?php
+										if($row->expiry_date > $date) {
+										  echo date_difference_number_format($date, $row->expiry_date);
+										} else {
+											echo '<span style="color:red"> Expired </span>';
+										}
+									?>
+								</td>
+								<td><?php echo $row->date?></td>
+								<td><?php echo $row->expiry_date?></td>
+								<td>
+									<?php echo wLinkDefault(_route('stock:completed', $row->id), 'Consumed')?>
+								</td>
+							</tr>
+						<?php endforeach?>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 <?php endbuild()?>
 <?php loadTo()?>

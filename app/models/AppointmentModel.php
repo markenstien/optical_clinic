@@ -3,11 +3,12 @@
 	{
 
 		public $table = 'appointments';
-
 		public $_fillables = [
 			'reference',
 			'start_time',
 			'end_time',
+			'staff_assigned_id',
+			'service_inquired_id',
 			'date',
 			'user_id',
 			'type',
@@ -38,8 +39,8 @@
 		{	
 			extract($appointment_data);
 
-			if(!$this->checkAvailability($date) || $this->checkDuplicateAppointment($appointment_data)) 
-				return false;
+			// if(!$this->_checkDateDifference($date) || $this->checkDuplicateAppointment($appointment_data)) 
+			// 	return false;
 			/*check appointment date if in maximum*/
 
 			$reference =  $this->generateRefence();
@@ -77,10 +78,13 @@
 					], $appointment_id);
 				}
 
-				_notify_include_email("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference",
-				[$appointment_data['user_id']],[$email] , ['href' => $appointment_link ]);
+				if(!empty($appointment_data['user_id'])) {
+					// _notify_include_email("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference",
+					// [$appointment_data['user_id']],[$email] , ['href' => $appointment_link ]);
+				}
+				
 				if($user_mobile_number) {
-					send_sms("Appointment to ".COMPANY_NAME." is submitted check your email for appointment reference" , [$user_mobile_number]);
+					// send_sms("Appointment to ".COMPANY_NAME." is submitted check your email for appointment reference" , [$user_mobile_number]);
 				}
 				_notify_operations("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
 			}
@@ -218,6 +222,16 @@
 			return true;
 		}
 
+		/**
+		 * LOGIC**
+		 * evertime slot there is a maximum allowed attendees
+		 * regardless of service availed or doctors selected
+		 */
+		public function checkAvailabilityByTime()
+		{
+
+		}
+
 
 		private function _checkDateDifference($reservationDate) {
 			
@@ -230,5 +244,40 @@
 			}
 			$this->addError("Reservation Date must have 3 days gap");
 			return false;
+		}
+
+		public function getAll($params = [])
+		{
+			$where = null;
+            $order = null;
+            $limit = null;
+
+            if(!empty($params['where'])) {
+                $where = " WHERE " . $this->conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY  " . $params['order'];
+            }
+
+            if(!empty($params['limit'])) {
+                $limit = " LIMIT " . $limit;
+            }
+
+			$this->db->query(
+				"SELECT staff.*, appointment.*,
+					service.name as service_name
+					FROM {$this->table} as appointment
+
+					LEFT JOIN users as staff 
+						ON staff.id = appointment.staff_assigned_id
+
+					LEFT JOIN service_bundles as service
+						ON service.id = appointment.service_inquired_id 
+						{$where} {$order} {$limit}
+					"
+			);
+
+			return $this->db->resultSet();
 		}
 	}

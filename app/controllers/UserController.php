@@ -245,7 +245,7 @@
 
 		public function profile()
 		{
-			_authRequired();
+			// _authRequired();
 			return $this->show( whoIs('id') );
 		}
 
@@ -271,37 +271,22 @@
 					'where' => [
 						'user_id' => $user->id
 					]
-				])
+				]),
+				'appointments' => []
 			];
 
-			$backer = false;
-
-			switch(strtolower($user->user_type))
-			{
-				case 'customer':
-					$data['appointments'] = $this->appointment->getDesc('id' , ['user_id' => $user->id]);
-					$data['sessions'] = $this->session->getAll([
-						'where' => [
-							'user_id' => $user->id
-						]
-					]);
-					if(!is_null($user->backer_id)) {
-						$backer = $this->model->get($user->backer_id);
-					}
-					$data['backer'] = $backer;
-					$this->view('user/patient_view' , $data);
-				break;
-
-				default:
-					//admin
-					$data['sessions'] = $this->session->getAll([
-						'where' => [
-							'doctor_id' => $user->id
-						]
-					]);
-					$this->view('user/admin_view' , $data);
-				break;
+			if(isEqual($user->user_type, USER_TYPES['DOCTOR'])) {
+				$data['appointments'] = $this->appointment->all([
+					'staff_assigned_id' => $user->id
+				]);
+			} else {
+				$data['appointments'] = $this->appointment->all([
+					'user_id' => $user->id
+				]);
 			}
+
+			
+			$this->view('user/admin_view' , $data);
 		}
 
 		public function sendAuth()
@@ -348,9 +333,23 @@
 
 		public function admin()
 		{
-			$appointments = $this->appointment->all();
+			if(isEqual(whoIs('user_type'), USER_TYPES['CUSTOMER'])) {
+				$appointments = $this->appointment->all([
+					'user_id' => whoIs('id'),
+					'date' => date('Y-m-d')
+				]);
+			} else if(isEqual(whoIs('user_type'), USER_TYPES['DOCTOR'])) {
+				$appointments = $this->appointment->all([
+					'staff_assigned_id' => whoIs('id'),
+					'date' => date('Y-m-d')
+				]);
+			}else {
+				$appointments = $this->appointment->all([
+					'date' => date('Y-m-d')
+				]);
+			}
 			$data = [
-				'appointments' => _group_db_result_by_column($appointments, 'user_id'),
+				'appointments' => $appointments,
 				'todaysAppointmentCount' => count($appointments),
 				'lowCount' => 0,
 				'nearExpiryCount' => 0,
@@ -372,6 +371,18 @@
 		public function removeSpecialization($id) {
 			Flash::set("Specialization Removed");
 			$this->user_service_specialization_model->delete($id);
+			return request()->return();
+		}
+
+		public function disable($id) {
+			$resp = $this->model->disable($id);
+			Flash::set($this->model->getMessageString());
+			return request()->return();
+		}
+
+		public function enable($id) {
+			$resp = $this->model->enable($id);
+			Flash::set($this->model->getMessageString());
 			return request()->return();
 		}
 	}

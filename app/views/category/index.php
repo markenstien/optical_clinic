@@ -21,6 +21,7 @@
 				<thead>
 					<th>#</th>
 					<th>Category</th>
+					<th>Action</th>
 				</thead>
 
 				<tbody>
@@ -28,6 +29,9 @@
 						<tr>
 							<td><?php echo ++$key?></td>
 							<td><?php echo $row->category?></td>
+							<td>
+								<a href="<?php echo _route('category:edit', $row->id)?>" class="btn btn-primary btn-xs">edit</a>
+							</td>
 						</tr>
 					<?php endforeach?>
 				</tbody>

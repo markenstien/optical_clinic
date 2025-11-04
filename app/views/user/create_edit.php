@@ -1,13 +1,7 @@
 <?php build('page-control')?>
-	<a href="<?php echo _route('user:index')?>" 
-		class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-    class="fas fa-users fa-sm text-white-50"></i> Users </a>
-<?php endbuild()?>
-
-<?php build('page-control')?>
 <div class="page-header">
 	<div>
-		<h1>👤 User Management -> <?php echo $type ?? '' == 'edit' ? $user->last_name : 'Add User'?></h1>
+		<h1>👤<?php echo $type ?? '' == 'edit' ? $user->last_name . ', '. $user->first_name : 'Add User'?></h1>
 		<p>Manage client profiles, information, and account details</p>
 	</div>
 	<div class="header-actions">
@@ -28,6 +22,7 @@
 					<div class="card-body">
 						<h4 class="card-title">Personal</h4>
 						<div class="form-group">
+							<input type="hidden" name="is_verified" value="1">
 							<?php
 								__( $form->getRow('first_name') );
 							?>

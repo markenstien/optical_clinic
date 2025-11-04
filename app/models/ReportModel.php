@@ -26,7 +26,7 @@
 				]
 			];
 
-			$appointments = $this->appointment_model->getAssoc('id' , $this->conditionConvert($where));
+			$appointments = $this->appointment_model->getAll($this->conditionConvert($where));
 
 			$session_reports = $this->session_model->getAll([
 				'where' => [
@@ -126,10 +126,9 @@
 			if($appointments)
 			{
 				$report_summary['total_appointments'] = count($appointments);
-
 				foreach($appointments as $key => $row) 
 				{
-					if(isEqual($row->status , 'arrived'))
+					if(isEqual($row->status , 'completed'))
 						$report_summary['total_appointment_arrived']++;
 				}
 			}
@@ -140,14 +139,14 @@
 
 				foreach($sessions as $row) 
 				{
-					if( !isset($report_summary['doctor_total_rendered_sessions'][$row->doctor_id]) ){
-						$report_summary['doctor_total_rendered_sessions'][$row->doctor_id] = [
+					if( !isset($report_summary['doctor_total_rendered_sessions'][$row->staff_assigned_id]) ){
+						$report_summary['doctor_total_rendered_sessions'][$row->staff_assigned_id] = [
 							'name'  => $row->doctor_name,
 							'total' => 0
 						];
 					}
 
-					$report_summary['doctor_total_rendered_sessions'][$row->doctor_id]['total']++;
+					$report_summary['doctor_total_rendered_sessions'][$row->staff_assigned_id]['total']++;
 				}
 			}
 			

@@ -59,4 +59,17 @@
             $this->data['logs'] = $logs;
             return $this->view('stock/logs', $this->data);
         }
+
+        /**
+         * do not product report
+         * if completed
+         */
+        public function completed($id) {
+            $this->model->update([
+                'meta_status' => 'consumed'
+            ], $id);
+            
+            Flash::set('Stock Record Moved to Consumed');
+            return request()->return();
+        }
     }

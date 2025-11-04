@@ -15,7 +15,10 @@
             'purchase_order_id',
             'entry_origin',
             'entry_type',
-            'created_by'
+            'created_by',
+            'expiry_date',
+            'stock_reference',
+            'meta_status',
         ];
         public function createOrUpdate($stockData, $id = null) {
             $_fillables = $this->getFillablesOnly($stockData);
@@ -28,6 +31,8 @@
             if (!is_null($id)) {
                 return parent::update($_fillables, $id);
             }
+
+            $_fillables['stock_reference'] = $this->generateReference();
             return parent::store($_fillables);
         }
 
@@ -170,5 +175,50 @@
                     return $this->db->resultSet();
                 break;
             }
+        }
+
+        /**
+         * CURYEAR-MONTH-STOCK-ID
+         */
+        private function generateReference($date = null) {
+            $standard = '';
+            if(!is_null($date)) {
+                $standard = date('ym', strtotime($date));
+            }else{
+                $standard = date('ym');
+            }
+
+            //get last id of the the stocks
+            $lastId = $this->lastId() + 1;
+            return strtoupper($standard.'-'.str_pad($lastId, 4, '0', STR_PAD_LEFT));
+        }
+
+        public function getAll($params = []) {
+            $where = null;
+            $order = null;
+            $limit = null;
+
+            if(!empty($params['where'])) {
+                $where = " WHERE " . $this->conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY  " . $params['order'];
+            }
+
+            if(!empty($params['limit'])) {
+                $limit = " LIMIT " . $limit;
+            }
+
+            $this->db->query(
+                "SELECT service.*, stock.* FROM stocks as stock
+                   LEFT JOIN services as service 
+                      ON stock.item_id = service.id
+                    {$where}
+                    {$order}
+                    {$limit}"
+            );
+
+            return $this->db->resultSet();
         }
     }

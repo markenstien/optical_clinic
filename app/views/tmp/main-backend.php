@@ -257,17 +257,19 @@
   <body>
     <header class="site-header" role="banner">
         <div class="site-header-inner">
-            <a class="brand-left" href="/admin/dashboard.php" style="color: #fff; text-decoration: none;">
+            <a class="brand-left" href="<?php echo _route('user:profile')?>" style="color: #fff; text-decoration: none;">
             <img src="<?php echo _path_asset('main-assets/img/new logo.jpg')?>" alt="Mica Aesthetic" class="brand-logo" width="32" height="32" />
-            <span class="brand-name" style="color: #fff;">MICA AESTHETIC</span>
+            <span class="brand-name" style="color: #fff;"><?php echo COMPANY_NAME?></span>
             </a>
-            <div class="brand-center" style="color: #fff;">MICA AESTHETIC CLINIC</div>
+            <div class="brand-center" style="color: #fff;"><?php echo COMPANY_NAME?></div>
             <div class="brand-right">
             <div class="header-icons">
                 <a  href="#" class="header-icon openModalBtn" data-modal="notificationModal" title="Near-expiry (30 days)">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                         <path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 15H5V9h14Z"/></svg>
-                    <span class="header-badge orange">3</span>
+                    <?php if($notifications) :?>
+                      <span class="header-badge orange"><?php echo count($notifications)?></span>
+                    <?php endif?>
                 </a>
                 <a class="header-icon" href="<?php echo _route('auth:logout')?>" title="Logout" onclick="return confirm('Are you sure you want to log out?');">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5v-2H5V5h5V3Zm9.707 8.293L16.414 8l-1.414 1.414L16.586 11H9v2h7.586l-1.586 1.586L16.414 16l3.293-3.293a1 1 0 0 0 0-1.414Z"/></svg>
@@ -281,30 +283,49 @@
       <aside class="sidebar">
         <div class="brand">
            <img src="<?php echo _path_asset('main-assets/img/new logo.jpg')?>" alt="MICA" width="32" height="32" style="border-radius: 6px;" />
-          <span>MICA AESTHETIC CLINIC</span>
+          <span><?php echo COMPANY_NAME?></span>
         </div>
         <nav>
           <a href="<?php echo _route('user:admin')?>" class="nav-item ">
             <span class="icon">📊</span>
             <span>Dashboard</span>
           </a>
-          <a href="<?php echo _route('category:index')?>" class="nav-item" >
-            <span class="icon">⚙️</span>
-            <span>Categories</span>
-          </a>
-          <a href="<?php echo _route('service:index')?>" class="nav-item" >
-            <span class="icon">📦</span>
-            <span>Inventory</span>
-          </a>
-          <a href="<?php echo _route('service-bundle:index')?>" class="nav-item" >
-            <span class="icon">🧰</span>
-            <span>Services</span>
-          </a>
-          <a href="<?php echo _route('appointment:index')?>" class="nav-item" >
-            <span class="icon">📅</span>
-            <span>Appointments</span>
-          </a>
-          <a href="<?php echo _route('user:index')?>" class="nav-item">
+          <?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN'])) :?>
+            <a href="<?php echo _route('category:index')?>" class="nav-item" >
+              <span class="icon">⚙️</span>
+              <span>Categories</span>
+            </a>
+          <?php endif?>
+
+          <?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN'])) :?>
+            <a href="<?php echo _route('service:index')?>" class="nav-item" >
+              <span class="icon">📦</span>
+              <span>Inventory</span>
+            </a>
+          <?php endif?>
+          
+          <?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN'])) :?>
+            <a href="<?php echo _route('service-bundle:index')?>" class="nav-item" >
+              <span class="icon">🧰</span>
+              <span>Services</span>
+            </a>
+          <?php endif?>
+
+          <?php if(isEqual(whoIs('user_type'), [USER_TYPES['STAFF'], USER_TYPES['CUSTOMER']])) :?>
+            <a href="<?php echo _route('appointment:index')?>" class="nav-item" >
+              <span class="icon">📅</span>
+              <span>Appointments</span>
+            </a>
+          <?php endif?>
+
+          <?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN'])) :?>
+            <a href="<?php echo _route('report:create')?>" class="nav-item" >
+              <span class="icon">📅</span>
+              <span>Reports</span>
+            </a>
+          <?php endif?>
+         
+          <a href="<?php echo isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) ? _route('user:index') : _route('user:profile')?>" class="nav-item">
             <span class="icon">👤</span>
             <span>Manage Account</span>
           </a>
@@ -316,6 +337,7 @@
       </aside>
 
       <main class="content">
+        <p style="text-align: right;"><?php echo whoIs('first_name') .  '/' . whoIs('user_type')?></p>
         <?php  produce('page-control')?>
         <?php  produce('content')?>
 

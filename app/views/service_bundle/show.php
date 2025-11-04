@@ -115,7 +115,7 @@
 							<th>Ref</th>
 							<th><?php echo $formService->getLabel('service')?></th>
 							<th><?php echo $formService->getLabel('category_id')?></th>
-							<th><?php echo $formService->getLabel('description')?></th>
+							<th><span title="Quantity Per Usage">QPU</span></th>
 							<th><?php echo $formService->getLabel('status')?></th>
 							<th>Stocks</th>
 						</thead>
@@ -129,7 +129,7 @@
 									<td><?php echo $row->code?></td>
 									<td><?php echo $row->service?></td>
 									<td><?php echo $row->category?></td>
-									<td><?php echo $row->description?></td>
+									<td><?php echo $row->quantity_per_usage?></td>
 									<td><?php echo $row->status?></td>
 									<td><?php echo $row->total_stock?></td>
 								</tr>

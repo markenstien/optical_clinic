@@ -83,6 +83,18 @@
         return $diff->format("%a days");
     }
 
+    function date_difference_number_format($date1, $date2) {
+        // Convert the date strings to DateTime objects
+        $datetime1 = new DateTime($date1);
+        $datetime2 = new DateTime($date2);
+
+        // Calculate the difference
+        $interval = $datetime1->diff($datetime2);
+
+        // Return the absolute number of days
+        return $interval->days;
+    }
+
 
     function timeInMinutesToHours($timeInMinutes , $isHTML = false)
     {

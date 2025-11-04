@@ -58,4 +58,4 @@
 	</style>
 <?php endbuild()?>
 
-<?php loadTo()?>
+<?php loadTo('tmp/base')?>

@@ -23,26 +23,22 @@
 <?php produce('styles')?>
 <body>
 
-<div class="col-md-5 mx-auto">
+<div class="col-md-8 mx-auto">
 	<?php if( isset($results)) :?>
 		<?php divider()?>
 		<div class="text-center">
-			<h4>Vital Care Report</h4>
+			<h4><?php echo COMPANY_NAME?></h4>
 			<h5>For</h5>
 			<p><?php echo "{$filter['start_date']} to {$filter['end_date']}" ?></p>
 		</div>
 		<table class="table table-bordered">
 			<tr>
 				<td>Total Appointments</td>
-				<td>Total Arrived Appointments</td>
-				<td>Total Sessions</td>
-				<td>Estimated Revenue</td>
+				<td>Total Completed Appointments</td>
 			</tr>
 			<tr>
 				<td><?php echo $summary['total_appointments'] ?></td>
 				<td><?php echo $summary['total_appointment_arrived'] ?></td>
-				<td><?php echo $summary['total_sessions'] ?></td>
-				<td><?php echo $summary['estimated_revenue'] ?></td>
 			</tr>
 		</table>
 
@@ -64,45 +60,29 @@
 
 		<?php if( isset($report_grouped) && $report_grouped ) :?>
 			<h4>Daily</h4>
-			<section style="border:1px solid #000; padding: 10px;margin-bottom: 15px;">
-				<h5>Appointments</h5>
+			<section style="padding: 10px;margin-bottom: 15px;">
+				<h5>Appointments - Date/Appointments/Completed Appointments</h5>
 				<?php foreach($report_grouped['appointments'] as $key => $items) :?>
-				<table class="table table-bordered">
-					<tr>
-						<td><?php echo $key?></td>
-						<td><?php echo !empty($items) ? count($items) : 'No Appointments'?></td>
-					</tr>
-				</table>
+					<?php
+						$date = $key;
+						$totalCompletedAppointment = 0;
+
+						foreach($items as $itemKey => $row) {
+							if(isEqual($row->status, 'completed')) {
+								$totalCompletedAppointment++;
+							}
+						}
+					?>
+
+					<table class="table">
+						<tr>
+							<td style="width: 30%;"><?php echo $key?></td>
+							<td style="width: 40%;"><?php echo count($items)?></td>
+							<td><?php echo $totalCompletedAppointment?></td>
+						</tr>
+					</table>
 				<?php endforeach?>
 			</section>
-
-			<?php if( $report_grouped['sessions']) :?>
-				<section style="border:1px solid #000; padding: 10px;margin-bottom: 15px;">
-					<h5>Sessions</h5>
-					<?php foreach($report_grouped['sessions'] as $key => $items) :?>
-					<table class="table table-bordered">
-						<tr>
-							<td><?php echo $key?></td>
-							<td><?php echo !empty($items) ? count($items) : 'No Appointments'?></td>
-						</tr>
-					</table>
-					<?php endforeach?>
-				</section>
-			<?php endif?>
-
-			<?php if( $report_grouped['services_catered']) :?>
-				<section style="border:1px solid #000; padding: 10px;margin-bottom: 15px;">
-					<h5>Services Catered</h5>
-					<?php foreach($report_grouped['services_catered'] as $key => $items) :?>
-					<table class="table table-bordered">
-						<tr>
-							<td><?php echo $key?></td>
-							<td><?php echo !empty($items) ? count($items) : 'No Appointments'?></td>
-						</tr>
-					</table>
-					<?php endforeach?>
-				</section>
-			<?php endif?>
 		<?php endif?> 
 
 			<?php if( $results['appointments']) :?>
@@ -110,38 +90,23 @@
 				<table class="table table-bordered table-sm">
 					<thead>
 						<th>Date</th>
+						<th>Service</th>
 						<th>Reference</th>
 						<th>Guest Name</th>
+						<th>Doctor</th>
 					</thead>
 
 					<tbody>
 						<?php foreach($results['appointments'] as $row) :?>
-							<tr>
-								<td><?php echo $row->date?></td>
-								<td><?php echo $row->reference?></td>
-								<td><?php echo $row->guest_name?></td>
-							</tr>
-						<?php endforeach?>
-					</tbody>
-				</table>
-			<?php endif?>
-
-
-			<?php if( $results['sessions']) :?>
-				<h4>Sessions</h4>
-				<table class="table table-bordered table-sm">
-					<thead>
-						<th>Date</th>
-						<th>Guest Name</th>
-					</thead>
-
-					<tbody>
-						<?php foreach($results['sessions'] as $row) :?>
-							<tr>
-								<td><?php echo $row->date_created?></td>
-								<td><?php echo $row->guest_name?></td>
-								<td><?php echo $row->doctor_name?></td>
-							</tr>
+							<?php if(isEqual($row->status, 'completed')) :?>
+								<tr>
+									<td><?php echo $row->date?></td>
+									<td><?php echo $row->service_name?></td>
+									<td><?php echo $row->reference?></td>
+									<td><?php echo $row->guest_name?></td>
+									<td><?php echo $row->first_name . ' ' .$row->last_name?></td>
+								</tr>
+							<?php endif?>
 						<?php endforeach?>
 					</tbody>
 				</table>

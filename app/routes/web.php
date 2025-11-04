@@ -19,6 +19,8 @@
 		'send-verification' => $controller .'/sendVerification',
 		'add-specialization' => $controller .'/addSpecialization',
 		'remove-specialization' => $controller .'/removeSpecialization',
+		'disable' => $controller .'/disable',
+		'enable' => $controller .'/enable',
 	];
 
 	$controller = '/AuthController';
@@ -91,7 +93,11 @@
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
 		'appointment_form' => $controller. '/appointment_form',
-		'payment-add' => $controller .'/addPayment'
+		'payment-add' => $controller .'/addPayment',
+		'approve' => $controller .'/approve',
+		'arrived' => $controller .'/arrived',
+		'cancel' => $controller .'/cancel',
+		'complete' => $controller .'/complete'
 	];
 
 	$controller = '/BillController';
@@ -187,7 +193,8 @@
 		'delete' => $controller.'/destroy',
 		'show'   => $controller.'/show',
 		'log'   => $controller.'/log',
-		'add'  => $controller.'/addStock'
+		'add'  => $controller.'/addStock',
+		'completed'  => $controller.'/completed',
 	];
 
 	$controller = '/SettingController';
@@ -251,6 +258,15 @@
 		'register' => $controller .'/register',
 		'login' => $controller .'/login',
 		'landing' => $controller .'/landing',
+	];
+
+	$controller = '/ReportController';
+	$routes['report'] = [
+		'index' => $controller.'/index',
+		'edit' => $controller.'/edit',
+		'create' => $controller.'/create',
+		'delete' => $controller.'/destroy',
+		'show'   => $controller.'/show'
 	];
 
 	

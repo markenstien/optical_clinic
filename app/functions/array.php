@@ -195,21 +195,19 @@
     function keypairtostr($arr , $separator = null , $rowSeparator = null , $valueWrapper = null)
     {
         $strArr = '';
-
-
-        if( is_null($valueWrapper))
+        if(is_null($valueWrapper))
             $valueWrapper = "'";
-
-        if( is_null($separator))
+        if(is_null($separator))
             $separator = '=';
-
         $arrCount = count($arr);
-
         foreach($arr as $key => $value)
         {
-            $strArr .= " {$key} {$separator} {$valueWrapper}{$value}{$valueWrapper}";
-                if(!is_null($rowSeparator))
+            $strArr .= "{$key}{$separator}{$valueWrapper}{$value}{$valueWrapper}";
+            if($key <= count($arr)) {
+                if(!is_null($rowSeparator)) {
                     $strArr .= "$rowSeparator";
+                }
+            }
         }
         return $strArr;
     }

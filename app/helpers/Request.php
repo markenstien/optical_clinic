@@ -157,4 +157,16 @@
         {
             header("Location:".$this->referrer());
         }
+
+		public function getCompleteURL() 
+		{
+			$url = $this->url();
+			$params = keypairtostr($this->inputs(), '=', '&', '');
+			return $url . '?'.$params;
+		}
+
+		public function getURLParams()
+		{
+			return keypairtostr($this->inputs(), '=', '&', ''); 
+		}
 	}

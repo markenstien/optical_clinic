@@ -1,6 +1,11 @@
 <?php
-	load(['ServiceForm'] , APPROOT.DS.'form');
 	use Form\ServiceForm;
+    use Services\StockService;
+
+	load(['ServiceForm'] , APPROOT.DS.'form');
+	load(['StockService'] , APPROOT.DS.'services');
+
+
 
 	class ServiceController extends Controller
 	{
@@ -18,11 +23,30 @@
 			_authRequired();
 
 			$services = $this->model->getAll();
+			$stocks = $this->modelStock->getAll([
+				'where' => [
+					'entry_origin' => StockService::ENTRY_PURCHASE_ORDER
+				]
+			]);
+
+			$stocksForFastMoving = $this->modelStock->getAll();
+			//fast moving
+
+			$expiringStocks = [];
+			foreach($stocks as $key => $row) {
+				if(empty($row->expiry_date)) continue;
+
+				$expiringStocks [] = $row;
+			}
+			/**
+			 * stocks from purcahse order
+			 */
 
 			$data = [
 				'title' => 'Products',
 				'services' => $services,
-				'form' => $this->_form
+				'form' => $this->_form,
+				'expiringStocks' => $expiringStocks
 			];
 			return $this->view('service/index' , $data);
 		}

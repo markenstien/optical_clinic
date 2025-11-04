@@ -33,22 +33,28 @@
 		public function getAll($params = []) {
 			$where = null;
 			$order = null;
+			$groupBy = null;
 
 			if(!empty($params['where'])) {
 				$where = " WHERE ". parent::conditionConvert($params['where']);
 			}
-
 			if(!empty($params['order'])) {
 				$order = " ORDER BY {$params['order']}";
 			}
-
+			if(!empty($params['group'])) {
+				$groupBy = " GROUP BY {$params['group']}";
+			}
 			$this->db->query(
-				"SELECT sb.*,
-					uss.id as uss_id 
-					FROM {$this->table} as uss
-					LEFT JOIN service_bundles as sb
-						ON sb.id = uss.service_id
+				"SELECT uss.id as uss_id, uss.user_id as user_id,
+					sb.*,user.first_name, user.last_name, user.is_disabled
+						FROM {$this->table} as uss
+							LEFT JOIN service_bundles as sb
+								ON uss.service_id = sb.id
+							LEFT JOIN users as user 
+								ON uss.user_id = user.id
+
 					{$where}
+					{$groupBy}
 					{$order} "
 			);
 

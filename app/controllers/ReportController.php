@@ -11,10 +11,9 @@
 
 		public function create()
 		{	
-
 			$data = [];
 
-			if( isset($_GET['report_create']) )
+			if(isset($_GET['report_create']))
 			{
 				$results = $this->model->createReport( $_GET );
 				$summary = $this->model->summarizeResults($results);
@@ -22,11 +21,9 @@
 				$appointments = $results['appointments'];
 				$services_catered = $results['services_catered'];
 
-
-				if( !empty($_GET['report_type']) )
+				if(!empty($_GET['report_type']))
 				{
 					$report_type = $_GET['report_type'];
-
 					$report_grouped  = [
 						'sessions' => $this->model->groupResults($sessions , $report_type, 'date_created'),
 						'appointments' => $this->model->groupResults($appointments , $report_type , 'date'),
@@ -34,7 +31,6 @@
 					];
 				}
 				
-
 				$data = [
 					'title' => 'Create Report',
 					'results' => $results,
@@ -46,7 +42,7 @@
 					$data['report_grouped'] = $report_grouped;
 			}
 
-			if( isset($data['results']) ){
+			if(isset($data['results'])){
 				return $this->view('report/index_skeleton' , $data);
 			}
 			

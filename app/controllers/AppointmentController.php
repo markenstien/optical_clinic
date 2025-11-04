@@ -1,8 +1,10 @@
 <?php 	
 	use Form\AppointmentForm;
 	use Form\PaymentForm;
+	use Services\StockService;
 
 	load(['AppointmentForm','PaymentForm'] , APPROOT.DS.'form');
+	load(['StockService'] , APPROOT.DS.'services');
 
 	class AppointmentController extends Controller
 	{
@@ -11,7 +13,9 @@
 		$category,
 		$service_cart_model,
 		$reservationFeeModel,
-		$modelPayment, $modelOrder, $modelSession;
+		$modelPayment, $modelOrder, $modelSession,
+		$userServiceSpecializationModel,
+		$userModel;
 
 		public $_form,$_paymentForm;
 
@@ -21,6 +25,7 @@
 			$this->service = model('ServiceModel');
 			$this->modelPayment = model('PaymentModel');
 			$this->modelOrder = model('OrderModel');
+			$this->userModel = model('userModel');
 
 			$this->service_bundle = model('ServiceBundleModel');
 			$this->category = model('CategoryModel');
@@ -28,6 +33,7 @@
 			$this->model = model('AppointmentModel');
 			$this->reservationFeeModel  = model('ReservationFeeSettingModel');
 			$this->modelSession = model('SessionModel');
+			$this->userServiceSpecializationModel = model('UserServiceSpecializationModel');
 
 			$this->_form = new AppointmentForm();
 			$this->_paymentForm = new PaymentForm();
@@ -76,12 +82,16 @@
 			*/
 			$auth = whoIs();
 
-			if(isEqual($auth->user_type , 'patient')){
+			if(isEqual($auth->user_type , [USER_TYPES['CUSTOMER']])){
 				$appointments = $this->model->all([
 					'user_id' => $auth->id
-				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, date desc");
+				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled','completed') asc, date asc");
+			}else if(isEqual($auth->user_type , [USER_TYPES['DOCTOR']])) {
+				$appointments = $this->model->all([
+					'staff_assigned_id' => $auth->id
+				], "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled','completed') asc, date asc");
 			}else{
-				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled') asc, id desc, date desc");
+				$appointments = $this->model->all(null, "FIELD(status, 'scheduled', 'pending', 'arrived', 'cancelled', 'completed') asc, id desc, date asc");
 			}
 
 			$data = [
@@ -128,65 +138,97 @@
 
 		public function create()
 		{	
-			if( isset($_GET['btn_filter']) )
-			{	
-				$rq  = request()->inputs();
+			$req = request()->inputs();
+			$data = [];
+			if($req['page'] ?? '' == 'customize-appointment') {
+				$isCompleteCycle = true;
+				$completeCycle = [
+					'service_id',
+					'doctor_id',
+					'date',
+					'time'
+				];
 
-				if( empty($rq['key_word']) && !isset($rq['categories']) )
-				{
-					Flash::set("Filter failed" , 'danger');
-					return request()->return();
+				foreach($completeCycle as $key => $row) {
+					if(empty($req[$row])) {
+						$isCompleteCycle = false;
+					}
 				}
 
-				$services = $this->service->getByFilter( $rq );
+				/**
+				 * get appointments of selected date
+				 */
+				
+				if(!empty($req['date'])) {
+					$appointments = $this->model->all([
+						'date' => $req['date'],
+						'staff_assigned_id' => $req['doctor_id']
+					]);
 
-				$service_bundles = $this->service_bundle->getByFilter($rq);
+					$data['appointments'] = $appointments;
+					/**
+					 * group appointments by date
+					 */
 
-			}elseif(isset($_GET['category']))
-			{
-				$services = $this->service->getAll([
+					/**
+					 * group by start time
+					 */
+					$data['groupByStartTime'] = [];
+					foreach($appointments as $key => $row) {
+						$startTime = date('h:i A', strtotime($row->start_time));
+						if(!isset($data['groupByStartTime'][$startTime])) {
+							$data['groupByStartTime'][$startTime] = [];
+						}
+						$data['groupByStartTime'][$startTime][] = $row;
+					}
+				}
+
+				if($isCompleteCycle) {
+					$time = unseal($req['time']);
+					$startAndEnd = explode('-', $time);
+					foreach($startAndEnd as $key => $row) {
+						$startAndEnd[$key] = trim($row);
+					}
+
+					$service = $this->service_bundle->get($req['service_id']);
+
+					$createAppointmentData = [
+						'date' => $req['date'],
+						'staff_assigned_id' => $req['doctor_id'],
+						'service_inquired_id' => $req['service_id'],
+						'start_time' => $startAndEnd[0],
+						'end_time' => $startAndEnd[1],
+						'reservation_fee' => $service->price_custom,
+					];
+
+					if(!empty(whoIs())) {
+						$createAppointmentData['user_id'] = whoIs('id');
+						$createAppointmentData['guest_email'] = whoIs('email');
+						$createAppointmentData['guest_name'] = whoIs('first_name') . ' '. whoIs('last_name');
+						$createAppointmentData['guest_phone'] = whoIs('phone_number');
+					}
+					$resp = $this->model->create($createAppointmentData);
+
+					if($resp) {
+						Flash::set("Reservation Sent");
+						return redirect(_route('appointment:index'));
+					}
+				}
+
+				$data['service'] = $this->service_bundle->getWithItems($req['service_id']);
+				$data['doctors'] = $this->userServiceSpecializationModel->getAll([
 					'where' => [
-						'category' => $_GET['category']
+						'service_id' => $req['service_id']
 					]
 				]);
 
-				$service_bundles = $this->service_bundle->getAll([
-					'where' => [
-						'category' => $_GET['category']
-					]
-				]);
-			}else
-			{
-
-				$services = $this->service->getAll([
-					'where' => [
-						'is_visible' => true
-					]
-				]);
-
-				$service_bundles = $this->service_bundle->getAll([
-					'where' => [
-						'is_visible' => true
-					]
-				]);
+				if(!empty($req['doctor_id'])){
+					$data['doctor'] = $this->userModel->get($req['doctor_id']);
+				}
+				return $this->view('appointment_booking/customize_appointment' , $data);
+			} else {
+				return $this->view('appointment_booking/index' , $data);
 			}
-
-			$categories = $this->category->getAll([
-				'cat_key' => 'SERVICES'
-			]);
-
-			$cart_summary = $this->service_cart_model->getCartSummary();
-
-			$data = [
-				'title' => 'Create An Appointment',
-				'categories' => $categories,
-				'service_bundles' => $service_bundles,
-				'services'   => $services,
-				'service_cart_model' => $this->service_cart_model,
-				'cart_summary'  => $cart_summary
-			];
-
-			return $this->view('appointment/create' , $data);
 		}
 
 
@@ -250,6 +292,14 @@
 				'global_id' => $payment->id ?? 0
 			]);
 
+			if($appointment->service_inquired_id) {
+				$appointment->service_bundle = $this->service_bundle->get($appointment->service_inquired_id);
+			}
+
+			if($appointment->staff_assigned_id) {
+				$appointment->doctor = $this->userModel->get($appointment->staff_assigned_id);
+			}
+
 			$data = [
 				'appointment' => $appointment,
 				'title' => '#'.$appointment->reference. ' | Appointment',
@@ -285,5 +335,111 @@
 			$this->data['paymentForm'] = $this->_paymentForm;
 			$this->data['appointment'] = $appointment;
 			return $this->view('appointment/payment', $this->data);
+		}
+
+		public function cancel($id)
+		{
+			$appointment = $this->model->get($id);
+			if($appointment->user_id)
+			{
+				_notify("Your Appointment {$appointment->reference} has been cancelled" , [$appointment->user_id], [
+					'href' => _route('appointment:show', $appointment->id)
+				]);
+			}
+
+			_notify_operations("Appointment {$appointment->reference} has been cancelled", [
+				'href' => _route('appointment:show', $appointment->id)
+			]);
+			
+			//update status
+			$this->model->update([
+				'status' => 'cancelled'
+			], $appointment->id);
+			Flash::set("Appointment Has been cancelled");
+			return redirect(_route('appointment:show', $appointment->id));
+		}
+
+		public function approve($id) {
+			$appointment = $this->model->get($id);
+
+			if($appointment->user_id)
+			{
+				_notify("Your Appointment {$appointment->reference} has been approved" , [$appointment->user_id], [
+					'link' => _route('appointment:show', $appointment->id)
+				]);
+			}
+
+			_notify_operations("Appointment {$appointment->reference} has been approved", [
+				'link' => _route('appointment:show', $appointment->id)
+			]);
+			
+			//update status
+			$this->model->update([
+				'status' => 'approved'
+			], $appointment->id);
+			Flash::set("Appointment Approved");
+			return redirect(_route('appointment:show', $appointment->id));
+		}
+
+		public function arrived($id) {
+			$appointment = $this->model->get($id);
+
+			if($appointment->user_id)
+			{
+				_notify("Your Appointment {$appointment->reference} has been updated to arrived" , [$appointment->user_id], [
+					'link' => _route('appointment:show', $appointment->id)
+				]);
+			}
+
+			_notify_operations("Appointment {$appointment->reference} has been updated to arrived", [
+				'link' => _route('appointment:show', $appointment->id)
+			]);
+			
+			//update status
+			$this->model->update([
+				'status' => 'arrived'
+			], $appointment->id);
+			Flash::set("Appointment is updated to arrived");
+			return redirect(_route('appointment:show', $appointment->id));
+		}
+		
+		public function complete($id) {
+			$this->stockModel = model('StockModel');
+			$appointment = $this->model->get($id);
+			if(!isEqual($appointment->status, 'completed')) {
+				//get service_inquired_id
+				$service_bundle = $this->service_bundle->getWithItems($appointment->service_inquired_id);
+				foreach($service_bundle->items as $key => $item) {
+					$this->stockModel->createOrUpdate([
+						'item_id' => $item->service_id,
+						'quantity' => $item->quantity_per_usage,
+						'entry_type' => StockService::ENTRY_DEDUCT,
+						'entry_origin' => StockService::ENTRY_ORIGIN,
+						'date' => date('Y-m-d'),
+						'remarks' => 'Appointment# '. $appointment->reference
+					]);
+				}
+
+				/**
+				 * notification
+				 */
+				if($appointment->user_id)
+				{
+					_notify("Your Appointment {$appointment->reference} has been completed" , [$appointment->user_id], [
+						'link' => _route('appointment:show', $appointment->id)
+					]);
+				}
+
+				_notify_operations("Appointment {$appointment->reference} has been completed", [
+					'link' => _route('appointment:show', $appointment->id)
+				]);
+				
+				//update status
+				$this->model->update([
+					'status' => 'completed'
+				], $appointment->id);
+				Flash::set("Appointment Complete");
+				return redirect(_route('appointment:show', $appointment->id));
+			}
 		}
 	}

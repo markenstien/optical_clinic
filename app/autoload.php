@@ -22,7 +22,8 @@
 		'database',
 		'modules',
 		'notify',
-		'email_tmp'
+		'email_tmp',
+		'helper_config',
 	]);
 
 	chdir('../app');

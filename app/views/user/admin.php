@@ -1,7 +1,7 @@
 <?php build('content') ?>
 <div class="banner">
     <div>
-        <h2>📊 Admin Dashboard</h2>
+        <h2>📊 Dashboard</h2>
         <p style="margin: 8px 0 0 0; opacity: 0.9; font-size: 16px;">Welcome to your clinic management center</p>
     </div>
     <div style="display: flex; align-items: center; gap: 16px;">
@@ -17,6 +17,7 @@
 </div>
 
 <section>
+    <?php Flash::show()?>
     <div class="grid-3">
         <!-- Quick Stats Card -->
         <div class="card">
@@ -60,44 +61,48 @@
         <div class="mica-card">
             <div class="txt">MICA<br/>AESTHETIC<br/>CLINIC</div>
         </div>
-
+        <?php if(isEqual(whoIs('user_type'), [USER_TYPES['ADMIN'], USER_TYPES['STAFF']])) :?>
         <!-- Notifications Card -->
         <div class="card" style="grid-column: 1 / span 2;">
-        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-            <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #9a6f46, #b8824a); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 8px 20px rgba(154,111,70,.3);">🔔</div>
-            <div>
-            <h3 style="margin: 0; color: #2c3e50; font-size: 20px; font-weight: 700;">System Notifications</h3>
-            <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Inventory alerts and system status</p>
-            </div>
-            <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1); border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
-            3 ALERTS
-            </div>
+                <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #9a6f46, #b8824a);
+                        border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; 
+                        box-shadow: 0 8px 20px rgba(154,111,70,.3);">🔔
+                        </div>
+                    <div>
+                        <h3 style="margin: 0; color: #2c3e50; font-size: 20px; font-weight: 700;">System Notifications</h3>
+                        <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Inventory alerts and system status</p>
+                    </div>
+                    <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1); border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
+                        3 ALERTS
+                    </div>
+                </div>
+            <ul class="notif-list">
+                <li>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 16px;">📦</span>
+                    <span style="font-weight: 500;">Low-stock products</span>
+                </div>
+                <?php if ($lowCount > 0): ?>
+                    <span class="badge red"><?php echo $lowCount; ?></span>
+                <?php else: ?>
+                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);">OK</span>
+                <?php endif; ?>
+                </li>
+                <li>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 16px;">⏰</span>
+                    <span style="font-weight: 500;">Near-expiry (20 days)</span>
+                </div>
+                <?php if ($nearExpiryCount > 0): ?>
+                    <span class="badge orange"><?php echo $nearExpiryCount; ?></span>
+                <?php else: ?>
+                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);" onclick="window.location.href='<?php echo _route('service:index')?>'">OK</span>
+                <?php endif; ?>
+                </li>
+            </ul>
         </div>
-        <ul class="notif-list">
-            <li>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 16px;">📦</span>
-                <span style="font-weight: 500;">Low-stock products</span>
-            </div>
-            <?php if ($lowCount > 0): ?>
-                <span class="badge red"><?php echo $lowCount; ?></span>
-            <?php else: ?>
-                <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);">OK</span>
-            <?php endif; ?>
-            </li>
-            <li>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="font-size: 16px;">⏰</span>
-                <span style="font-weight: 500;">Near-expiry (30 days)</span>
-            </div>
-            <?php if ($nearExpiryCount > 0): ?>
-                <span class="badge orange"><?php echo $nearExpiryCount; ?></span>
-            <?php else: ?>
-                <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);">OK</span>
-            <?php endif; ?>
-            </li>
-        </ul>
-        </div>
+        <?php endif?>
 
         <!-- Inspirational Quote Card -->
         <div class="quote-card">
@@ -112,6 +117,8 @@
         </div>
 
         <!-- Doctor Appointments Panel -->
+
+        <?php if(isEqual(whoIs('user_type'), USER_TYPES['DOCTOR'])) :?>
         <div class="card" style="grid-column: 1 / span 3;">
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
             <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #9a6f46, #b8824a); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 8px 20px rgba(154,111,70,.3);">👩‍⚕️</div>
@@ -121,15 +128,10 @@
             </div>
             <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1);
              border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
-            
+                <?php echo count($appointments)?>
             </div>
         </div>
-
-        <div class="no-appointments">
-            <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.4;">📅</div>
-            <div style="font-weight: 600; font-size: 16px;">No upcoming appointments</div>
-            <div style="margin-top: 8px; font-size: 14px; opacity: 0.8;">All doctors are currently free</div>
-        </div>
+        <?php endif?>
         <!-- Welcome Message Card -->
         <div class="quote-card" style="grid-column: 1 / span 3; background: linear-gradient(135deg, #9a6f46, #b8824a); min-height: 120px;">
         <div style="text-align: center; position: relative; z-index: 2;">

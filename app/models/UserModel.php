@@ -233,10 +233,6 @@
 		public function update($user_data , $id)
 		{
 			$res = $this->save($user_data , $id);
-
-			//check muna if doctor
-
-
 			if(!$res) {
 				$this->addError("Unable to create user");
 				return false;
@@ -362,6 +358,46 @@
 			}
 
 			return $auth;
+		}
+
+		public function disable($id) {
+			$isOkay = parent::update([
+				'is_disabled' => true
+			], $id);
+
+			$date = date('Y-m-d h:i A');
+
+			if($isOkay) {
+				$this->addMessage("User successfully disabled");
+				_notify("You account has been disabled on date {$date}", [$id]);
+				_notify_operations("Account has been disabled on date {$date}", [
+					'href' => _route('user:show', $id)
+				]);
+				return true;
+			} else {
+				$this->addMessage("Something went wrong");
+				return false;
+			}
+		}
+
+		public function enable($id) {
+			$isOkay = parent::update([
+				'is_disabled' => false
+			], $id);
+
+			$date = date('Y-m-d h:i A');
+
+			if($isOkay) {
+				$this->addMessage("User successfully re-enabled account");
+				_notify("You account has been re-enabled on date {$date}", [$id]);
+				_notify_operations("Account has been re-enabled on date {$date}", [
+					'href' => _route('user:show', $id)
+				]);
+				return true;
+			} else {
+				$this->addMessage("Something went wrong");
+				return false;
+			}
 		}
 
 	}

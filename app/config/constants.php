@@ -57,4 +57,19 @@
     define('COMPANY_CONTACT', '(+63) 995 322 5898 ');
 
     define('FILE_IMAGE_TYPES', ['png','jpg','jpeg','bitmap']);
+
+    const USER_TYPES = [
+        'ADMIN' => 'admin',
+        'CUSTOMER' => 'customer',
+        'STAFF' => 'staff',
+        'DOCTOR' => 'doctor',
+    ];
+
+    const SCHEDULING = [
+        'office_open' => '07:00 AM', 
+        'office_close' => '08:00 PM',
+        'max_customer_per_service_date_slot' => 20,
+        'service_time_per_time_slot' => 2, // total service time every time slot if 2 will be 7:00AM - 9:00AM
+        'max_customer_per_service_time_slot' => 1
+    ];
 ?>

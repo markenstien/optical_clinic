@@ -183,7 +183,7 @@
 					
 					setTimeout(function() {
 						$('#item-update-message').html('');
-					},1000); 
+					},2000); 
 				}
 			});
 		}
