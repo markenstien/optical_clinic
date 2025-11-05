@@ -1,5 +1,5 @@
-// const URL = 'https://www.micaclinic.site/api';
-const URL = 'http://dev.merimeri/api';
+const URL = 'https://www.micaclinic.site/api';
+// const URL = 'http://dev.merimeri/api';
 
 const DS  = '/';
 

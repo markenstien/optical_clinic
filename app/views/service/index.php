@@ -53,7 +53,7 @@
 								<td><?php echo $row->description?></td>
 								<td><?php echo $row->is_visible == true ? 'Active' : 'In-Active'?></td>
 								<td><?php echo $row->total_stock?></td>
-								<td>
+							<td>
 									<?php
 										__([
 											btnView(_route('service:show' , $row->id)),
