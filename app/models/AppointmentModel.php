@@ -58,37 +58,23 @@
 			
 			if($appointment_id)
 			{
-				// $user_model = model('UserModel');
-				// if(!empty($appointment_data['user_id']))
-				// {
-				// 	$user = $user_model->single(['id' => $appointment_data['user_id']]);
-				// 	$email = $user->email;
-				// 	$user_mobile_number = $user->phone_number;
-				// } else {
-				// 	$email = $appointment_data['guest_email'];
-				// 	$user_mobile_number = $appointment_data['guest_phone'];
-				// }
-				// $user = $user_model->getByKey('email', $email)[0] ?? false;
-				// if($user) {
-				// 	parent::update([
-				// 		'user_id' => $user->id
-				// 	], $appointment_id);
-				// }
+				$user_model = model('UserModel');
+				if(!empty($appointment_data['user_id']))
+				{
+					$user = $user_model->single(['id' => $appointment_data['user_id']]);
+					$appointment_data['guest_email'] = $user->email;
+				}
 
 				_notify_operations("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
 				/**
 				 * notify user for this appointment
 				 */
 				if(!empty($appointment_data['user_id'])) {
-					_notify('Your appointment has been sent, waiting for admin approval', $appointment_data['user_id'], [
+					_notify('Your appointment has been sent, waiting for admin approval', [$appointment_data['user_id']], [
 						'href' => $appointment_link
 					]);
 				}
-
-				/**
-				 * send email about the appointment
-				 */
-
+				
 				$emailBody =$this->emailFormat($appointment_id);
 				_mail($appointment_data['guest_email'], "Appointment Details - " . COMPANY_NAME, $emailBody);
 			}
@@ -327,7 +313,7 @@
 					<li>Phone Number : {$companyPhoneNumber}</li>
 					<li>Email : {$companyEmail}</li>
 				</ul>
-				
+
 				<p style='text-center'>{$companyAddress}</p>
 			EOF;
 

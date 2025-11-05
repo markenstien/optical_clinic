@@ -211,17 +211,15 @@
 
 					if(isSubmitted()) {
 						$postData = request()->posts();
-						if(!empty(whoIs())) {
-							$createAppointmentData['user_id'] = whoIs('id');
-							$createAppointmentData['guest_email'] = whoIs('email');
-							$createAppointmentData['guest_name'] = whoIs('first_name') . ' '. whoIs('last_name');
-							$createAppointmentData['guest_phone'] = whoIs('phone_number');
-						} else {
-							$createAppointmentData['user_id'] = '';
-							$createAppointmentData['guest_email'] = $postData['email'];
-							$createAppointmentData['guest_name'] = $postData['first_name'] . ' '. $postData['last_name'];
-							$createAppointmentData['guest_phone'] = $postData['phone_number'];
-						}
+						$createAppointmentData['user_id'] = '';
+						$createAppointmentData['guest_email'] = $postData['email'];
+						$createAppointmentData['guest_name'] = $postData['first_name'] . ' '. $postData['last_name'];
+						$createAppointmentData['guest_phone'] = $postData['phone_number'];
+					} else {
+						$createAppointmentData['user_id'] = whoIs('id');
+						$createAppointmentData['guest_email'] = whoIs('email');
+						$createAppointmentData['guest_name'] = whoIs('first_name') . ' '. whoIs('last_name');
+						$createAppointmentData['guest_phone'] = whoIs('phone_number');
 					}
 					
 					$resp = $this->model->create($createAppointmentData);
