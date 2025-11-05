@@ -74,7 +74,7 @@
 						'href' => $appointment_link
 					]);
 				}
-				
+
 				$emailBody =$this->emailFormat($appointment_id);
 				_mail($appointment_data['guest_email'], "Appointment Details - " . COMPANY_NAME, $emailBody);
 			}
@@ -297,7 +297,7 @@
 					<li>Service : {$appointment->service_name}</li>
 					<li>Doctor : {$appointment->last_name}, {$appointment->first_name}</li>
 					<li>Estimated Cost : {$appointment->reservation_fee}</li>
-				<ul>
+				</ul>
 
 				<p> We will be contacting you, using the following details you sent us. </p>
 
