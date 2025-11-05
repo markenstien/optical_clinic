@@ -51,9 +51,16 @@
             $request = request()->inputs();
 
             if (isset($request['item_id'])) {
-                $logs = $this->model->getProductLogs($request['item_id']);
+                $logs = $this->model->getAll([
+                    'where' => [
+                        'item_id' => $request['item_id']
+                    ],
+                    'order' => 'stock.id desc'
+                ]);
             } else {
-                $logs = $this->model->all(null,'id desc');
+                $logs = $this->model->getAll([
+                    'order' => 'stock.id desc'
+                ]);
             }
 
             $this->data['logs'] = $logs;

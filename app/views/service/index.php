@@ -6,7 +6,10 @@
 	</div>
 	<div class="header-actions">
 		<a class="btn secondary" href="<?php echo _route('service:create')?>">
-		<span>➕</span> Add Product
+			<span>➕</span> Add Product
+		</a>
+		<a class="btn secondary" href="<?php echo _route('stock:log')?>">
+			<span>📋</span> Inventory Records
 		</a>
 	</div>
 </div>
@@ -54,7 +57,9 @@
 									<?php
 										__([
 											btnView(_route('service:show' , $row->id)),
-											
+											btnView(_route('stock:log' , [
+												'item_id' => $row->id
+											]),'Records'),
 										])
 									?>
 								</td>
