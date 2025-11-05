@@ -30,13 +30,6 @@
 
 						<div class="form-group">
 							<?php
-								__( $form->getRow('middle_name') );
-							?>
-						</div>
-
-
-						<div class="form-group">
-							<?php
 								__( $form->getRow('last_name') );
 							?>
 						</div>

@@ -72,17 +72,7 @@
 											<input type="text" value="<?php echo $user->first_name?>" disabled>
 										</div>
 									</div>
-
-									<div class="row">
-										<div class="col-md-3">
-											<?php echo $userForm->getLabel('middle_name')?>
-										</div>
-
-										<div class="col-md-9">
-											<input type="text" value="<?php echo $user->middle_name?>" disabled>
-										</div>
-									</div>
-
+									
 									<div class="row">
 										<div class="col-md-3">
 											<?php echo $userForm->getLabel('last_name')?>
@@ -195,7 +185,7 @@
 								<td><?php echo $appointment->reference?></td>
 								<td><?php echo $appointment->guest_name?></td>
 								<td><?php echo $appointment->user_id !=0 ? 'Yes' : 'No'?></td>
-								<td><?php echo $appointment->date?> <a href="#">Test</a></td>
+								<td><?php echo $appointment->date?></td>
 								<td><?php echo is_null($appointment->start_time) ? 'Not Available on previous version' : $appointment->start_time?></td>
 								<td><?php echo $appointment->type?></td>
 								<td><?php echo wSpanBuilder($appointment->status, $statusColor)?></td>

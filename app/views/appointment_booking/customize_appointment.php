@@ -29,6 +29,7 @@
                             'page' => request()->input('page'),
                             'service_id' => request()->input('service_id'),
                             'doctor_id' => $doctor->user_id,
+                            '#calendarSelection'
                         ])?>" class="box <?php echo $doctor->is_disabled ? 'disabled-link' : ''?>">
                             <div>
                                 <h3><?php echo $doctor->first_name?> <?php echo $doctor->last_name?></h3>
@@ -42,8 +43,8 @@
                     <h1 style="margin: 0px;">✅<?php echo $doctor->last_name?>, <?php echo $doctor->first_name?></h1>
                     <?php echo wDivider()?>
                     <a href="<?php echo _route('appointment:create', [
-                        'page' => request()->input('page'),
-                        'service_id' => request()->input('service_id')
+                        'page' => request()->get('page'),
+                        'service_id' => request()->get('service_id')
                     ])?>" class="box">
                         <div>Change</div>
                     </a>
@@ -61,7 +62,7 @@
                 ];
 
                 foreach($requiredFields as $key => $row) {
-                    if(!in_array($row, array_keys(request()->inputs()))) {
+                    if(!in_array($row, array_keys(request()->get()))) {
                         $valid = false;
                     }
                 }
@@ -70,10 +71,10 @@
             <?php if($valid) :?>
                 <div class="card">
                     <div class="card-body">
-                        <?php if(empty(request()->input('date'))) :?>
+                        <?php if(empty(request()->get('date'))) :?>
                             <div>
                                 <h2>Calendar</h2>
-                                <div class="calendar">
+                                <div class="calendar" id="calendarSelection">
                                     <div class="calendar-header">
                                     <button id="prev-month">&#8592;</button>
                                     <div id="month-year"></div>
@@ -83,47 +84,96 @@
                                 </div>
                             </div>
                         <?php else:?>
-                            <h3><?php echo request()->input('date')?></h3>
+                            <h3><?php echo request()->get('date')?></h3>
                             <?php echo wDivider()?>
                             <a href="<?php echo _route('appointment:create', [
-                                'page' => request()->input('page'),
-                                'service_id' => request()->input('service_id'),
-                                'doctor_id' => request()->input('doctor_id')
+                                'page' => request()->get('page'),
+                                'service_id' => request()->get('service_id'),
+                                'doctor_id' => request()->get('doctor_id')
                             ])?>" class="box">
                                 <div>Change</div>
                             </a>
                             
-                            <h4>Available Time</h4>
+                            <?php if(empty(request()->get('time'))) :?>
+                                <h4 id="timeSelection">Available Time</h4>
+                                <?php
+                                    $generateTimeSlots = __generateTimeSlots(SCHEDULING['office_open'], SCHEDULING['office_close']);
 
-                            <?php
-                                $generateTimeSlots = __generateTimeSlots(SCHEDULING['office_open'], SCHEDULING['office_close']);
+                                    foreach($generateTimeSlots as $key => $row) {
+                                        $time = explode('-', $row);
+                                        $startTime = trim($time[0]);
+                                        $isFullyBookedHour = false;
 
-                                foreach($generateTimeSlots as $key => $row) {
-                                    $time = explode('-', $row);
-                                    $startTime = trim($time[0]);
-                                    $isFullyBookedHour = false;
-
-                                    if(isset($groupByStartTime[$startTime])) {
-                                        if(count($groupByStartTime[$startTime]) >= SCHEDULING['max_customer_per_service_time_slot']) {
-                                            $isFullyBookedHour = true;
+                                        if(isset($groupByStartTime[$startTime])) {
+                                            if(count($groupByStartTime[$startTime]) >= SCHEDULING['max_customer_per_service_time_slot']) {
+                                                $isFullyBookedHour = true;
+                                            }
                                         }
+                                        ?> 
+                                            <a href="<?php echo _route('appointment:create', [
+                                                'page' => request()->get('page'),
+                                                'service_id' => request()->get('service_id'),
+                                                'doctor_id' => request()->get('doctor_id'),
+                                                'date' => request()->get('date'),
+                                                'time' => seal($row),
+                                                '#CustomerDetailForm'
+                                            ])?>" class="book-appointment box <?php echo $isFullyBookedHour ? 'disabled-link' : ''?>">
+                                            <div><?php echo $row?></div>
+                                        </a>
+                                        <?php
                                     }
-                                    ?> 
-                                        <a href="<?php echo _route('appointment:create', [
-                                            'page' => request()->input('page'),
-                                            'service_id' => request()->input('service_id'),
-                                            'doctor_id' => request()->input('doctor_id'),
-                                            'date' => request()->input('date'),
-                                            'time' => seal($row),
-                                        ])?>" class="book-appointment box <?php echo $isFullyBookedHour ? 'disabled-link' : ''?>">
-                                        <div><?php echo $row?></div>
-                                    </a>
-                                    <?php
-                                }
-                            ?>
+                                ?>
+                            <?php else:?>
+                                <h4>Time Reserved : <?php echo unseal(request()->get('time'))?></h4>
+                                <a href="<?php echo _route('appointment:create', [
+                                    'page' => request()->get('page'),
+                                    'service_id' => request()->get('service_id'),
+                                    'doctor_id' => request()->get('doctor_id'),
+                                    '#calendarSelection'
+                                ])?>" class="box">
+                                    <div>Change</div>
+                                </a>
+                            <?php endif?>
+                            
                         <?php endif?>
                     </div>
                     
+                </div> 
+            <?php endif?>
+
+            <?php if(!empty(request()->get('time'))) :?>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 id="CustomerDetailForm">Customer Information </h4>
+                        <?php
+                            Form::open([
+                                'method' => 'post'
+                            ]);
+
+                            Form::hidden('guest_data','guest_date');
+                        ?>
+                        <div class="form-group">
+                            <?php __($userForm->getRow('first_name')) ?>
+                        </div>
+
+                        <div class="form-group">
+                            <?php __($userForm->getRow('last_name')) ?>
+                        </div>
+
+                        <div class="form-group">
+                            <?php __($userForm->getRow('email')) ?>
+                        </div>
+
+                        <div class="form-group">
+                            <?php __($userForm->getRow('phone_number', [
+                                'required' => false
+                            ])) ?>
+                        </div>
+
+                        <input type="submit" role="submit" class="btn" style="background-color: #4caf50; color:#fff" value="Book Appointment">
+
+                        <?php Form::close() ?>
+                    </div>
                 </div> 
             <?php endif?>
     </div>
@@ -246,21 +296,25 @@
             const link = document.createElement("a");
             link.textContent = day;
 
-            // Disable weekends or dates from the disabledDates array
+            // Disable weekends, past dates, or custom disabled dates
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Ignore time part
+
             if (disabledDates.includes(dateStr)) {
-            // Custom disabled dates (red)
-            link.classList.add("disabled");
-            link.style.color = "red";
-            link.style.pointerEvents = "none";
-            } else if (dayOfWeek === 0 || dayOfWeek === 6) {
-            // Weekends (gray)
-            link.classList.add("disabled");
-            link.style.color = "gray";
-            link.style.pointerEvents = "none";
+                // Custom disabled dates (red)
+                link.classList.add("disabled");
+                link.style.color = "red";
+                link.style.pointerEvents = "none";
+            } else if (dateObj < today) {
+                // Past dates (light gray)
+                link.classList.add("disabled");
+                link.style.color = "lightgray";
+                link.style.pointerEvents = "none";
             } else {
-            // Normal clickable day
-            link.href = updateDateInUrl(window.location.href, dateStr);
+                // Normal clickable day
+                link.href = updateDateInUrl(window.location.href, dateStr);
             }
+
 
             dayDiv.appendChild(link);
             daysContainer.appendChild(dayDiv);
@@ -273,7 +327,7 @@
     const [base, queryString] = url.split("?");
     const params = new URLSearchParams(queryString);
     params.set("date", newDate);
-    return `${base}?${params.toString()}`;
+    return `${base}?${params.toString()}#timeSelection`;
     }
 
     if(prevBtn) {
@@ -301,13 +355,15 @@
         el.style.backgroundColor = 'red';
     });
 
-    var elems = document.getElementsByClassName('book-appointment');
-    var confirmIt = function (e) {
-        if (!confirm('Are you sure you want to book this appointment?')) e.preventDefault();
-    };
-    for (var i = 0, l = elems.length; i < l; i++) {
-        elems[i].addEventListener('click', confirmIt, false);
-    }
+    <?php if(!empty(whoIs())) :?>
+        var elems = document.getElementsByClassName('book-appointment');
+        var confirmIt = function (e) {
+            if (!confirm('Are you sure you want to book this appointment?')) e.preventDefault();
+        };
+        for (var i = 0, l = elems.length; i < l; i++) {
+            elems[i].addEventListener('click', confirmIt, false);
+        }
+    <?php endif?>
 </script>
 <?php endbuild()?>
 <?php loadTo('appointment_booking/base')?>

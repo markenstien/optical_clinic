@@ -248,6 +248,17 @@
     opacity: 0.8;
     }
 
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+    }
+
+    div.form-group{
+      margin-bottom: 8px;
+    }
+
       /* Responsive Design - Mobile First */
       @media (max-width: 960px){
         .services{grid-template-columns:repeat(2,1fr)}
@@ -385,7 +396,8 @@
         <div class="nav-actions">
           <a class="btn" href="<?php echo _route('page:login')?>" id="loginBtn" 
             style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18)">Login</a>
-          <a class="cta-btn" href="<?php echo _route('page:register')?>" id="signupBtn">Sign Up</a>
+          <a class="btn" href="<?php echo _route('page:register')?>"
+            style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18)" id="signupBtn">Sign Up</a>
         </div>
         <?php else:?>
             <div class="nav-actions">

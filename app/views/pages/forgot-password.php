@@ -42,30 +42,40 @@
 
       <main class="container center">
         <section class="card auth-card">
-          <h1>User Login</h1>
-          <div class="auth-sub">Login to your account to book appointments and manage your profile.</div>
+          <h1>Forget Password</h1>
+          <div class="auth-sub">Use the email you used for your account</div>
           <?php Flash::show()?>
-          <form method="post" class="profile-form" action="<?php echo _route('auth:login')?>">
-            <div class="form-grid">
-              <label><span>Email</span><input type="email" name="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required /></label>
-              <label class="password-field">
-                <span>Password</span>
-                <div style="position: relative;">
-                  <input type="password" name="password" id="password" required style="padding-right: 40px; width: 100%;" />
-                  <button type="button" id="togglePassword" class="password-toggle" aria-label="Show password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer; padding: 5px;">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-              </label>
+          <?php if(!$isSubmitted) :?>
+            <div class="card-body">
+                <?php
+                    Form::open([
+                        'method' => 'post'
+                    ]);
+                ?>
+                    <div class="form-group">
+                        <?php
+                            Form::label('Email');
+                            Form::email('email','', [
+                                'class' => 'form-control',
+                                'placeholder' => 'If you have account with us a reset password link will be sent to your email'
+                            ]);
+                        ?>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <?php
+                            Form::submit('btn_forget_password');
+                        ?>
+                    </div>
+                <?php Form::close()?>
+                <?php echo wDivider(25)?>
+                <?php echo wLinkDefault(_route('auth:login'), 'Cancel Forgot Password')?>
             </div>
-            <div class="actions" style="justify-content: space-between;">
-              <a class="link" href="<?php echo _route('page:index')?>">Back to Home</a>
-              <a href="<?php echo _route('forget-pw:index')?>" class="link">Forgot Password?</a>
+        <?php else:?>
+            <div class="card-body">
+                <p class="txt-warning">If Email exists, reset password instruction will be sent to the email.</p>
             </div>
-            <div class="actions" style="justify-content: flex-end; margin-top: 10px;">
-              <button class="btn primary" type="submit">Login</button>
-            </div>
-          </form>
+        <?php endif?>
         </section>
       </main>
     </div>

@@ -336,16 +336,28 @@
 			if(isEqual(whoIs('user_type'), USER_TYPES['CUSTOMER'])) {
 				$appointments = $this->appointment->all([
 					'user_id' => whoIs('id'),
-					'date' => date('Y-m-d')
+					'date' => date('Y-m-d'),
+					'status' => [
+						'condition' => 'not equal',
+						'value' => 'cancelled'
+					]
 				]);
 			} else if(isEqual(whoIs('user_type'), USER_TYPES['DOCTOR'])) {
 				$appointments = $this->appointment->all([
 					'staff_assigned_id' => whoIs('id'),
-					'date' => date('Y-m-d')
+					'date' => date('Y-m-d'),
+					'status' => [
+						'condition' => 'not equal',
+						'value' => 'cancelled'
+					]
 				]);
 			}else {
 				$appointments = $this->appointment->all([
-					'date' => date('Y-m-d')
+					'date' => date('Y-m-d'),
+					'status' => [
+						'condition' => 'not equal',
+						'value' => 'cancelled'
+					]
 				]);
 			}
 			$data = [

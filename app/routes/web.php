@@ -143,7 +143,8 @@
 		'edit' => $controller.'/edit',
 		'create' => $controller.'/create',
 		'delete' => $controller.'/destroy',
-		'show'   => $controller.'/show'
+		'enable'   => $controller.'/enable',
+		'disable'   => $controller.'/disable'
 	];
 
 	$controller = '/SessionController';

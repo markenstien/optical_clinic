@@ -65,7 +65,7 @@
 								<td><?php echo $appointment->reference?></td>
 								<td><?php echo $appointment->guest_name?></td>
 								<td><?php echo $appointment->user_id !=0 ? 'Yes' : 'No'?></td>
-								<td><?php echo $appointment->date?> <a href="#">Test</a></td>
+								<td><?php echo $appointment->date?></td>
 								<td><?php echo is_null($appointment->start_time) ? 'Not Available on previous version' : $appointment->start_time?></td>
 								<td><?php echo $appointment->type?></td>
 								<td><?php echo wSpanBuilder($appointment->status, $statusColor)?></td>

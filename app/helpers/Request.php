@@ -77,7 +77,7 @@
 			if(is_null($name)){
 				return $fields;
 			}else{
-				return $fields[$name];
+				return $fields[$name] ?? '';
 			}
 		}
 

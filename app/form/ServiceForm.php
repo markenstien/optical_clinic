@@ -105,7 +105,8 @@
 			$option_values = $category_model->getAll([
 				'order' => 'category',
 				'where' => [
-					'cat_key' => 'PRODUCT'
+					'cat_key' => 'PRODUCT',
+					'is_disabled' => false
 				]
 			]);
 

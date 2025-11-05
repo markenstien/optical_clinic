@@ -1,9 +1,10 @@
 <?php 	
 	use Form\AppointmentForm;
 	use Form\PaymentForm;
+	use Form\UserForm;
 	use Services\StockService;
 
-	load(['AppointmentForm','PaymentForm'] , APPROOT.DS.'form');
+	load(['AppointmentForm','PaymentForm', 'UserForm'] , APPROOT.DS.'form');
 	load(['StockService'] , APPROOT.DS.'services');
 
 	class AppointmentController extends Controller
@@ -17,7 +18,7 @@
 		$userServiceSpecializationModel,
 		$userModel;
 
-		public $_form,$_paymentForm;
+		public $_form,$_paymentForm,$_userForm;
 
 		public function __construct()
 		{
@@ -37,6 +38,7 @@
 
 			$this->_form = new AppointmentForm();
 			$this->_paymentForm = new PaymentForm();
+			$this->_userForm = new UserForm();
 		}
 
 		/**
@@ -140,6 +142,7 @@
 		{	
 			$req = request()->inputs();
 			$data = [];
+
 			if($req['page'] ?? '' == 'customize-appointment') {
 				$isCompleteCycle = true;
 				$completeCycle = [
@@ -148,6 +151,10 @@
 					'date',
 					'time'
 				];
+
+				if(!whoIs()) {
+					array_push($completeCycle, 'guest_data');
+				}
 
 				foreach($completeCycle as $key => $row) {
 					if(empty($req[$row])) {
@@ -182,8 +189,9 @@
 						$data['groupByStartTime'][$startTime][] = $row;
 					}
 				}
-
+				
 				if($isCompleteCycle) {
+
 					$time = unseal($req['time']);
 					$startAndEnd = explode('-', $time);
 					foreach($startAndEnd as $key => $row) {
@@ -201,12 +209,21 @@
 						'reservation_fee' => $service->price_custom,
 					];
 
-					if(!empty(whoIs())) {
-						$createAppointmentData['user_id'] = whoIs('id');
-						$createAppointmentData['guest_email'] = whoIs('email');
-						$createAppointmentData['guest_name'] = whoIs('first_name') . ' '. whoIs('last_name');
-						$createAppointmentData['guest_phone'] = whoIs('phone_number');
+					if(isSubmitted()) {
+						$postData = request()->posts();
+						if(!empty(whoIs())) {
+							$createAppointmentData['user_id'] = whoIs('id');
+							$createAppointmentData['guest_email'] = whoIs('email');
+							$createAppointmentData['guest_name'] = whoIs('first_name') . ' '. whoIs('last_name');
+							$createAppointmentData['guest_phone'] = whoIs('phone_number');
+						} else {
+							$createAppointmentData['user_id'] = '';
+							$createAppointmentData['guest_email'] = $postData['email'];
+							$createAppointmentData['guest_name'] = $postData['first_name'] . ' '. $postData['last_name'];
+							$createAppointmentData['guest_phone'] = $postData['phone_number'];
+						}
 					}
+					
 					$resp = $this->model->create($createAppointmentData);
 
 					if($resp) {
@@ -221,10 +238,12 @@
 						'service_id' => $req['service_id']
 					]
 				]);
+				$data['userForm'] = $this->_userForm;
 
 				if(!empty($req['doctor_id'])){
 					$data['doctor'] = $this->userModel->get($req['doctor_id']);
 				}
+
 				return $this->view('appointment_booking/customize_appointment' , $data);
 			} else {
 				return $this->view('appointment_booking/index' , $data);

@@ -7,11 +7,9 @@
 		public function __construct()
 		{
 			parent::__construct();
-			// _authRequired([
-			// 	'staff',
-			// 	'admin',
-			// 	'sub_admin'
-			// ]);
+			_authRequired([
+				USER_TYPES['ADMIN']
+			]);
 			$this->_form = new CategoryForm();
 			$this->model = model('CategoryModel');
 		}
@@ -87,6 +85,27 @@
 			];
 
 			return $this->view('category/edit' , $data);
+		}
+
+
+		public function enable($id)
+		{
+			$this->model->update([
+				'is_disabled' => false
+			], $id);
+
+			Flash::set("Category enabled");
+			return request()->return();
+		}
+
+		public function disable($id)
+		{
+			$this->model->update([
+				'is_disabled' => true
+			], $id);
+
+			Flash::set("Category disbled");
+			return request()->return();
 		}
 
 	}

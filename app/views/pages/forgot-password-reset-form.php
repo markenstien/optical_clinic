@@ -42,30 +42,43 @@
 
       <main class="container center">
         <section class="card auth-card">
-          <h1>User Login</h1>
-          <div class="auth-sub">Login to your account to book appointments and manage your profile.</div>
-          <?php Flash::show()?>
-          <form method="post" class="profile-form" action="<?php echo _route('auth:login')?>">
-            <div class="form-grid">
-              <label><span>Email</span><input type="email" name="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required /></label>
-              <label class="password-field">
-                <span>Password</span>
-                <div style="position: relative;">
-                  <input type="password" name="password" id="password" required style="padding-right: 40px; width: 100%;" />
-                  <button type="button" id="togglePassword" class="password-toggle" aria-label="Show password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer; padding: 5px;">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                </div>
-              </label>
-            </div>
-            <div class="actions" style="justify-content: space-between;">
-              <a class="link" href="<?php echo _route('page:index')?>">Back to Home</a>
-              <a href="<?php echo _route('forget-pw:index')?>" class="link">Forgot Password?</a>
-            </div>
-            <div class="actions" style="justify-content: flex-end; margin-top: 10px;">
-              <button class="btn primary" type="submit">Login</button>
-            </div>
-          </form>
+          <h1>Forget Password</h1>
+          <div class="auth-sub">Set your new password</div>
+            <?php Flash::show()?>
+            <div class="card-body">
+              <?php
+                  Form::open([
+                      'method' => 'post'
+                  ]);
+
+                  Form::hidden('userId', $userId);
+              ?>
+                  <div class="form-group">
+                      <?php
+                          Form::label('New Password');
+                          Form::password('new_password','', [
+                              'class' => 'form-control'
+                          ]);
+                      ?>
+                  </div>
+
+                  <div class="form-group mt-3">
+                      <?php
+                          Form::label('Confirm Password');
+                          Form::password('confirm_password','', [
+                              'class' => 'form-control'
+                          ]);
+                      ?>
+                  </div>
+
+                  <div class="form-group mt-3">
+                      <?php
+                          Form::submit('btn_forget_password');
+                      ?>
+                  </div>
+              <?php Form::close()?>
+              <?php echo wLinkDefault(_route('auth:login'), 'Cancel Forgot Password')?>
+          </div>
         </section>
       </main>
     </div>

@@ -29,7 +29,7 @@
 				$isSubmitted  = true;
 			}
 			$this->data['isSubmitted'] = $isSubmitted;
-			return $this->view('forget_password/index', $this->data);
+			return $this->view('pages/forgot-password', $this->data);
 		}
 
 		/*
@@ -79,7 +79,7 @@
 			}
 			$this->data['userId'] = $user->id;
 
-			return $this->view('forget_password/reset_password', $this->data);
+			return $this->view('pages/forgot-password-reset-form', $this->data);
 		}
 
 		private function generateResetPassword($userID, $emailUsed) {
@@ -114,9 +114,7 @@
 				$html .= "<div>{$link}</div>";
 
 				_mail($emailUsed,"Reset password", $html);
-
 				Flash::set("Reset password link has been sent to your email, you can close this page now.");
-
 				return $preparePayload;
 			}
 		}

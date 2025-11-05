@@ -50,12 +50,35 @@
             <input type="hidden" value="from_another_form">
             <input type="hidden" value="customer" name="user_type">
             <div class="form-grid">
-              <label><span>First Name</span><input type="text" name="first_name" value="<?php echo htmlspecialchars($_POST['first_name'] ?? ''); ?>" required /></label>
-              <label><span>Last Name</span><input type="text" name="last_name" value="<?php echo htmlspecialchars($_POST['last_name'] ?? ''); ?>" required /></label>
-              <label><span>Phone</span><input type="text" name="phone_number" value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>" /></label>
-              <label><span>Email</span><input type="email" name="email" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required /></label>
+              <label><span>First Name *</span>
+                <?php
+                  Form::text('first_name', $_POST['first_name'] ?? '', [
+                    'required' => true
+                  ]);
+                ?>
+              </label>
+              <label><span>Last Name *</span>
+                <?php
+                  Form::text('last_name', $_POST['last_name'] ?? '', [
+                    'required' => true
+                  ]);
+                ?>
+              </label>
+              <label><span>Phone</span>
+                <?php
+                  Form::text('phone', $_POST['phone'] ?? '', [
+                  ]);
+                ?>
+              </label>
+              <label><span>Email *</span>
+                <?php
+                  Form::email('email', $_POST['email'] ?? '', [
+                    'required' => true
+                  ]);
+                ?>
+              </label>
               <label>
-                <span>Gender</span>
+                <span>Gender *</span>
                 <select name="gender" required>
                   <option value="" <?php echo (!isset($_POST['gender']) || $_POST['gender'] === '') ? 'selected' : ''; ?>>-- Select Gender --</option>
                   <option value="Male" <?php echo (isset($_POST['gender']) && $_POST['gender'] === 'Male') ? 'selected' : ''; ?>>Male</option>
@@ -63,9 +86,18 @@
                 </select>
               </label>
               <label class="password-field">
-                <span>Password</span>
+                <span>Password *</span>
                 <div style="position: relative;">
-                  <input type="password" name="password" id="password" required style="padding-right: 40px; width: 100%;" />
+                  <?php
+                    Form::email('password', $_POST['password'] ?? '', [
+                      'required' => true,
+                      'id' => 'password',
+                      'style' => 'padding-right: 40px; width: 100%;'
+                    ]);
+                  ?>
+
+                  <!-- <input type="password" name="password" id="password" required style="padding-right: 40px; width: 100%;" /> -->
+
                   <button type="button" class="toggle-password" data-target="password" aria-label="Show password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #666; cursor: pointer; padding: 5px;">
                     <i class="fas fa-eye"></i>
                   </button>

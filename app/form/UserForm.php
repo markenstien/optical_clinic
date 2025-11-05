@@ -26,7 +26,7 @@
 			$this->addProfile();
 			$this->addFirstName();
 			$this->addLastName();
-			$this->addMiddleName();
+			// $this->addMiddleName();
 			$this->addBirthDay();
 			$this->addGender();
 			$this->addUserPreference();

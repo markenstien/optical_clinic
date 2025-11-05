@@ -21,6 +21,7 @@
 				<thead>
 					<th>#</th>
 					<th>Category</th>
+					<th>Disabled</th>
 					<th>Action</th>
 				</thead>
 
@@ -29,6 +30,7 @@
 						<tr>
 							<td><?php echo ++$key?></td>
 							<td><?php echo $row->category?></td>
+							<td><?php echo $row->is_disabled ? 'Disabled' : 'Active'?></td>
 							<td>
 								<a href="<?php echo _route('category:edit', $row->id)?>" class="btn btn-primary btn-xs">edit</a>
 							</td>

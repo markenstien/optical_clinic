@@ -61,7 +61,7 @@
         <div class="mica-card">
             <div class="txt">MICA<br/>AESTHETIC<br/>CLINIC</div>
         </div>
-        <?php if(isEqual(whoIs('user_type'), [USER_TYPES['ADMIN'], USER_TYPES['STAFF']])) :?>
+        <?php if(isEqual(whoIs('user_type'), [USER_TYPES['ADMIN']])) :?>
         <!-- Notifications Card -->
         <div class="card" style="grid-column: 1 / span 2;">
                 <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">

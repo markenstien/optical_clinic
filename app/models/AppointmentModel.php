@@ -58,36 +58,41 @@
 			
 			if($appointment_id)
 			{
-				$user_model = model('UserModel');
-				if(!empty($appointment_data['user_id']))
-				{
-					$user = $user_model->single(['id' => $appointment_data['user_id']]);
-					$email = $user->email;
-					$user_mobile_number = $user->phone_number;
-				} else {
-					$email = $appointment_data['guest_email'];
-					$user_mobile_number = $appointment_data['guest_phone'];
-				}
+				// $user_model = model('UserModel');
+				// if(!empty($appointment_data['user_id']))
+				// {
+				// 	$user = $user_model->single(['id' => $appointment_data['user_id']]);
+				// 	$email = $user->email;
+				// 	$user_mobile_number = $user->phone_number;
+				// } else {
+				// 	$email = $appointment_data['guest_email'];
+				// 	$user_mobile_number = $appointment_data['guest_phone'];
+				// }
+				// $user = $user_model->getByKey('email', $email)[0] ?? false;
+				// if($user) {
+				// 	parent::update([
+				// 		'user_id' => $user->id
+				// 	], $appointment_id);
+				// }
 
-				$user = $user_model->getByKey('email', $email)[0] ?? false;
-
-				if($user) {
-					//update appintment
-					parent::update([
-						'user_id' => $user->id
-					], $appointment_id);
-				}
-
-				if(!empty($appointment_data['user_id'])) {
-					// _notify_include_email("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference",
-					// [$appointment_data['user_id']],[$email] , ['href' => $appointment_link ]);
-				}
-				
-				if($user_mobile_number) {
-					// send_sms("Appointment to ".COMPANY_NAME." is submitted check your email for appointment reference" , [$user_mobile_number]);
-				}
 				_notify_operations("Appointment to ".COMPANY_NAME." is submitted .#{$reference} appointment reference" , ['href' => $appointment_link]);
+				/**
+				 * notify user for this appointment
+				 */
+				if(!empty($appointment_data['user_id'])) {
+					_notify('Your appointment has been sent, waiting for admin approval', $appointment_data['user_id'], [
+						'href' => $appointment_link
+					]);
+				}
+
+				/**
+				 * send email about the appointment
+				 */
+
+				$emailBody =$this->emailFormat($appointment_id);
+				_mail($appointment_data['guest_email'], "Appointment Details - " . COMPANY_NAME, $emailBody);
 			}
+
 			parent::_addRetval('appointment_id', $appointment_id);
 			return $appointment_id;
 		}
@@ -279,5 +284,48 @@
 			);
 
 			return $this->db->resultSet();
+		}
+
+		public function getSingle($id) {
+			return $this->getAll([
+				'where' => [
+					'appointment.id' => $id
+				]
+			])[0] ?? false;
+		}
+
+		public function emailFormat($appointmentId) {
+			$appointment = $this->getSingle($appointmentId);
+			$companyName = COMPANY_NAME;
+			$companyEmail = COMPANY_EMAIL;
+			$companyPhoneNumber = COMPANY_CONTACT;
+			$companyAddress = COMPANY_ADDRESS;
+
+			$html = '';
+			$html .= <<<EOF
+				<h1> Good Day, {$appointment->guest_name}</h1>
+				<h3>This is your appointment details.</h3>
+				<ul> 
+					<li>Date : {$appointment->date}</li>
+					<li>Arrival Time : {$appointment->start_time}</li>
+					<li>Service : {$appointment->service_name}</li>
+					<li>Doctor : {$appointment->last_name}, {$appointment->first_name}</li>
+					<li>Estimated Cost : {$appointment->reservation_fee}</li>
+				<ul>
+				<p> We will be contacting you, using the following details you sent us. </p>
+				<ul> 
+					<li>Email : {$appointment->guest_email}</li>
+					<li>Phone Number : {$appointment->guest_phone}</li>
+					<li>Name : {$appointment->guest_name}</li>
+				<ul>
+				<p> Thank you for choosing {$companyName}, if have any inquires feel fee to contact us via following.<p>
+				<ul> 
+					<li>Phone Number : {$companyPhoneNumber}</li>
+					<li>Email : {$companyEmail}</li>
+				</ul>
+				<p style='text-center'>{$companyAddress}</p>
+			EOF;
+
+			return $html;
 		}
 	}

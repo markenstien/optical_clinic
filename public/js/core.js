@@ -1,12 +1,11 @@
-const URL = 'https://www.micaclinic.site/api';
-// const URL = 'http://dev.merimeri/api';
+// const URL = 'https://www.micaclinic.site/api';
+const URL = 'http://dev.merimeri/api';
 
 const DS  = '/';
 
 const getURL = function(called_url = null)
 {
 	if(called_url != null) {
-
 		return URL+DS+called_url;
 	}
 

@@ -25,7 +25,7 @@
 		<?php endif?>
 
 
-		<?php if(!isEqual($appointment->status, 'completed')) :?>
+		<?php if(!isEqual($appointment->status, ['completed', 'cancelled'])) :?>
 			<a class="btn danger" href="<?php echo _route('appointment:cancel', $appointment->id)?>">
 				<span>⚙️</span> Cancel
 			</a>
