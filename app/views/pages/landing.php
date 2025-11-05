@@ -591,6 +591,7 @@
             <a href="#about">About</a>
             <a href="#services">Services</a>
             <a href="#contact">Contact</a>
+            <a href="<?php echo _route('appointment:create')?>">Book An Appointment</a>
           </div>
         </div>
         <div>
