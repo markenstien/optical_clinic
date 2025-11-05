@@ -228,7 +228,11 @@
 
 					if($resp) {
 						Flash::set("Reservation Sent");
-						return redirect(_route('appointment:index'));
+						if(!empty(whoIs())) {
+							return redirect(_route('appointment:index'));
+						} else {
+							return redirect(_route('appointment:blank-page'));
+						}
 					}
 				}
 
@@ -460,5 +464,9 @@
 				Flash::set("Appointment Complete");
 				return redirect(_route('appointment:show', $appointment->id));
 			}
+		}
+
+		public function blankPage() {
+			return $this->view('pages/blank-page');
 		}
 	}

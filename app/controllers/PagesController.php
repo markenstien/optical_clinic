@@ -22,4 +22,8 @@
         {
             return $this->view('pages.sign-up');
         }
+
+        public function blankPage() {
+            return $this->view('pages.blank-page');
+        }
     }

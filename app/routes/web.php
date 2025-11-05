@@ -97,7 +97,8 @@
 		'approve' => $controller .'/approve',
 		'arrived' => $controller .'/arrived',
 		'cancel' => $controller .'/cancel',
-		'complete' => $controller .'/complete'
+		'complete' => $controller .'/complete',
+		'blank-page' => $controller .'/blankPage',
 	];
 
 	$controller = '/BillController';

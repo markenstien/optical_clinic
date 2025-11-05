@@ -312,17 +312,22 @@
 					<li>Doctor : {$appointment->last_name}, {$appointment->first_name}</li>
 					<li>Estimated Cost : {$appointment->reservation_fee}</li>
 				<ul>
+
 				<p> We will be contacting you, using the following details you sent us. </p>
+
 				<ul> 
 					<li>Email : {$appointment->guest_email}</li>
 					<li>Phone Number : {$appointment->guest_phone}</li>
 					<li>Name : {$appointment->guest_name}</li>
-				<ul>
+				</ul>
+
 				<p> Thank you for choosing {$companyName}, if have any inquires feel fee to contact us via following.<p>
+
 				<ul> 
 					<li>Phone Number : {$companyPhoneNumber}</li>
 					<li>Email : {$companyEmail}</li>
 				</ul>
+				
 				<p style='text-center'>{$companyAddress}</p>
 			EOF;
 

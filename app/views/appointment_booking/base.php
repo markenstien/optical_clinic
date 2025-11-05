@@ -394,6 +394,8 @@
         </div>
         <?php if(!whoIs()):?>
         <div class="nav-actions">
+          <a class="btn" href="<?php echo _route('page:index')?>" id="loginBtn" 
+            style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18)">Home Page</a>
           <a class="btn" href="<?php echo _route('page:login')?>" id="loginBtn" 
             style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18)">Login</a>
           <a class="btn" href="<?php echo _route('page:register')?>"
