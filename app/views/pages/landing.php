@@ -490,6 +490,7 @@
           <a href="#about">About</a>
           <a href="#services">Services</a>
           <a href="#contact">Contact</a>
+          <a href="<?php echo _route('appointment:create')?>">Book An Appointment</a>
         </div>
       </nav>
       <div class="mobile-menu" id="mobileMenu">
@@ -497,9 +498,10 @@
         <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#contact">Contact</a>
+        <a href="<?php echo _route('appointment:create')?>">Book An Appointment</a>
         <div style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
-          <a href="auth/user-login.php" class="btn" style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18); text-align:center">Login</a>
-          <a href="auth/signup.php" class="cta-btn" style="text-align:center">Sign Up</a>
+          <a href="<?php echo _route('page:login')?>" class="btn" style="background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.18); text-align:center">Login</a>
+          <a href="<?php echo _route('page:register')?>" class="cta-btn" style="text-align:center">Sign Up</a>
         </div>
       </div>
     </header>
