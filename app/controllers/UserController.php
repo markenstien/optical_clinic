@@ -333,6 +333,7 @@
 
 		public function admin()
 		{
+			_requireAuth();
 			if(isEqual(whoIs('user_type'), USER_TYPES['CUSTOMER'])) {
 				$appointments = $this->appointment->all([
 					'user_id' => whoIs('id'),
