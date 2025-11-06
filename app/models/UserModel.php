@@ -333,8 +333,8 @@
 				$this->addError("Verify your account to access " . COMPANY_NAME . "Platform {$link}" );
 				return false;
 			}
-
-			return $this->startAuth($user->id);
+			$startAuth = $this->startAuth($user->id);
+			return $startAuth;
 		}
 
 		/*
@@ -343,21 +343,12 @@
 		public function startAuth($id)
 		{
 			$user = parent::get($id);
-
 			if(!$user){
 				$this->addError("Auth cannot be started!");
 				return false;
 			}
-
-			$auth = null;
-
-			while( is_null($auth) )
-			{
-				Session::set('auth' , $user);
-				$auth = Session::get('auth');
-			}
-
-			return $auth;
+			Session::set('auth' , $user);
+			return $user;
 		}
 
 		public function disable($id) {
