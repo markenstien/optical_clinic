@@ -359,12 +359,19 @@
 
         $isObject = is_object($data);
 
-        foreach( $collectOnly as $key )
+        foreach($collectOnly as $key)
         {
-            if( $isObject )
+            if((strpos($key, ':') !== false)) {
+                $keyArray = explode(':', $key);
+            }
+            
+            if($isObject)
             {
+                if(isset($keyArray)) {
+                    $looping = keypairtostr($key, '[]', '->');
+                    dump($looping);
+                }
                 $retVal[$key] = $data->$key;
-                
             }elseif(is_array($data)) {
                 $retVal[$key] = $data[$key];
             }
@@ -476,6 +483,3 @@
         curl_close ($ch);
     }
 
-    
-    
-    

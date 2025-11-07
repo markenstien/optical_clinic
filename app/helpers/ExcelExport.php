@@ -1,6 +1,8 @@
 <?php 	
 	require_once APPROOT.DS.'libraries/spreadsheet/vendor/autoload.php';
-	use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 	use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
@@ -54,7 +56,7 @@
 
 		    		foreach($header as $key=> $h) 
 		    		{
-		    			$sheet->setCellValue($alphabhet[$key].'1' , $h);
+						$sheet->setCellValueExplicit($alphabhet[$key].'1' , $h, DataType::TYPE_STRING);
 		    		}
 
 		    		$rowCount = 2;
@@ -76,7 +78,7 @@
 									$col = $defaultCellValue;
 								} else {
 									$col = is_null($col) ? $defaultCellValue : $col;
-									$sheet->setCellValue($alphabhet[$colCounter].''.($rowCount) , $col);
+									$sheet->setCellValueExplicit($alphabhet[$colCounter].''.($rowCount) , $col, DataType::TYPE_STRING);
 								}
 								
 								$colCounter++;

@@ -1,0 +1,65 @@
+function G_PickDataFromArray($datas, $collectTheseKeysOnly = [], $returnType = 'object')
+{
+    $retVal = [];
+
+    foreach ($datas as $data) {
+        $retVal[] = G_FormatData($data, $collectTheseKeysOnly, $returnType);
+    }
+
+    return $retVal;
+}
+
+function G_FormatData($data, $collectTheseKeysOnly = [], $returnType = 'object')
+{
+    $retVal = [];
+    $collectOnly = array_values($collectTheseKeysOnly);
+    $isObject = is_object($data);
+
+    foreach ($collectOnly as $collectThisKey) {
+        $value = null;
+
+        // Detect nested key (e.g., service:name)
+        if (strpos($collectThisKey, ':') !== false) {
+            $keys = explode(':', $collectThisKey);
+            $temp = $isObject ? (array) $data : $data;
+
+            foreach ($keys as $key) {
+                // Convert nested objects to arrays dynamically
+                if (is_object($temp)) {
+                    $temp = (array) $temp;
+                }
+
+                if (is_array($temp) && isset($temp[$key])) {
+                    $temp = $temp[$key];
+                } else {
+                    $temp = null;
+                    break;
+                }
+            }
+
+            $value = $temp;
+        } else {
+            // Handle simple (non-nested) keys
+            if ($isObject && isset($data->$collectThisKey)) {
+                $value = $data->$collectThisKey;
+            } elseif (is_array($data) && isset($data[$collectThisKey])) {
+                $value = $data[$collectThisKey];
+            }
+        }
+
+        // Use only the final key name in the output
+        $finalKey = basename(str_replace(':', '/', $collectThisKey));
+        $retVal[$finalKey] = $value;
+    }
+
+    // Handle return type
+    if (function_exists('isEqual')) {
+        if (isEqual($returnType, 'object')) {
+            return json_decode(json_encode($retVal));
+        }
+    } elseif ($returnType === 'object') {
+        return json_decode(json_encode($retVal));
+    }
+
+    return $retVal;
+}

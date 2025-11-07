@@ -83,4 +83,15 @@
     }
 
 
+    /**
+     * stocks
+     */
+    function sortByUsagePercentageDesc($data) {
+        // Use uasort to preserve keys and sort by usagePercentage
+        uasort($data, function($a, $b) {
+            return $b['attributes']['usagePercentage'] <=> $a['attributes']['usagePercentage'];
+        });
+        return $data;
+    }
+
     

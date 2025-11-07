@@ -34,7 +34,8 @@
 			<?php Form::close()?>
 
             <?php echo wDivider()?>
-            <?php echo wLinkDefault('/'.request()->getCompleteURL().'&excel_export=true', 'Export')?>
+            <?php echo wLinkDefault('/'.request()->getCompleteURL().'&excel_export=true', 'Export')?> || 
+            <?php echo wLinkDefault('/'.request()->getCompleteURL().'&excel_export&report_type=fastmoving', 'Export Fast Moving -> slow moving report')?>
             
             <div class="table-responsive">
                 <table class="table table-bordered">
