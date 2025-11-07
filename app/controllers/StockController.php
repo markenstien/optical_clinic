@@ -50,18 +50,66 @@
         public function log() {
             $request = request()->inputs();
 
-            if (isset($request['item_id'])) {
-                $logs = $this->model->getAll([
-                    'where' => [
-                        'item_id' => $request['item_id']
-                    ],
-                    'order' => 'stock.id desc'
-                ]);
-            } else {
-                $logs = $this->model->getAll([
-                    'order' => 'stock.id desc'
-                ]);
+            $condition = [];
+
+            if(!empty($request['item_id'])) {
+                $condition['item_id'] = $request['item_id'];
             }
+
+            if(!empty($request['start_date'])) {
+                $condition['date'] = [
+					'condition' => 'between',
+					'value' => [
+						$request['start_date'],
+						$request['end_date'],
+					]
+				];
+            }
+
+            $logs = $this->model->getAll([
+                'order' => 'stock.id desc',
+                'where' => $condition
+            ]);
+
+            if(isset($request['excel_export'])) {
+                $date = date('Y-m-d');
+				_load_helper(ExcelExport::class);
+				$newExcelExport = new ExcelExport();
+
+                foreach($logs as $key => $row) {
+                    $row->days_to_expire = '';
+                    if($row->expiry_date) {
+                        $row->days_to_expire = date_difference_number_format($date, $row->days_to_expire);
+                    }
+                }
+
+				$newExcelExport->setHeader([
+					'Product',
+					'Stock Reference',
+					'Quantity',
+					'Origin',
+					'Days To Expire',
+					'Entry Date',
+					'Expiry Date',
+					'Remarks',
+					'Record Stamp',
+				]);
+
+				$exportData = G_PickDataFromArray($logs, [
+					'service',
+					'stock_reference',
+					'quantity',
+					'entry_origin',
+					'days_to_expire',
+					'date',
+					'expiry_date',
+					'remarks',
+					'created_at',
+				], 'array');
+
+				$newExcelExport->setData($exportData);	
+				$newExcelExport->exportFile();
+			}
 
             $this->data['logs'] = $logs;
             return $this->view('stock/logs', $this->data);

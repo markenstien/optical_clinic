@@ -144,3 +144,11 @@
         }
         return $retVal;
     }
+
+    function _load_helper($helperClassName) {
+        if(file_exists(HELPERS.DS.$helperClassName.'.php')) {
+            require_once HELPERS.DS.$helperClassName.'.php';
+        } else {
+            echo die("helper {$helperClassName} do not exists");
+        }
+    }

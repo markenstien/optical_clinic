@@ -21,26 +21,64 @@
 		public function index()
 		{
 			_authRequired();
+			$request = request()->get();
+			$date = date('Y-m-d');
+
+			$stockCondition = [
+				'entry_origin' => StockService::ENTRY_PURCHASE_ORDER
+			];
+
+			if(!empty($request['start_date'])) {
+				$stockCondition['date'] = [
+					'condition' => 'between',
+					'value' => [
+						$request['start_date'],
+						$request['end_date'],
+					]
+				];
+			}
 
 			$services = $this->model->getAll();
 			$stocks = $this->modelStock->getAll([
-				'where' => [
-					'entry_origin' => StockService::ENTRY_PURCHASE_ORDER
-				]
+				'where' => $stockCondition
 			]);
 
 			$stocksForFastMoving = $this->modelStock->getAll();
 			//fast moving
-
 			$expiringStocks = [];
 			foreach($stocks as $key => $row) {
 				if(empty($row->expiry_date)) continue;
-
-				$expiringStocks [] = $row;
+				if(date_difference_number_format($date, $row->expiry_date) <= request()->get('days_to_expire', 20)) {
+					$row->days_to_expire = date_difference_number_format($date, $row->expiry_date);
+					$expiringStocks [] = $row;
+				}
 			}
 			/**
 			 * stocks from purcahse order
 			 */
+
+			if(isset($request['excel_export'])) {
+				_load_helper(ExcelExport::class);
+				$newExcelExport = new ExcelExport();
+				$newExcelExport->setHeader([
+					'Product',
+					'Stock Reference',
+					'Days To Expire',
+					'Entry Date',
+					'Expiry Date'
+				]);
+
+				$exportData = G_PickDataFromArray($expiringStocks, [
+					'service',
+					'stock_reference',
+					'days_to_expire',
+					'date',
+					'expiry_date'
+				], 'array');
+
+				$newExcelExport->setData($exportData);	
+				$newExcelExport->exportFile();
+			}
 
 			$data = [
 				'title' => 'Products',

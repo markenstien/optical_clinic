@@ -40,7 +40,12 @@
 						<?php
 							$filter_categories = $_GET['categories'] ?? [];
 						?>
-						<?php foreach($categories as $category) :?>
+						<?php foreach($categories as $key => $category) :?>
+							<?php
+								if($category->is_disabled) {
+									continue;
+								}
+							?>
 							<label style="padding: 10px; background: #eee;margin-right: 25px;">
 								<?php echo strtoupper($category->category)?>
 								<?php 
@@ -73,7 +78,8 @@
 							<th>Action</th>
 						</thead>
 						<tbody>
-							<?php foreach($services as $row) :?>
+							<?php foreach($services as $key => $row) :?>
+								<?php if($key > 5) break?>
 							<tr>
 								<td><?php echo $row->code?></td>
 								<td><?php echo $row->service?></td>

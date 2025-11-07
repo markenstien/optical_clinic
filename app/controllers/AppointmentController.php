@@ -393,6 +393,8 @@
 			_notify_operations("Appointment {$appointment->reference} has been approved", [
 				'link' => _route('appointment:show', $appointment->id)
 			]);
+
+			_mail($appointment->guest_email, "Appointment Updated to Approved", $this->model->emailFormat($appointment->id));
 			
 			//update status
 			$this->model->update([
@@ -415,6 +417,8 @@
 			_notify_operations("Appointment {$appointment->reference} has been updated to arrived", [
 				'link' => _route('appointment:show', $appointment->id)
 			]);
+
+			_mail($appointment->guest_email, "Appointment Updated to Arrived", $this->model->emailFormat($appointment->id));
 			
 			//update status
 			$this->model->update([
@@ -454,6 +458,9 @@
 				_notify_operations("Appointment {$appointment->reference} has been completed", [
 					'link' => _route('appointment:show', $appointment->id)
 				]);
+
+
+				_mail($appointment->guest_email, "Appointment Updated to Complete", $this->model->emailFormat($appointment->id));
 				
 				//update status
 				$this->model->update([

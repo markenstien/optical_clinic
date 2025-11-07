@@ -1,4 +1,9 @@
 <?php build('content') ?>
+<?php
+    $notifications = db_get_notifications([
+        'recipient_id' => whoIs('id')
+    ], 'desc', '10');
+?>
 <div class="banner">
     <div>
         <h2>📊 Dashboard</h2>
@@ -37,7 +42,7 @@
                 border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">LIVE DATA</div>
             </div>
         </div>
-
+        
         <!-- Recent Activity Card -->
         <div class="card">
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
@@ -49,12 +54,11 @@
             <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Latest system updates</p>
             </div>
         </div>
-        <div class="muted-box" style="text-align: center;">
-            <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.4;">📋</div>
-            <div style="color: #6c757d; font-weight: 600; font-size: 16px;">No recent activities</div>
-            <div style="margin-top: 8px; padding: 8px 16px; background: rgba(154,111,70,.1); border-radius: 20px; 
-            color: #9a6f46; font-size: 12px; font-weight: 600;">MONITORING</div>
-        </div>
+            <?php foreach($notifications as $key => $notification) :?>
+                <div style="margin: 5px;">
+                    <a href="<?php echo $notification->href ?? '#'?>"><?php echo $notification->message?></a>
+                </div>
+            <?php endforeach?>
         </div>
 
         <!-- MICA Brand Card -->

@@ -86,10 +86,7 @@
 			]);
 
 			$bundle = $this->bundle->get($bundle_id);
-
 			$bundle_items = $this->model->getByBundle($bundle_id);
-
-			// $services = $this->service->getAll();
 
 			$data = [
 				'title' => "{$bundle->name} | Service Bundles",

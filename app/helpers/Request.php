@@ -58,7 +58,7 @@
 			return '';
 		}
 
-		public function get($name = null)
+		public function get($name = null, $default = '')
 		{
 			$request = $_GET;
 
@@ -77,7 +77,7 @@
 			if(is_null($name)){
 				return $fields;
 			}else{
-				return $fields[$name] ?? '';
+				return empty($fields[$name] ?? '') ? $default : $fields[$name];
 			}
 		}
 

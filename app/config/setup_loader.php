@@ -16,7 +16,7 @@
             define('DBHOST' , 'localhost');
             define('DBUSER' , 'root');
             define('DBPASS' , '');
-            define('DBNAME' , 'merimeri');
+            define('DBNAME' , 'meri_medi');
 
             define('BASECONTROLLER' , 'PagesController');
             define('BASEMETHOD' , 'index');

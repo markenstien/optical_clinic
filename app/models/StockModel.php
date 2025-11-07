@@ -207,7 +207,7 @@
             }
 
             if(!empty($params['limit'])) {
-                $limit = " LIMIT " . $limit;
+                $limit = " LIMIT " . $params['limit'];
             }
 
             $this->db->query(

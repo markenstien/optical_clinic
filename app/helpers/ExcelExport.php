@@ -37,12 +37,12 @@
 		}
 		private function formatExcel()
 		{
-
+			$defaultCellValue = 'n/a';
 			$data = $this->data;
 			$spreadsheet = new Spreadsheet();
-
 			$sheet = $spreadsheet->getActiveSheet();
-            
+
+
 		    if(is_array($data))
 		    {
 		    	$rowCount = 0;
@@ -63,15 +63,25 @@
 			    		// $rowCount = 1;
 			    		$colCounter = 0;
 
-			    		foreach($columns as $colCount => $col)
-			    		{
-			    			$sheet->getColumnDimension($alphabhet[$colCounter])
-			    			->setAutoSize(true);
+						if(is_object($columns)) {
+							$columns = (array) $columns;
+						}
 
-			    			$sheet->setCellValue($alphabhet[$colCounter].''.($rowCount) , $col);
-			    			
-			    			$colCounter++;
-			    		}
+			    		if(is_array($columns)) {
+							foreach($columns as $colCount => $col)
+							{
+								$sheet->getColumnDimension($alphabhet[$colCounter])
+								->setAutoSize(true);
+								if(empty($col)) {
+									$col = $defaultCellValue;
+								} else {
+									$col = is_null($col) ? $defaultCellValue : $col;
+									$sheet->setCellValue($alphabhet[$colCounter].''.($rowCount) , $col);
+								}
+								
+								$colCounter++;
+							}
+						}
 
 			    		$rowCount++;
 			    	}
@@ -79,11 +89,21 @@
 			    	foreach($data as $rowCount => $columns)
 			    	{
 			    		$colCounter = 0;
-			    		foreach($columns as $colCount => $col)
-			    		{
-			    			$sheet->setCellValue($alphabhet[$colCounter].''.($rowCount+1) , $col);
-			    			$colCounter++;
-			    		}
+						if(is_object($columns)) {
+							$columns = (array) $columns;
+						}
+						if(is_array($columns)) {
+							foreach($columns as $colCount => $col)
+							{
+								if(empty($col)) {
+									$col = $defaultCellValue;
+								} else {
+									$col = is_null($col) ? $defaultCellValue : $col;
+									$sheet->setCellValue($alphabhet[$colCounter].''.($rowCount+1) , $col);
+								}
+								$colCounter++;
+							}
+						}
 			    	}
 		    	}
 
@@ -93,24 +113,22 @@
 		    		$name = $this->name;
 		    	}
 		    	
-		    	$file = $name.'.xlsx';
-				$path = BASE_DIR.DS.'public/assets/uploads/office';
+		    	$file = $name . '.xlsx';
+				$path = BASE_DIR . DS . 'public/assets/uploads/office';
 				$writer = new Xlsx($spreadsheet);
-				try{
-					header('Content-Type: application/vnd.ms-excel');
-					header('Content-Disposition: attachment; filename="'.$file.'"');
-					ob_get_clean();
-					$writer->save("php://output");
-					Flash::set('Report Generated');
-				}catch(Exception $e){
-					Flash::set($e->getMessage() , 'danger');
-					err_404('Trying to detect error');
+
+				try {
+					if (ob_get_length()) ob_end_clean(); // clear existing output buffers
+
+					header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+					header('Content-Disposition: attachment; filename="' . $file . '"');
+					header('Cache-Control: max-age=0');
+
+					$writer->save('php://output');
+					exit; // important to stop any further output
+				} catch (Exception $e) {
+					Flash::set($e->getMessage(), 'danger');
 				}
-		    }else
-		    {
-		    	var_dump($data);
 		    }
-
-
 		}
 	}

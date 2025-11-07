@@ -1,28 +1,30 @@
 <?php build('content') ?>
-<div class="page-header">
-	<div>
-		<h1>👥User Account</h1>
-		<p>View Your account details here</p>
-	</div>
+<?php if(whoIs('user_type') != USER_TYPES['CUSTOMER']) :?>
+	<div class="page-header">
+		<div>
+			<h1>👥User Account</h1>
+			<p>View Your account details here</p>
+		</div>
 
-	<div class="header-actions">
-		<a class="btn secondary" href="<?php echo _route('user:edit', $user->id)?>">
-			<span>⚙️</span>Edit
-		</a>
-
-		<?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) && $user->is_disabled == false) :?>
-			<a class="btn danger" href="<?php echo _route('user:disable', $user->id)?>">
-				<span>❌</span>Disable Account
+		<div class="header-actions">
+			<a class="btn secondary" href="<?php echo _route('user:edit', $user->id)?>">
+				<span>⚙️</span>Edit
 			</a>
-		<?php endif?>
 
-		<?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) && $user->is_disabled == true) :?>
-			<a class="btn success" href="<?php echo _route('user:enable', $user->id)?>">
-				<span>✅</span>Re-Activate Account
-			</a>
-		<?php endif?>
+			<?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) && $user->is_disabled == false) :?>
+				<a class="btn danger" href="<?php echo _route('user:disable', $user->id)?>">
+					<span>❌</span>Disable Account
+				</a>
+			<?php endif?>
+
+			<?php if(isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) && $user->is_disabled == true) :?>
+				<a class="btn success" href="<?php echo _route('user:enable', $user->id)?>">
+					<span>✅</span>Re-Activate Account
+				</a>
+			<?php endif?>
+		</div>
 	</div>
-</div>
+<?php endif?>
 <div class="container">
 	<div id="modal1" class="modal-overlay">
 		<div class="modal">
@@ -93,7 +95,6 @@
 										</div>
 									</div>
 								</div>
-								<hr>
 								<div class="card-body">
 									<div class="row">
 										<div class="col-md-3">
@@ -115,6 +116,14 @@
 										</div>
 									</div>
 								</div>
+
+								<?php if(isEqual(whoIs('user_type'), USER_TYPES['CUSTOMER'])) :?>
+									<div class="card-footer">
+										<a class="btn secondary" href="<?php echo _route('user:edit', $user->id)?>">
+											<span>⚙️</span>Edit
+										</a>
+									</div>
+								<?php endif?>
 							</div>
 						</div>
 

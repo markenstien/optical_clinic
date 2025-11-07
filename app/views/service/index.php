@@ -71,10 +71,27 @@
 		</div>
 		<?php echo wDivider()?>
 		<div class="card-body">
-			<h1>Inventory Reports</h1>
+			<h1>Expiring Inventory Reports</h1>
+			<?php Form::open(['method' => 'get'])?>
+				<div>
+					<label for="#">End Date
+						<?php Form::date('start_date', '', ['required' => true])?>
+					</label>
+					<label for="#">Start Date
+						<?php Form::date('end_date', '', ['required' => true])?>
+					</label>
+					<label for="#">Days To Expire
+						<?php Form::number('days_to_expire', request()->get('days_to_expire', '20'))?>
+					</label>
+				</div>
 
-			<div class="card-body">
+				<div>
+					<?php Form::submit('', 'Filter Date')?>
+				</div>
+			<?php Form::close()?>
+			<div class="card-body" id="expiringProuctContainer">
 				<h3>Expiring Product</h3>
+				<?php echo wLinkDefault(request()->getCompleteURL().'&excel_export=true', 'Export')?>
 				<table class="table">
 					<thead>
 						<th>Product</th>

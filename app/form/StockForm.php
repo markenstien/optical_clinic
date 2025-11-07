@@ -87,7 +87,9 @@
                     'label' => 'Entry Origin',
                     'option_values' => [
                         StockService::ENTRY_PURCHASE_ORDER,
-                        StockService::ENTRY_ORIGIN, StockService::ENTRY_ORIGIN_DEFECTIVE_ITEM
+                        StockService::ENTRY_ORIGIN, 
+                        StockService::ENTRY_ORIGIN_DEFECTIVE_ITEM,
+                        StockService::ENTRY_CONSUMED
                     ]
                 ],
                 'required' => true,

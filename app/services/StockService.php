@@ -9,6 +9,7 @@
         const ENTRY_ORIGIN_DEFECTIVE_ITEM = 'DEFECTIVE_ITEM';
         const ENTRY_ORIGIN_CHANGE_ITEM = 'CHANGE_ITEM';
         const ENTRY_PURCHASE_ORDER = 'PURCHASE_ORDER';
+        const ENTRY_CONSUMED = 'CONSUMED';
 
         const BORROW = 'BORROW';
         const RETURN_ITEM = 'RETURN_ITEM';
