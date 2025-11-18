@@ -78,19 +78,20 @@
                         <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px; opacity: 0.8;">Inventory alerts and system status</p>
                     </div>
                     <div style="margin-left: auto; padding: 6px 12px; background: rgba(154,111,70,.1); border-radius: 20px; color: #9a6f46; font-size: 12px; font-weight: 600;">
-                        3 ALERTS
+                        2 ALERTS
                     </div>
                 </div>
             <ul class="notif-list">
                 <li>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 16px;">📦</span>
-                    <span style="font-weight: 500;">Low-stock products</span>
+                    <span style="font-weight: 500;">Fast Moving and Slow Moving</span>
                 </div>
                 <?php if ($lowCount > 0): ?>
                     <span class="badge red"><?php echo $lowCount; ?></span>
                 <?php else: ?>
-                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);">OK</span>
+                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);"
+                    onclick="window.location.href='<?php echo _route('stock:log')?>'">OK</span>
                 <?php endif; ?>
                 </li>
                 <li>
@@ -101,7 +102,8 @@
                 <?php if ($nearExpiryCount > 0): ?>
                     <span class="badge orange"><?php echo $nearExpiryCount; ?></span>
                 <?php else: ?>
-                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);" onclick="window.location.href='<?php echo _route('service:index')?>'">OK</span>
+                    <span class="badge" style="background: linear-gradient(135deg, #28a745, #20c997);" 
+                    onclick="window.location.href='<?php echo _route('service:index')?>'">OK</span>
                 <?php endif; ?>
                 </li>
             </ul>
