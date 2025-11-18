@@ -20,7 +20,7 @@
 		return $db->single();
 	}
 
-	function db_get_notifications($where = null, $order = 'asc', $limit = '30') {
+	function db_get_notifications($where = null, $order = 'asc', $limit = '1000') {
 		$notificationModel = model('NotificationModel');
 		return $notificationModel->getAll([
 			'where' => $where,

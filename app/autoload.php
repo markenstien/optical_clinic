@@ -1,8 +1,5 @@
 <?php
 	header('Access-Control-Allow-Origin: *');
-
-	session_start();
-
 	require_multiple(FNCTNS , [
 		'session',
 		'debug',

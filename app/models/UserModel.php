@@ -333,8 +333,8 @@
 				$this->addError("Verify your account to access " . COMPANY_NAME . "Platform {$link}" );
 				return false;
 			}
-			$startAuth = $this->startAuth($user->id);
-			return $startAuth;
+			// $startAuth = $this->startAuth($user->id);
+			return $user;
 		}
 
 		/*

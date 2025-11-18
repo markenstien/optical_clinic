@@ -4,7 +4,7 @@
    */
   $notifications = db_get_notifications([
     'recipient_id' => whoIs('id')
-  ], 'desc', '10');
+  ], 'desc');
 ?>
 <!doctype html>
 <html lang="en">
@@ -328,10 +328,6 @@
           <a href="<?php echo isEqual(whoIs('user_type'), USER_TYPES['ADMIN']) ? _route('user:index') : _route('user:profile')?>" class="nav-item">
             <span class="icon">👤</span>
             <span>Manage Account</span>
-          </a>
-          <a href="<?php echo _route('auth:logout')?>" class="nav-item danger">
-            <span class="icon">🚪</span>
-            <span>Logout</span>
           </a>
         </nav>
       </aside>

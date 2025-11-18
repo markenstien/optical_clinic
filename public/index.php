@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	ob_clean();
 
 	$root = dirname(dirname(__FILE__));
