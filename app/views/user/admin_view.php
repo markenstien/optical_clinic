@@ -138,7 +138,7 @@
 										<?php foreach($userSpecializations as $key => $row) :?>
 											<tr>
 												<td><?php echo $row->name?></td>
-												<td><a href="<?php echo _route('user:remove-specialization', $row->id)?>" class="btn btn-danger btn-xs">Remove</a></td>
+												<td><a href="<?php echo _route('user:remove-specialization', $row->uss_id)?>" class="btn btn-danger btn-xs">Remove</a></td>
 											</tr>
 										<?php endforeach?>
 									</table>
