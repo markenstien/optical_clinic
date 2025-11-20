@@ -287,13 +287,15 @@
 			$companyPhoneNumber = COMPANY_CONTACT;
 			$companyAddress = COMPANY_ADDRESS;
 
+			$timeStart = timeConvert($appointment->start_time);
+
 			$html = '';
 			$html .= <<<EOF
 				<h1> Good Day, {$appointment->guest_name}</h1>
 				<h3>This is your appointment details.</h3>
 				<ul> 
 					<li>Date : {$appointment->date}</li>
-					<li>Arrival Time : {$appointment->start_time}</li>
+					<li>Arrival Time : {$timeStart}</li>
 					<li>Service : {$appointment->service_name}</li>
 					<li>Doctor : {$appointment->last_name}, {$appointment->first_name}</li>
 					<li>Estimated Cost : {$appointment->reservation_fee}</li>
