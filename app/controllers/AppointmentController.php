@@ -198,14 +198,16 @@
 						$startAndEnd[$key] = trim($row);
 					}
 
+					$startTime = date('H:i', strtotime($startAndEnd[0]));
+					$endTime = date('H:i', strtotime($startAndEnd[1]));
 					$service = $this->service_bundle->get($req['service_id']);
 
 					$createAppointmentData = [
 						'date' => $req['date'],
 						'staff_assigned_id' => $req['doctor_id'],
 						'service_inquired_id' => $req['service_id'],
-						'start_time' => $startAndEnd[0],
-						'end_time' => $startAndEnd[1],
+						'start_time' => $startTime,
+						'end_time' => $endTime,
 						'reservation_fee' => $service->price_custom,
 					];
 

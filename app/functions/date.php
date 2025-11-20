@@ -28,6 +28,13 @@
         return date('Y-m-d h:i:s A');
     }
 
+    function timeConvert($time, $format = '12') {
+        if($format == '12') {
+            return date('h:i A', strtotime(date('Y-m-d'. ' '.$time)));
+        } else {
+            return date('H:i', strtotime(date('Y-m-d'. ' '.$time)));
+        }
+    }
 
     function today()
     {

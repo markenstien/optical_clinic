@@ -325,7 +325,6 @@
 			}
 
 			if(!$user->is_verified){
-
 				$link = wLinkDefault(_route('user:send-verification', null, [
 					'userId' => seal($user->id)
 				]), 'Send Verification Again');
@@ -333,7 +332,13 @@
 				$this->addError("Verify your account to access " . COMPANY_NAME . "Platform {$link}" );
 				return false;
 			}
-			// $startAuth = $this->startAuth($user->id);
+
+			if($user->is_disabled) {
+				$this->addError("Account is disabled, contact your administrator for account reactivation.");
+				return false;
+			}
+
+			$startAuth = $this->startAuth($user->id);
 			return $user;
 		}
 

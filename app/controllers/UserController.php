@@ -1,8 +1,7 @@
 <?php
-	load(['UserForm' , 'DoctorForm', 'AddressForm'] , APPROOT.DS.'form');
+	load(['UserForm' , 'DoctorForm'] , APPROOT.DS.'form');
 	use Form\UserForm;
 	use Form\DoctorForm;
-	use Form\AddressForm;
 
 
 	class UserController extends Controller
@@ -13,12 +12,10 @@
 			parent::__construct();
 
 			$this->_form = new UserForm('form_user');
-			$this->_form_address = new AddressForm();
 
 			$this->model = model('UserModel');
 			$this->session = model('SessionModel');
 			$this->appointment = model('AppointmentModel');
-			$this->adddess_model = model('AddressModel');
 			$this->service_bundle_model = model('ServiceBundleModel');
 			$this->user_service_specialization_model = model('UserServiceSpecializationModel');
 		}
@@ -216,8 +213,6 @@
 			}
 
 			$user = $this->model->get($id);
-			$user_address = $this->adddess_model->get($user->address_id);
-
 			$doc_form = new DoctorForm();
 
 			$this->_form->setUrl(_route('user:edit' , $id));
@@ -228,14 +223,11 @@
 
 			$this->_form->setValueObject($user);
 
-			$this->_form_address->remove('submit');
-
 			$data = [
 				'title' => 'Create User',
 				'form'  => $this->_form,
 				'doc_form' => $doc_form,
 				'user'   => $user,
-				'form_address' => $this->_form_address,
 				'user_id' => $id,
 				'type' => 'edit'
 			];

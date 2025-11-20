@@ -59,7 +59,7 @@
 					<div class="row">
 						<div class="col-md-3">Date</div>
 						<div class="col-md-9">
-							<input type="text" disabled value="<?php echo $appointment->date?> (<?php echo date('H:i A', strtotime($appointment->start_time))?> - <?php echo date('H:i A', strtotime($appointment->end_time))?>)">
+							<input type="text" disabled value="<?php echo $appointment->date?> (<?php echo timeConvert($appointment->start_time)?> - <?php echo timeConvert($appointment->end_time)?>)">
 						</div>
 					</div>
 					<div class="row">
